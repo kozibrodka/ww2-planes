@@ -40,12 +40,12 @@ public class Properties_Biplane extends Machine_properties {
         acceleration = 2.0D;
         decceleration = 1.0D;
         maxHeight = 120;
-        startSound = "ofensywa:propstart";
+        startSound = "planes:propstart";
         startSoundLength = 20;
-        propSound = "ofensywa:propsound";
+        propSound = "planes:propsound";
         propSoundLength = 30;
-        shootSound = "ofensywa:bullet";
-        bombSound = "ofensywa:bomb";
+        shootSound = "planes:bullet";
+        bombSound = "planes:bomb";
         playerYOffset = -0.5D;
         numPassengers = 0;
         if(numPassengers > 0)

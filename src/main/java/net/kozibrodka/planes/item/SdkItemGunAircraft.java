@@ -13,7 +13,7 @@ public class SdkItemGunAircraft extends SdkItemGun {
 
     public SdkItemGunAircraft(Identifier i) {
         super(i);
-        firingSound = "ofensywa:bullet";
+        firingSound = "planes:bullet";
         requiredBullet = ItemBase.map; //crash? //TODO: O CO CHODZI?
         numBullets = 1;
         damage = 10;

@@ -41,12 +41,12 @@ public class PropertiesNew_JU87 extends Machine_properties {
         acceleration = 3.0D;
         decceleration = 3.0D;
         maxHeight = 256;
-        startSound = "ofensywa:propstart";
+        startSound = "planes:propstart";
         startSoundLength = 20;
-        propSound = "ofensywa:propsound";
+        propSound = "planes:propsound";
         propSoundLength = 30;
-        shootSound = "ofensywa:bullet";
-        bombSound = "ofensywa:bomb";
+        shootSound = "planes:bullet";
+        bombSound = "planes:bomb";
         playerXOffset = 13D;
         playerYOffset = 31D;
         numPassengers = 0;

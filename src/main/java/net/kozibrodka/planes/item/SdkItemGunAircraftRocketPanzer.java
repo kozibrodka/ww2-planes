@@ -15,7 +15,7 @@ public class SdkItemGunAircraftRocketPanzer extends SdkItemGun
     public SdkItemGunAircraftRocketPanzer(Identifier i)
     {
         super(i);
-        firingSound = "ofensywa:rocket";
+        firingSound = "planes:rocket";
         requiredBullet = ItemBase.map; //crash? //TODO: O CO CHODZI?
         numBullets = 1;
         damage = 10;

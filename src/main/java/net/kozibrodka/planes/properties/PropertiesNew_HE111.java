@@ -41,12 +41,12 @@ public class PropertiesNew_HE111 extends Machine_properties {
         acceleration = 2.0D;
         decceleration = 2.0D;
         maxHeight = 256;
-        startSound = "ofensywa:propstart";
+        startSound = "planes:propstart";
         startSoundLength = 20;
-        propSound = "ofensywa:propsound";
+        propSound = "planes:propsound";
         propSoundLength = 30;
-        shootSound = "ofensywa:bullet";
-        bombSound = "ofensywa:bomb";
+        shootSound = "planes:bullet";
+        bombSound = "planes:bomb";
         playerXOffset = 6D; //lekkie niedociagniecia
         playerYOffset = 25D;
         numPassengers = 0;

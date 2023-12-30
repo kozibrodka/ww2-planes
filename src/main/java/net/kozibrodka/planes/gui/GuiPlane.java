@@ -39,7 +39,7 @@ public class GuiPlane extends ContainerBase
 
     protected void renderContainerBackground(float f)
     {
-        int i = minecraft.textureManager.getTextureId("/assets/ofensywa/stationapi/textures/item/ww2/plane.png");
+        int i = minecraft.textureManager.getTextureId("/assets/planes/stationapi/textures/gui/plane.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         minecraft.textureManager.bindTexture(i);
         int j = (width - containerWidth) / 2;

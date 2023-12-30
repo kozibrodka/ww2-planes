@@ -10,8 +10,8 @@ public class Properties_Bofors extends AAGun_properties {
         texture = "AAAllies";
         shortName = "bofors";
         przedmiot = mod_Planes.bofors;
-        shootSound = "ofensywa:aafire";
-        reloadSound = "ofensywa:barreload";
+        shootSound = "planes:aafire";
+        reloadSound = "planes:barreload";
 
         reloadTime = 20;//20
         health = 100;

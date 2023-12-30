@@ -2,8 +2,9 @@ package net.kozibrodka.planes.recipe;
 
 import net.minecraft.inventory.Crafting;
 import net.minecraft.item.ItemInstance;
+import net.modificationstation.stationapi.api.recipe.StationRecipe;
 
-public class PlaneShapedRecipe {
+public class PlaneShapedRecipe implements PlaneRecipeTemplate, StationRecipe {
     private int width;
     private int height;
     private ItemInstance[] ingredients;
@@ -78,5 +79,15 @@ public class PlaneShapedRecipe {
 
     public int getIngredientCount() {
         return this.width * this.height;
+    }
+
+    @Override
+    public ItemInstance[] getIngredients() {
+        return ingredients;
+    }
+
+    @Override
+    public ItemInstance[] getOutputs() {
+        return new ItemInstance[] {output};
     }
 }

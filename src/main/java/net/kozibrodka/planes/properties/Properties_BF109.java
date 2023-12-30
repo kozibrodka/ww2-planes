@@ -40,12 +40,12 @@ public class Properties_BF109 extends Machine_properties {
         acceleration = 3.0D;
         decceleration = 3.0D;
         maxHeight = 125;
-        startSound = "ofensywa:propstart";
+        startSound = "planes:propstart";
         startSoundLength = 20;
-        propSound = "ofensywa:propsound";
+        propSound = "planes:propsound";
         propSoundLength = 30;
-        shootSound = "ofensywa:bullet";
-        bombSound = "ofensywa:bomb";
+        shootSound = "planes:bullet";
+        bombSound = "planes:bomb";
         playerYOffset = 0D;
         numPassengers = 0;
         if(numPassengers > 0)
@@ -61,7 +61,7 @@ public class Properties_BF109 extends Machine_properties {
             seatsY[passengerL] = 0;
             seatsZ[passengerL] = 0;
         }
-        item_propeller =  new ItemInstance(ww2Parts.metalPropeller.id, 1, 0);
+        item_propeller =  new ItemInstance(ww2Parts.metalPropeller.id, 1, 0); //ww2Parts.metalPropeller.id
         item_cockpit =  new ItemInstance(ww2Parts.metalCockpit.id, 1, 0);
         item_wings = new ItemInstance(ww2Parts.metalWing.id,1,0);
         item_guns =  new ItemInstance(ItemBase.egg.id, 1, 0);

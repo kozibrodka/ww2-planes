@@ -106,6 +106,11 @@ public class PlaneRecipeRegistry {
         return null;
     }
 
+    public List getRecipeList()
+    {
+        return plane_recipes;
+    }
+
     private static final PlaneRecipeRegistry INSTANCE = new PlaneRecipeRegistry();
     public static final PlaneRecipeRegistry getInstance() {
         return INSTANCE;

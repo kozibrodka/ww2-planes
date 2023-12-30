@@ -40,12 +40,12 @@ public class Properties_Fokker extends Machine_properties {
         acceleration = 3.0D;
         decceleration = 2.0D;
         maxHeight = 115;
-        startSound = "ofensywa:propstart";
+        startSound = "planes:propstart";
         startSoundLength = 20;
-        propSound = "ofensywa:propsound";
+        propSound = "planes:propsound";
         propSoundLength = 30;
-        shootSound = "ofensywa:bullet";
-        bombSound = "ofensywa:bomb";
+        shootSound = "planes:bullet";
+        bombSound = "planes:bomb";
         playerYOffset = -0.3D;
         numPassengers = 0;
         if(numPassengers > 0)

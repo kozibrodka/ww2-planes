@@ -10,8 +10,8 @@ public class Properties_Flakvierling extends AAGun_properties {
         texture = "AAAxis";
         shortName = "flakvierling";
         przedmiot = mod_Planes.flakvierling;
-        shootSound = "ofensywa:aafire";
-        reloadSound = "ofensywa:mp44reload";
+        shootSound = "planes:aafire";
+        reloadSound = "planes:mp44reload";
 
         reloadTime = 100;
         health = 100;

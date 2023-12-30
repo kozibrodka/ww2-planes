@@ -22,10 +22,10 @@
       "net.kozibrodka.planes.events.mod_Planes"
     ],
     "stationapi:event_bus_client": [
-
+      "net.kozibrodka.planes.events.TextureListener"
     ],
     "stationapi:event_bus_server": [
-      "net.kozibrodka.planes.events.TextureListener"
+
     ]
   },
   "mixins": [

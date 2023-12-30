@@ -1,22 +1,21 @@
 package net.kozibrodka.planes.events;
 
-import net.kozibrodka.planes.entity.EntityAAGun;
-import net.kozibrodka.planes.entity.EntityPlane;
-import net.kozibrodka.planes.entity.EntityPlaneNew;
+import net.glasslauncher.hmifabric.event.HMITabRegistryEvent;
+import net.kozibrodka.planes.entity.*;
 import net.kozibrodka.planes.item.*;
 import net.kozibrodka.planes.properties.*;
+import net.kozibrodka.planes.recipe.PlanelRecipeTab;
 import net.kozibrodka.planes.recipe.BlockPlaneWorkbench;
 import net.kozibrodka.planes.recipe.PlaneRecipeRegistry;
-import net.kozibrodka.planes.render.RenderAAGun;
-import net.kozibrodka.planes.render.RenderPlane;
-import net.kozibrodka.planes.render.RenderPlaneNew;
 import net.kozibrodka.sdk_api.events.init.ww2Parts;
+import net.kozibrodka.sdk_api.events.utils.SdkEntityBullet;
+import net.kozibrodka.sdk_api.events.utils.SdkMap;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.mine_diver.unsafeevents.listener.ListenerPriority;
 import net.minecraft.achievement.Achievement;
 import net.minecraft.achievement.Achievements;
 import net.minecraft.block.BlockBase;
-import net.modificationstation.stationapi.api.client.event.render.entity.EntityRendererRegisterEvent;
+import net.minecraft.item.ItemInstance;
 import net.modificationstation.stationapi.api.event.achievement.AchievementRegisterEvent;
 import net.modificationstation.stationapi.api.event.entity.EntityRegister;
 import net.modificationstation.stationapi.api.event.recipe.RecipeRegisterEvent;
@@ -109,7 +108,6 @@ public class mod_Planes {
 
     @EventListener
     public void registerItems(ItemRegistryEvent event) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-
         bullet = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "bullet")).setTranslationKey(MOD_ID, "bullet");
         aaShell = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "aaShell")).setTranslationKey(MOD_ID, "aaShell");
         rocketAircraft = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "rocketAircraft")).setTranslationKey(MOD_ID, "rocketAircraft").setMaxStackSize(2);
@@ -119,7 +117,7 @@ public class mod_Planes {
         largeBomb = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "largeBomb")).setTranslationKey(MOD_ID, "largeBomb").setMaxStackSize(1);
         napalm = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "napalm")).setTranslationKey(MOD_ID, "napalm").setMaxStackSize(2);
         planeFuel = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "planeFuel")).setTranslationKey(MOD_ID, "planeFuel");
-        planeBlowTorch = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "planeBlowTorch")).setTranslationKey(MOD_ID, "planeBlowTorch");
+        planeBlowTorch = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "planeBlowTorch")).setTranslationKey(MOD_ID, "planeBlowTorch").setMaxStackSize(1).setDurability(15);;
 
         itemGunAircraft = (TemplateItemBase) new SdkItemGunAircraft(Identifier.of(MOD_ID, "itemGunAircraft")).setTranslationKey(MOD_ID, "itemGunAircraft");
         itemGunAircraftRocket = (TemplateItemBase) new SdkItemGunAircraftRocket(Identifier.of(MOD_ID, "itemGunAircraftRocket")).setTranslationKey(MOD_ID, "itemGunAircraftRocket");
@@ -172,6 +170,7 @@ public class mod_Planes {
             planetype.przedmiot = (TemplateItemBase) new ItemAAGun(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxStackSize(1);
         }
 
+        SdkMap.hitsoundList.add(SdkEntityBulletAircraft.class);
     }
 
     @EventListener
@@ -184,7 +183,7 @@ public class mod_Planes {
         PlaneRecipeRegistry.getInstance().initPlaneRecipe();
     }
 
-    @EventListener(priority = ListenerPriority.HIGHEST)
+    @EventListener(priority = ListenerPriority.HIGH) //highest
     public void registerAchievements(AchievementRegisterEvent event) {
         craftPlane = new Achievement(230, MOD_ID.id("craftPlane").toString(), -5, 4, ww2Parts.woodenPropeller, Achievements.AQUIRE_IRON).method_1041();
         startPlane = new Achievement(231, MOD_ID.id("startPlane").toString(), -7, 4, ww2Parts.smallEngine, craftPlane).method_1041();
@@ -198,6 +197,10 @@ public class mod_Planes {
         event.register(EntityPlane.class, String.valueOf(Identifier.of(MOD_ID, "EntityPlane")));
         event.register(EntityPlaneNew.class, String.valueOf(Identifier.of(MOD_ID, "EntityPlaneNew")));
         event.register(EntityAAGun.class, String.valueOf(Identifier.of(MOD_ID, "EntityAAGun")));
+        event.register(SdkEntityBulletAircraft.class, String.valueOf(Identifier.of(MOD_ID, "SdkEntityBulletAircraft")));
+        event.register(EntityBomb.class, String.valueOf(Identifier.of(MOD_ID, "EntityBomb")));
+        event.register(SdkEntityBulletAircraftRocket.class, String.valueOf(Identifier.of(MOD_ID, "SdkEntityBulletAircraftRocket")));
+        event.register(SdkEntityBulletAircraftRocketPanzer.class, String.valueOf(Identifier.of(MOD_ID, "SdkEntityBulletAircraftRocketPanzer")));
     }
 
     @EventListener
@@ -205,7 +208,17 @@ public class mod_Planes {
         Registry.register(event.registry, MOD_ID.id("EntityPlane"), EntityPlane::new);
         Registry.register(event.registry, MOD_ID.id("EntityPlaneNew"), EntityPlaneNew::new);
         Registry.register(event.registry, MOD_ID.id("EntityAAGun"), EntityAAGun::new);
+        Registry.register(event.registry, MOD_ID.id("SdkEntityBulletAircraft"), SdkEntityBulletAircraft::new);
+        Registry.register(event.registry, MOD_ID.id("EntityBomb"), EntityBomb::new);
+        Registry.register(event.registry, MOD_ID.id("SdkEntityBulletAircraftRocket"), SdkEntityBulletAircraftRocket::new);
+        Registry.register(event.registry, MOD_ID.id("SdkEntityBulletAircraftRocketPanzer"), SdkEntityBulletAircraftRocketPanzer::new);
     }
+
+    @EventListener
+    public void registerTabs(HMITabRegistryEvent event) {
+        event.registry.register(Identifier.of(MOD_ID, "anvil"), new PlanelRecipeTab(MOD_ID), new ItemInstance(planeWorkbench));
+    }
+    //TODO: fix graphics TMI,
 
 }
 

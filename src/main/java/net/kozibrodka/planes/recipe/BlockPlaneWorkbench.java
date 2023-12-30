@@ -1,6 +1,7 @@
 package net.kozibrodka.planes.recipe;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.planes.events.TextureListener;
 import net.kozibrodka.planes.gui.GuiPlaneCrafting;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -26,6 +27,21 @@ public class BlockPlaneWorkbench extends TemplateBlockBase
         {
             ((Minecraft) FabricLoader.getInstance().getGameInstance()).openScreen(new GuiPlaneCrafting(entityplayer.inventory, world, i, j, k));
             return true;
+        }
+    }
+
+    public int getTextureForSide(int i)
+    {
+        if(i == 1)
+        {
+            return TextureListener.plane_work_top;
+        }else
+        if(i == 0)
+        {
+            return TextureListener.plane_work_bottom;
+        }else
+        {
+            return TextureListener.plane_work_side;
         }
     }
 
