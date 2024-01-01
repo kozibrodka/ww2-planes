@@ -26,6 +26,9 @@
     ],
     "stationapi:event_bus_server": [
 
+    ],
+    "gcapi": [
+      "net.kozibrodka.planes.events.mod_Planes"
     ]
   },
   "mixins": [

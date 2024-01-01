@@ -65,6 +65,7 @@ public class TextureListener {
         event.renderers.put(EntityPlane.class, new RenderPlane());
         event.renderers.put(EntityPlaneNew.class, new RenderPlaneNew());
         event.renderers.put(EntityAAGun.class, new RenderAAGun());
+        event.renderers.put(EntityAAShell.class, new RenderAAShell());
         event.renderers.put(SdkEntityBulletAircraft.class, new SdkRenderBulletAircraft());
         event.renderers.put(EntityBomb.class, new RenderBomb());
         event.renderers.put(SdkEntityBulletAircraftRocket.class, new SdkRenderBulletRocket());

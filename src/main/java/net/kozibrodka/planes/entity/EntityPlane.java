@@ -246,53 +246,56 @@ public class EntityPlane extends EntityBase
                 }
 
             }
-            int r8 = 2;
-            float f8 = 1.5F;
-            if(plane.item_bay.itemId != ItemBase.egg.id && rand.nextInt(r8) == 0)
-                dropItem(plane.item_bay.itemId, 1, f8);
-            if(rand.nextInt(r8) == 0)
-                dropItem(plane.item_cockpit.itemId, 1, f8);
-            if(rand.nextInt(r8) == 0)
-                dropItem(plane.item_propeller.itemId, 1, f8);
-            if(rand.nextInt(r8) == 0)
-                dropItem(plane.item_tail.itemId, 1, f8);
-            if(rand.nextInt(r8) == 0)
-                dropItem(plane.item_wings.itemId, 1, f8);
-            if(rand.nextInt(r8) == 0)
-                dropItem(plane.item_wings.itemId, 1, f8);
-            if(plane.item_guns.itemId != ItemBase.egg.id && rand.nextInt(r8) == 0)
-                dropItem(plane.item_guns.itemId, 1, f8);
-            if(plane.item_guns.itemId != ItemBase.egg.id && rand.nextInt(r8) == 0)
-                dropItem(plane.item_guns.itemId, 1, f8);
-                            switch(engineType)
-                {
-                    case 1: // '\001'
-                        if(rand.nextInt(r8) == 0)
-                        dropItem(ww2Parts.smallEngine.id, 1, f8);
-                        break;
-
-                    case 2: // '\002'
-                        if(rand.nextInt(r8) == 0)
-                        dropItem(ww2Parts.mediumEngine.id, 1, f8);
-                        break;
-
-                    case 3: // '\003'
-                        if(rand.nextInt(r8) == 0)
-                        dropItem(ww2Parts.largeEngine.id, 1, f8);
-                        break;
-
-                    case 4: // '\004'
-                        if(rand.nextInt(r8) == 0)
-                        dropItem(ww2Parts.rotaryEngine.id, 1, f8);
-                        break;
-
-                }
-
-                if(plane.dyeColor != 16 && rand.nextInt(r8) == 0)
-                dropItem(new ItemInstance(ItemBase.dyePowder, rand.nextInt(6) + 1, plane.dyeColor), f8);
-
+            dropParts();
         }
         return true;
+    }
+
+    public void dropParts(){
+        int r8 = 2;
+        float f8 = 1.5F;
+        if(plane.item_bay.itemId != ItemBase.egg.id && rand.nextInt(r8) == 0)
+            dropItem(plane.item_bay.itemId, 1, f8);
+        if(rand.nextInt(r8) == 0)
+            dropItem(plane.item_cockpit.itemId, 1, f8);
+        if(rand.nextInt(r8) == 0)
+            dropItem(plane.item_propeller.itemId, 1, f8);
+        if(rand.nextInt(r8) == 0)
+            dropItem(plane.item_tail.itemId, 1, f8);
+        if(rand.nextInt(r8) == 0)
+            dropItem(plane.item_wings.itemId, 1, f8);
+        if(rand.nextInt(r8) == 0)
+            dropItem(plane.item_wings.itemId, 1, f8);
+        if(plane.item_guns.itemId != ItemBase.egg.id && rand.nextInt(r8) == 0)
+            dropItem(plane.item_guns.itemId, 1, f8);
+        if(plane.item_guns.itemId != ItemBase.egg.id && rand.nextInt(r8) == 0)
+            dropItem(plane.item_guns.itemId, 1, f8);
+        switch(engineType)
+        {
+            case 1: // '\001'
+                if(rand.nextInt(r8) == 0)
+                    dropItem(ww2Parts.smallEngine.id, 1, f8);
+                break;
+
+            case 2: // '\002'
+                if(rand.nextInt(r8) == 0)
+                    dropItem(ww2Parts.mediumEngine.id, 1, f8);
+                break;
+
+            case 3: // '\003'
+                if(rand.nextInt(r8) == 0)
+                    dropItem(ww2Parts.largeEngine.id, 1, f8);
+                break;
+
+            case 4: // '\004'
+                if(rand.nextInt(r8) == 0)
+                    dropItem(ww2Parts.rotaryEngine.id, 1, f8);
+                break;
+
+        }
+
+        if(plane.dyeColor != 16 && rand.nextInt(r8) == 0)
+            dropItem(new ItemInstance(ItemBase.dyePowder, rand.nextInt(6) + 1, plane.dyeColor), f8);
     }
 
     public void remove()

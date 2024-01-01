@@ -3,6 +3,7 @@ package net.kozibrodka.planes.entity;
 
 import net.kozibrodka.planes.events.mod_Planes;
 import net.kozibrodka.planes.properties.AAGunType;
+import net.kozibrodka.sdk_api.events.utils.WW2Cannon;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
@@ -12,7 +13,7 @@ import net.minecraft.util.io.ListTag;
 import net.minecraft.util.maths.Box;
 import net.minecraft.util.maths.Vec3f;
 
-public class EntityAAGun extends EntityBase {
+public class EntityAAGun extends EntityBase implements WW2Cannon {
     private int field_9394_d;
     private double field_9393_e;
     private double field_9392_f;
@@ -380,7 +381,7 @@ public class EntityAAGun extends EntityBase {
         } else {
             if(!this.level.isServerSide) {
                 if(this.passenger == entityplayer) {
-                    entityplayer.startRiding(this);
+//                    entityplayer.startRiding(this);
                     return true;
                 }
 
@@ -414,5 +415,10 @@ public class EntityAAGun extends EntityBase {
         }
 
         return -1;
+    }
+
+    @Override
+    public void exitKey(PlayerBase entityplayer) {
+        passenger.startRiding(this);
     }
 }

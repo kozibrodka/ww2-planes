@@ -2,18 +2,19 @@ package net.kozibrodka.planes.properties;
 
 import net.kozibrodka.planes.events.mod_Planes;
 import net.kozibrodka.planes.model.ModelHE111_125;
+import net.kozibrodka.planes.model.ModelLancaster;
 import net.kozibrodka.sdk_api.events.init.ww2Parts;
 import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
 
-public class PropertiesNew_HE111 extends Machine_properties {
-    public PropertiesNew_HE111()
+public class PropertiesNew_Lancaster extends Machine_properties {
+    public PropertiesNew_Lancaster()
     {
-        name = "Heinkel He111";
-        shortName = "He111";
-        texture = "SkinPlaneHE111";
-        modelNew = new ModelHE111_125();
-        przedmiot = mod_Planes.planeNew_HE111;
+        name = "Lancaster";
+        shortName = "Lancaster";
+        texture = "Lancaster";
+        modelNew = new ModelLancaster();
+        przedmiot = mod_Planes.Lancaster;
         maxPropSpeed = 5.0F;
         takeOffSpeed = 4.0F;
         barrelX = 0;
@@ -47,8 +48,8 @@ public class PropertiesNew_HE111 extends Machine_properties {
         propSoundLength = 30;
         shootSound = "planes:bullet";
         bombSound = "planes:bomb";
-        playerXOffset = 6D; //lekkie niedociagniecia
-        playerYOffset = 25D;
+        playerXOffset = 35D; //lekkie niedociagniecia
+        playerYOffset = 90D;
         numPassengers = 0;
         if(numPassengers > 0)
         {
@@ -74,11 +75,11 @@ public class PropertiesNew_HE111 extends Machine_properties {
         itemlist2 = "TBCEP";
         itemlist3 = "DDW D";
         planeFuelAdd = 1000;
-        sloped = true;
-        slopedPitch = -7;
-        standingOko = 0.625F;
-        planeWidth = 6F;
-        planeHeight = 2.8F;
+        sloped = false;
+        slopedPitch = 0;
+        standingOko = -2.5F;
+        planeWidth = 10F;
+        planeHeight = 3F;
     }
 
 }

@@ -1,6 +1,7 @@
 package net.kozibrodka.planes.events;
 
 import net.glasslauncher.hmifabric.event.HMITabRegistryEvent;
+import net.glasslauncher.mods.api.gcapi.api.GConfig;
 import net.kozibrodka.planes.entity.*;
 import net.kozibrodka.planes.item.*;
 import net.kozibrodka.planes.properties.*;
@@ -8,7 +9,6 @@ import net.kozibrodka.planes.recipe.PlanelRecipeTab;
 import net.kozibrodka.planes.recipe.BlockPlaneWorkbench;
 import net.kozibrodka.planes.recipe.PlaneRecipeRegistry;
 import net.kozibrodka.sdk_api.events.init.ww2Parts;
-import net.kozibrodka.sdk_api.events.utils.SdkEntityBullet;
 import net.kozibrodka.sdk_api.events.utils.SdkMap;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.mine_diver.unsafeevents.listener.ListenerPriority;
@@ -36,6 +36,9 @@ import java.util.Map;
 
 public class mod_Planes {
 
+    @GConfig(value = "PlanesCFG", visibleName = "WW2 Planes Config")
+    public static final PlanesCFG planesGlass = new PlanesCFG();
+
     @Entrypoint.ModID
     public static final ModID MOD_ID = Null.get();
 
@@ -47,11 +50,13 @@ public class mod_Planes {
     }
     public static AAGunType getAAGunType(String s) {return (AAGunType) aaGunMapping.get(s);}
 
+
     public static boolean bulletsEnabled = true;
     public static boolean bombsEnabled = true;
-    public static boolean aaEnabled = true;
     public static boolean planesExplode = true;
+
     public static boolean useMouseControl = false;
+    public static boolean aaEnabled = true;
 
     public static Achievement craftPlane;
     public static Achievement startPlane;
@@ -88,9 +93,15 @@ public class mod_Planes {
     public static TemplateItemBase Mustang;
     public static TemplateItemBase Spitfire;
     public static TemplateItemBase TwoSeaterBiplane;
+    public static TemplateItemBase Lancaster;
 
     public static TemplateItemBase bofors;
     public static TemplateItemBase flakvierling;
+
+    public static TemplateItemBase flak88;
+    public static TemplateItemBase flak88a;
+    public static TemplateItemBase flak88b;
+    public static TemplateItemBase flak88c;
 
     public static TemplateItemBase planeNew_YAK5;
     public static TemplateItemBase planeNew_Spitfire1;
@@ -105,6 +116,7 @@ public class mod_Planes {
     public static TemplateItemBase planeNew_HE111;
 
     public static TemplateBlockBase planeWorkbench;
+
 
     @EventListener
     public void registerItems(ItemRegistryEvent event) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -123,28 +135,39 @@ public class mod_Planes {
         itemGunAircraftRocket = (TemplateItemBase) new SdkItemGunAircraftRocket(Identifier.of(MOD_ID, "itemGunAircraftRocket")).setTranslationKey(MOD_ID, "itemGunAircraftRocket");
         itemGunAircraftRocketPanzer = (TemplateItemBase) new SdkItemGunAircraftRocketPanzer(Identifier.of(MOD_ID, "itemGunAircraftRocketPanzer")).setTranslationKey(MOD_ID, "itemGunAircraftRocketPanzer");
 
-        new PlaneType(new Properties_BF109());
-        new PlaneType(new Properties_Biplane());
-        new PlaneType(new Properties_Camel());
-        new PlaneType(new Properties_Fokker());
-        new PlaneType(new Properties_Mustang());
-        new PlaneType(new Properties_Spitfire());
-        new PlaneType(new Properties_TwoSeaterBiplane());
+        if(planesGlass.registerPlanes_OLD) {
+            new PlaneType(new Properties_BF109());
+            new PlaneType(new Properties_Biplane());
+            new PlaneType(new Properties_Camel());
+            new PlaneType(new Properties_Fokker());
+            new PlaneType(new Properties_Mustang());
+            new PlaneType(new Properties_Spitfire());
+            new PlaneType(new Properties_TwoSeaterBiplane());
+        }
 
-        new PlaneTypeNew(new PropertiesNew_YAK5());
-        new PlaneTypeNew(new PropertiesNew_HE111());
-        new PlaneTypeNew(new PropertiesNew_Hurricane());
-        new PlaneTypeNew(new PropertiesNew_JU87());
-        new PlaneTypeNew(new PropertiesNew_JU87G());
-        new PlaneTypeNew(new PropertiesNew_ME109());
-        new PlaneTypeNew(new PropertiesNew_ME262());
-        new PlaneTypeNew(new PropertiesNew_P38());
-        new PlaneTypeNew(new PropertiesNew_P38a());
-        new PlaneTypeNew(new PropertiesNew_SpitfireBrown());
-        new PlaneTypeNew(new PropertiesNew_SpitfireGrey());
+        if(planesGlass.registerPlanes_NEW) {
+            new PlaneTypeNew(new PropertiesNew_YAK5());
+            new PlaneTypeNew(new PropertiesNew_HE111());
+            new PlaneTypeNew(new PropertiesNew_Hurricane());
+            new PlaneTypeNew(new PropertiesNew_JU87());
+            new PlaneTypeNew(new PropertiesNew_JU87G());
+            new PlaneTypeNew(new PropertiesNew_ME109());
+            new PlaneTypeNew(new PropertiesNew_ME262());
+            new PlaneTypeNew(new PropertiesNew_P38());
+            new PlaneTypeNew(new PropertiesNew_P38a());
+            new PlaneTypeNew(new PropertiesNew_SpitfireBrown());
+            new PlaneTypeNew(new PropertiesNew_SpitfireGrey());
+//            new PlaneTypeNew(new PropertiesNew_Lancaster());
+        }
 
-        new AAGunType(new Properties_Bofors());
-        new AAGunType(new Properties_Flakvierling());
+        if(planesGlass.registerAA) {
+            new AAGunType(new Properties_Bofors());
+            new AAGunType(new Properties_Flakvierling());
+//            new AAGunType(new Properties_Flak88());
+//            new AAGunType(new Properties_Flak88a());
+//            new AAGunType(new Properties_Flak88b());
+//            new AAGunType(new Properties_Flak88c());
+        }
 
         for (int i = 0; i < PlaneType.types.size(); i++) {
             PlaneType planetype = (PlaneType) PlaneType.types.get(i);
@@ -197,6 +220,7 @@ public class mod_Planes {
         event.register(EntityPlane.class, String.valueOf(Identifier.of(MOD_ID, "EntityPlane")));
         event.register(EntityPlaneNew.class, String.valueOf(Identifier.of(MOD_ID, "EntityPlaneNew")));
         event.register(EntityAAGun.class, String.valueOf(Identifier.of(MOD_ID, "EntityAAGun")));
+        event.register(EntityAAShell.class, String.valueOf(Identifier.of(MOD_ID, "EntityAAShell")));
         event.register(SdkEntityBulletAircraft.class, String.valueOf(Identifier.of(MOD_ID, "SdkEntityBulletAircraft")));
         event.register(EntityBomb.class, String.valueOf(Identifier.of(MOD_ID, "EntityBomb")));
         event.register(SdkEntityBulletAircraftRocket.class, String.valueOf(Identifier.of(MOD_ID, "SdkEntityBulletAircraftRocket")));
@@ -208,6 +232,7 @@ public class mod_Planes {
         Registry.register(event.registry, MOD_ID.id("EntityPlane"), EntityPlane::new);
         Registry.register(event.registry, MOD_ID.id("EntityPlaneNew"), EntityPlaneNew::new);
         Registry.register(event.registry, MOD_ID.id("EntityAAGun"), EntityAAGun::new);
+        Registry.register(event.registry, MOD_ID.id("EntityAAShell"), EntityAAShell::new);
         Registry.register(event.registry, MOD_ID.id("SdkEntityBulletAircraft"), SdkEntityBulletAircraft::new);
         Registry.register(event.registry, MOD_ID.id("EntityBomb"), EntityBomb::new);
         Registry.register(event.registry, MOD_ID.id("SdkEntityBulletAircraftRocket"), SdkEntityBulletAircraftRocket::new);
@@ -216,9 +241,9 @@ public class mod_Planes {
 
     @EventListener
     public void registerTabs(HMITabRegistryEvent event) {
-        event.registry.register(Identifier.of(MOD_ID, "anvil"), new PlanelRecipeTab(MOD_ID), new ItemInstance(planeWorkbench));
+        event.registry.register(Identifier.of(MOD_ID, "planes"), new PlanelRecipeTab(MOD_ID), new ItemInstance(planeWorkbench));
     }
-    //TODO: fix graphics TMI,
+    //TODO: fix graphics TMI, set Planes Props, Modern Planes CFG, Crafting for parts, Config, balance DMG ETC.
 
 }
 

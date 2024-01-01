@@ -49,7 +49,7 @@ public class RenderPlaneNew extends EntityRenderer {
             GL11.glRotatef(((MathHelper.sin(f2) * f2 * f3) / 10F) * (float)entityplane.boatRockDirection, 1.0F, 0.0F, 0.0F);
         }
         GL11.glRotatef(entityplane.rotationRoll, 1.0F, 0.0F, 0.0F);
-        bindTexture((new StringBuilder()).append("/assets/ofensywa/stationapi/textures/manus164/").append(entityplane.plane.texture).append(".png").toString());
+        bindTexture((new StringBuilder()).append("/assets/planes/stationapi/textures/mob/").append(entityplane.plane.texture).append(".png").toString());
 //        GL11.glScalef(-1F, 1F, 1F); DOBRE, ale zle
         GL11.glScalef(-1F, 1F, -1F);
 //        GL11.glScalef(-1F, -1F, 1.0F); ORYG
