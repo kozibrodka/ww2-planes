@@ -16,9 +16,9 @@ public class PropertiesNew_YAK5 extends Machine_properties {
         przedmiot = mod_Planes.planeNew_YAK5;
         maxPropSpeed = 4.5F;
         takeOffSpeed = 3.0F;
-        barrelX = -20;
-        barrelY = 10;
-        barrelZ = -29;
+        barrelX = -40;
+        barrelY = -10;
+        barrelZ = -33;
         bombXOffset = 0;
         bombYOffset = 16;
         bombZOffset = 0;
@@ -33,7 +33,7 @@ public class PropertiesNew_YAK5 extends Machine_properties {
         numBulletSlots = 5;
         numBombSlots = 1;
         numRocketSlots = 0;
-        planeHealth = 1800;
+        planeHealth = 500;
         turnLeftModifier = 2.0D;
         turnRightModifier = 2.0D;
         lookUpModifier = 2.0D;

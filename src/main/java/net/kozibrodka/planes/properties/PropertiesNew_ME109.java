@@ -20,10 +20,10 @@ public class PropertiesNew_ME109 extends Machine_properties {
         barrelY = 27;
         barrelZ = -3;
         bombXOffset = 0;
-        bombYOffset = 6;
+        bombYOffset = 16;
         bombZOffset = 0;
-        propellerX = -40;
-        propellerY = 18;
+        propellerX = -45;
+        propellerY = -10;
         propellerZ = 0;
         hasGuns = true;
         hasBombs = true;
@@ -33,7 +33,7 @@ public class PropertiesNew_ME109 extends Machine_properties {
         numBulletSlots = 5;
         numBombSlots = 1;
         numRocketSlots = 0;
-        planeHealth = 1800;
+        planeHealth = 500;
         turnLeftModifier = 2.0D;
         turnRightModifier = 2.0D;
         lookUpModifier = 2.0D;

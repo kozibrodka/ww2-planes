@@ -1,15 +1,41 @@
-achievement.boned=You've been boned!
-achievement.boned.desc=Pick up a bone.
-achievement.apple=AppleStuff
-achievement.apple.desc=Pick up an apple.
+tile.planeWorkbench.name=Plane Workbench
 
-achievement.page.examplemod=Example
+item.BF109.name=BF109
+item.Biplane.name=Biplane
+item.Camel.name=Camel
+item.Fokker.name=Fokker
+item.Mustang.name=Mustang
+item.Spitfire.name=Spitfire
+item.TwoSeaterBiplane.name=Two Seater Biplane
+item.Lancaster.name=Lancaster
 
-item.coolitem.name=Cool Item
+item.bofors.name=Bofors
+item.flakvierling.name=Flakvierling
 
-tile.test.name=Example Block
-tile.test2.name=Example Block With Model
+item.YAK5.name=YAK 5
+item.Spitfire1.name=Supermarine Spitfire Grey Carmo
+item.Spitfire2.name=Supermarine Spitfire Brown Carmo
+item.P38.name=P-38 Lightning - Green Color
+item.P38a.name=P-38 Lightning - Metal Color
+item.ME262.name=Messerschmidt 262
+item.ME109.name=Messerschmidt 109
+item.JU87G.name=Junkers JU 87 Gunbird
+item.JU87.name=Junkers JU 87
+item.Hurricane.name=Hawker Hurricane
+item.He111.name=Heinkel He111
 
-key.test=Give Boned Achievement
-key.test2=Give Apple Achievement
-key.hurtme=Hurt Self
+item.itemGunAircraft.name=gun_aircraft
+item.itemGunAircraftRocket.name=gun_rocket_he
+item.itemGunAircraftRocketPanzer.name=gun_rocket_ap
+
+item.smallBomb.name=Small Bomb
+item.largeBomb.name=Large Bomb
+item.napalm.name=Napalm
+item.panzerBomb.name=AP Bomb
+item.bullet.name=Plane Bullet
+item.rocketAircraft.name=AP Rocket
+item.rocketAircraftPanzer.name=HE Rocket
+item.aaShell.name=AA Shell
+item.planeFuel.name=Aviation Fuel
+item.planeBlowTorch.name=Plane Blowtorch
+

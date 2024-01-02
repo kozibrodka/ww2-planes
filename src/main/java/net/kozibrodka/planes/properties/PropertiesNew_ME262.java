@@ -17,14 +17,14 @@ public class PropertiesNew_ME262 extends Machine_properties {
         maxPropSpeed = 4.5F;
         takeOffSpeed = 3.0F;
         barrelX = -27;
-        barrelY = 30;
-        barrelZ = -2;
+        barrelY = -10;
+        barrelZ = -33;
         bombXOffset = 0;
         bombYOffset = 16;
         bombZOffset = 0;
         propellerX = -20;
-        propellerY = 14;
-        propellerZ = -47;
+        propellerY = 9;
+        propellerZ = -40;
         hasGuns = true;
         hasBombs = true;
         planeShootDelay = 7;
@@ -33,7 +33,7 @@ public class PropertiesNew_ME262 extends Machine_properties {
         numBulletSlots = 5;
         numBombSlots = 1;
         numRocketSlots = 0;
-        planeHealth = 1800;
+        planeHealth = 800;
         turnLeftModifier = 2.0D;
         turnRightModifier = 2.0D;
         lookUpModifier = 2.0D;
@@ -47,7 +47,7 @@ public class PropertiesNew_ME262 extends Machine_properties {
         propSoundLength = 30;
         shootSound = "planes:bullet";
         bombSound = "planes:bomb";
-        playerXOffset = 22D;
+        playerXOffset = 12D;
         playerYOffset = 18D;
         numPassengers = 0;
         if(numPassengers > 0)

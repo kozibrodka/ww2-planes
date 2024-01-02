@@ -19,11 +19,12 @@ public class SdkItemGunAircraftRocket extends SdkItemGun
         firingSound = "planes:rocket";
         requiredBullet = ItemBase.map;
         numBullets = 1;
-        damage = 10;
+        damage = 30;
         muzzleVelocity = 1.5F;
         spread = 0.0F;
         useDelay = 1;
         recoil = 0.0F;
+        penetration = 3;
     }
 
     public SdkEntityBullet getBulletEntity(Level world, EntityBase entity, float f, float f1, float f2, float f3, float f4)

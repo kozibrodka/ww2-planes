@@ -27,7 +27,7 @@ public class Properties_Mustang extends Machine_properties {
         hasGuns = true;
         hasBombs = true;
         planeShootDelay = 6;
-        planeBombDelay = 0;
+        planeBombDelay = 10;
         numCargoSlots = 0;
         numBulletSlots = 0;
         numBombSlots = 5;

@@ -9,20 +9,20 @@ import net.minecraft.item.ItemInstance;
 public class PropertiesNew_P38 extends Machine_properties {
     public PropertiesNew_P38()
     {
-        name = "P-38 Lightning - Metal Color";
+        name = "P-38 Lightning - Green Color";
         shortName = "P38";
         texture = "SkinPlaneP38";
         modelNew = new ModelP38_125();
         przedmiot = mod_Planes.planeNew_P38;
         maxPropSpeed = 4.5F;
         takeOffSpeed = 3.0F;
-        barrelX = -52;
-        barrelY = 26;
-        barrelZ = -2;
+        barrelX = -55;
+        barrelY = -15;
+        barrelZ = -38;
         bombXOffset = 0;
         bombYOffset = 16;
         bombZOffset = 0;
-        propellerX = -32;
+        propellerX = -35;
         propellerY = 22;
         propellerZ = -39;
         hasGuns = true;
@@ -33,7 +33,7 @@ public class PropertiesNew_P38 extends Machine_properties {
         numBulletSlots = 5;
         numBombSlots = 1;
         numRocketSlots = 0;
-        planeHealth = 1800;
+        planeHealth = 700;
         turnLeftModifier = 2.0D;
         turnRightModifier = 2.0D;
         lookUpModifier = 2.0D;
@@ -47,7 +47,7 @@ public class PropertiesNew_P38 extends Machine_properties {
         propSoundLength = 30;
         shootSound = "planes:bullet";
         bombSound = "planes:bomb";
-        playerXOffset =-2D;
+        playerXOffset =-5D;
         playerYOffset = 18D;
         numPassengers = 0;
         if(numPassengers > 0)

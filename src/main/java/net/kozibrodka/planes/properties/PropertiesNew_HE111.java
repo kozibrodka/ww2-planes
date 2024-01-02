@@ -20,7 +20,7 @@ public class PropertiesNew_HE111 extends Machine_properties {
         barrelY = 0;
         barrelZ = 0;
         bombXOffset = 20;
-        bombYOffset = 10;
+        bombYOffset = 16;
         bombZOffset = 0;
         propellerX = -15;
         propellerY = 22;
@@ -33,7 +33,7 @@ public class PropertiesNew_HE111 extends Machine_properties {
         numBulletSlots = 0;
         numBombSlots = 6; //6
         numRocketSlots = 0;
-        planeHealth = 2500;
+        planeHealth = 1000;
         turnLeftModifier = 1.0D;
         turnRightModifier = 1.0D;
         lookUpModifier = 1.0D;

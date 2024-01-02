@@ -17,10 +17,10 @@ public class PropertiesNew_SpitfireBrown extends Machine_properties {
         maxPropSpeed = 4.5F;
         takeOffSpeed = 3.0F;
         barrelX = -40;
-        barrelY = 13;
+        barrelY = -10;
         barrelZ = -32;
         bombXOffset = 0;
-        bombYOffset = 6;
+        bombYOffset = 16;
         bombZOffset = 0;
         propellerX = -42;
         propellerY = 19;
@@ -33,7 +33,7 @@ public class PropertiesNew_SpitfireBrown extends Machine_properties {
         numBulletSlots = 5;
         numBombSlots = 1;
         numRocketSlots = 0;
-        planeHealth = 1800;
+        planeHealth = 500;
         turnLeftModifier = 2.0D;
         turnRightModifier = 2.0D;
         lookUpModifier = 2.0D;
@@ -47,7 +47,7 @@ public class PropertiesNew_SpitfireBrown extends Machine_properties {
         propSoundLength = 30;
         shootSound = "planes:bullet";
         bombSound = "planes:bomb";
-        playerXOffset = 14D;
+        playerXOffset = 6D;
         playerYOffset = 16D;
         numPassengers = 0;
         if(numPassengers > 0)

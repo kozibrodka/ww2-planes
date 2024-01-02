@@ -10,6 +10,7 @@ import net.kozibrodka.planes.recipe.BlockPlaneWorkbench;
 import net.kozibrodka.planes.recipe.PlaneRecipeRegistry;
 import net.kozibrodka.sdk_api.events.init.ww2Parts;
 import net.kozibrodka.sdk_api.events.utils.SdkMap;
+import net.kozibrodka.sdk_api.events.utils.WW2Plane;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.mine_diver.unsafeevents.listener.ListenerPriority;
 import net.minecraft.achievement.Achievement;
@@ -117,6 +118,7 @@ public class mod_Planes {
 
     public static TemplateBlockBase planeWorkbench;
 
+    //todo: passengers, nie wiem czy w ogole dziala.     Otwieranie inventory jedynie przy zerowej prędkośći??? balans hp. , change ekwipunek samolotu?, fkalverling reload (first one)
 
     @EventListener
     public void registerItems(ItemRegistryEvent event) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
@@ -129,7 +131,7 @@ public class mod_Planes {
         largeBomb = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "largeBomb")).setTranslationKey(MOD_ID, "largeBomb").setMaxStackSize(1);
         napalm = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "napalm")).setTranslationKey(MOD_ID, "napalm").setMaxStackSize(2);
         planeFuel = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "planeFuel")).setTranslationKey(MOD_ID, "planeFuel");
-        planeBlowTorch = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "planeBlowTorch")).setTranslationKey(MOD_ID, "planeBlowTorch").setMaxStackSize(1).setDurability(15);;
+        planeBlowTorch = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "planeBlowTorch")).setTranslationKey(MOD_ID, "planeBlowTorch").setMaxStackSize(1).setDurability(64);;
 
         itemGunAircraft = (TemplateItemBase) new SdkItemGunAircraft(Identifier.of(MOD_ID, "itemGunAircraft")).setTranslationKey(MOD_ID, "itemGunAircraft");
         itemGunAircraftRocket = (TemplateItemBase) new SdkItemGunAircraftRocket(Identifier.of(MOD_ID, "itemGunAircraftRocket")).setTranslationKey(MOD_ID, "itemGunAircraftRocket");
@@ -157,7 +159,7 @@ public class mod_Planes {
             new PlaneTypeNew(new PropertiesNew_P38a());
             new PlaneTypeNew(new PropertiesNew_SpitfireBrown());
             new PlaneTypeNew(new PropertiesNew_SpitfireGrey());
-//            new PlaneTypeNew(new PropertiesNew_Lancaster());
+            new PlaneTypeNew(new PropertiesNew_Lancaster());
         }
 
         if(planesGlass.registerAA) {

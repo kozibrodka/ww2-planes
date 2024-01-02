@@ -16,7 +16,7 @@ public class Properties_Camel extends Machine_properties {
         maxPropSpeed = 2.0F;
         takeOffSpeed = 2.0F;
         barrelX = -48;
-        barrelY = -9;
+        barrelY = -15;
         barrelZ = 3;
         bombXOffset = 0;
         bombYOffset = 16;

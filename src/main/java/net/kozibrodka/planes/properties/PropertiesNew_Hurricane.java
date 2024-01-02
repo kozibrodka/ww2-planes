@@ -16,11 +16,11 @@ public class PropertiesNew_Hurricane extends Machine_properties {
         przedmiot = mod_Planes.planeNew_Hurricane;
         maxPropSpeed = 4.5F;
         takeOffSpeed = 3.0F;
-        barrelX = -16;
-        barrelY = 13;
-        barrelZ = -50;
+        barrelX = -40;
+        barrelY = -10;
+        barrelZ = -48;
         bombXOffset = 0;
-        bombYOffset = 6;
+        bombYOffset = 16;
         bombZOffset = 0;
         propellerX = -38;
         propellerY = 21;
@@ -33,7 +33,7 @@ public class PropertiesNew_Hurricane extends Machine_properties {
         numBulletSlots = 5;
         numBombSlots = 1;
         numRocketSlots = 0;
-        planeHealth = 1800;
+        planeHealth = 500;
         turnLeftModifier = 2.0D;
         turnRightModifier = 2.0D;
         lookUpModifier = 2.0D;

@@ -1,8 +1,7 @@
 package net.kozibrodka.planes.properties;
 
 import net.kozibrodka.planes.events.mod_Planes;
-import net.kozibrodka.planes.model.ModelHE111_125;
-import net.kozibrodka.planes.model.ModelLancaster;
+import net.kozibrodka.planes.model.ModelLancaster_125;
 import net.kozibrodka.sdk_api.events.init.ww2Parts;
 import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
@@ -13,7 +12,7 @@ public class PropertiesNew_Lancaster extends Machine_properties {
         name = "Lancaster";
         shortName = "Lancaster";
         texture = "Lancaster";
-        modelNew = new ModelLancaster();
+        modelNew = new ModelLancaster_125();
         przedmiot = mod_Planes.Lancaster;
         maxPropSpeed = 5.0F;
         takeOffSpeed = 4.0F;
@@ -21,11 +20,11 @@ public class PropertiesNew_Lancaster extends Machine_properties {
         barrelY = 0;
         barrelZ = 0;
         bombXOffset = 20;
-        bombYOffset = 10;
+        bombYOffset = 16;
         bombZOffset = 0;
-        propellerX = -15;
-        propellerY = 22;
-        propellerZ = 44;
+        propellerX = -50;
+        propellerY = 75;
+        propellerZ = 0;
         hasGuns = false;
         hasBombs = true;
         planeShootDelay = 7;
@@ -34,7 +33,7 @@ public class PropertiesNew_Lancaster extends Machine_properties {
         numBulletSlots = 0;
         numBombSlots = 6; //6
         numRocketSlots = 0;
-        planeHealth = 2500;
+        planeHealth = 1250;
         turnLeftModifier = 1.0D;
         turnRightModifier = 1.0D;
         lookUpModifier = 1.0D;
@@ -48,8 +47,8 @@ public class PropertiesNew_Lancaster extends Machine_properties {
         propSoundLength = 30;
         shootSound = "planes:bullet";
         bombSound = "planes:bomb";
-        playerXOffset = 35D; //lekkie niedociagniecia
-        playerYOffset = 90D;
+        playerXOffset = 35D; //lekkie niedociagniecia //35
+        playerYOffset = 90D;  //90
         numPassengers = 0;
         if(numPassengers > 0)
         {

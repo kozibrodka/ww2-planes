@@ -27,7 +27,7 @@ public class Properties_BF109 extends Machine_properties {
         hasGuns = true;
         hasBombs = true;
         planeShootDelay = 0;
-        planeBombDelay = 15;
+        planeBombDelay = 20;
         numCargoSlots = 0;
         numBulletSlots = 5;
         numBombSlots = 2;

@@ -3,6 +3,7 @@ package net.kozibrodka.planes.entity;
 
 import net.kozibrodka.sdk_api.events.ingame.mod_SdkGuns;
 import net.kozibrodka.sdk_api.events.utils.SdkTools;
+import net.kozibrodka.sdk_api.events.utils.WW2Plane;
 import net.minecraft.block.BlockBase;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Living;
@@ -42,7 +43,7 @@ public class EntityAAShell extends EntityBase
         setPosition(d, d1, d2);
         standingEyeHeight = 0.0F;
         setVelocity(d3, d4, d5);
-        damage = dmg;
+        damageAA = (int)dmg;
         spreadVal = spr;
         muzzleVel = vel;
         aaRange = rng;
@@ -161,9 +162,9 @@ public class EntityAAShell extends EntityBase
         {
             if(movingobjectposition.field_1989 != null)
             {
-                if(movingobjectposition.field_1989.damage(owner, 5))
+                if(movingobjectposition.field_1989.damage(owner, damageAA/5))
                 {
-                    level.playSound(this, "ofensywa:flak", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
+                    level.playSound(this, "planes:flak", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
                     remove();
                 }
             } else
@@ -180,7 +181,7 @@ public class EntityAAShell extends EntityBase
                 x -= (velocityX / (double)f1) * 0.05000000074505806D;
                 y -= (velocityY / (double)f1) * 0.05000000074505806D;
                 z -= (velocityZ / (double)f1) * 0.05000000074505806D;
-                level.playSound(this, "ofensywa:bullethit", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
+                level.playSound(this, "planes:bullethit", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
                 if (inTile == BlockBase.GLASS.id && mod_SdkGuns.bulletsDestroyGlass) {
                     SdkTools.minecraft.particleManager.addTileBreakParticles(xTile, yTile, zTile, BlockBase.GLASS.id & 0xff, BlockBase.GLASS.id >> 8 & 0xff);
                     SdkTools.minecraft.soundHelper.playSound(BlockBase.GLASS.sounds.getBreakSound(), (float) xTile + 0.5F, (float) yTile + 0.5F, (float) zTile + 0.5F, (BlockBase.GLASS.sounds.getVolume() + 1.0F) / 2.0F, BlockBase.GLASS.sounds.getPitch() * 0.8F);
@@ -194,26 +195,9 @@ public class EntityAAShell extends EntityBase
                     BlockBase.LEAVES.activate(level, xTile, yTile, zTile, level.getTileMeta(xTile, yTile, zTile));
                 }
                 remove();
-//                if(inTile == Block.glass.blockID || inTile == Block.glowStone.blockID || inTile == Block.leaves.blockID)
-//                {
-//                    Block block = Block.blocksList[inTile];
-//                    ModLoader.getMinecraftInstance().sndManager.playSound(block.stepSound.stepSoundDir(), (float)xTile + 0.5F, (float)yTile + 0.5F, (float)zTile + 0.5F, (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
-//                    level.setBlockWithNotify(xTile, yTile, zTile, 0);
-//                } else
-//                {
-//                    velocityX = (float)(movingobjectposition.field_1988.x - x);
-//                    velocityY = (float)(movingobjectposition.field_1988.y - y);
-//                    velocityZ = (float)(movingobjectposition.field_1988.z - z);
-//                    float f1 = MathHelper.sqrt(velocityX * velocityX + velocityY * velocityY + velocityZ * velocityZ);
-//                    x -= (velocityX / (double)f1) * 0.05000000074505806D;
-//                    y -= (velocityY / (double)f1) * 0.05000000074505806D;
-//                    z -= (velocityZ / (double)f1) * 0.05000000074505806D;
-//                    level.playSoundAtEntity(this, "ofensywa:bullethit", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
-//                    remove();
-//                }
             }
         }
-        List list1 = level.getEntities(EntityPlane.class, Box.createButWasteMemory(x - 4D, y - 4D, z - 4D, x + 4D, y + 4D, z + 4D));
+        List list1 = level.getEntities(WW2Plane.class, Box.createButWasteMemory(x - 4D, y - 4D, z - 4D, x + 4D, y + 4D, z + 4D));
         if(!list1.isEmpty() || flyTime >= aaRange) //20
         {
             for(int j = 0; j < 1000; j++)
@@ -227,34 +211,11 @@ public class EntityAAShell extends EntityBase
 //                ModLoader.getMinecraftInstance().effectRenderer.addEffect(entitysmokefx);
             }
 
-            level.playSound(this, "ofensywa:flak", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
+            level.playSound(this, "planes:flak", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
             for(int k = 0; k < list1.size(); k++)
             {
-                EntityPlane entityplane = (EntityPlane)list1.get(k);
-                entityplane.damage(this, 40);
-            }
-
-            remove();
-        }
-        List list2 = level.getEntities(EntityPlaneNew.class, Box.createButWasteMemory(x - 4D, y - 4D, z - 4D, x + 4D, y + 4D, z + 4D));
-        if(!list2.isEmpty() || flyTime >= aaRange) //20
-        {
-            for(int l = 0; l < 1000; l++)
-            {
-                WW2EntitySmokeFX entitysmokefx = new WW2EntitySmokeFX(level, x + rand.nextGaussian(), y + rand.nextGaussian(), z + rand.nextGaussian(), 0.01D, 0.01D, 0.01D);
-                entitysmokefx.velocityX = rand.nextGaussian() / 20D;
-                entitysmokefx.velocityY = rand.nextGaussian() / 20D;
-                entitysmokefx.velocityZ = rand.nextGaussian() / 20D;
-                entitysmokefx.renderDistanceMultiplier = 200D;
-                SdkTools.minecraft.particleManager.addParticle(entitysmokefx);
-//                ModLoader.getMinecraftInstance().effectRenderer.addEffect(entitysmokefx1);
-            }
-
-            level.playSound(this, "Flak", 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
-            for(int i1 = 0; i1 < list2.size(); i1++)
-            {
-                EntityPlaneNew entitypl = (EntityPlaneNew)list2.get(i1);
-                entitypl.damage(this, 40);
+                EntityBase entityplane = (EntityBase)list1.get(k);
+                entityplane.damage(this, damageAA);
             }
 
             remove();
@@ -341,7 +302,7 @@ public class EntityAAShell extends EntityBase
     public Living owner;
     private int timeTillDeath;
     private int flyTime;
-    protected float damage;
+    protected int damageAA;
     private float muzzleVel;
     private float spreadVal;
     private int aaRange;

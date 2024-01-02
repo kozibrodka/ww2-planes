@@ -16,7 +16,7 @@ public class Properties_Bofors extends AAGun_properties {
         reloadTime = 20;//20
         health = 100;
         recoil = 5;
-        damage = 10.0F;
+        damage = 50.0F;
         accuracy = 6.0F;
         velocity = 3.0F;
         range = 20;

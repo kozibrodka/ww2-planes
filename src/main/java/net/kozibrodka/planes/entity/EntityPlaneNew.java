@@ -19,6 +19,7 @@ import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Item;
 import net.minecraft.entity.Living;
 import net.minecraft.entity.animal.Wolf;
+import net.minecraft.entity.monster.MonsterEntityType;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.inventory.InventoryBase;
 import net.minecraft.item.ItemBase;
@@ -65,11 +66,17 @@ public class EntityPlaneNew extends EntityBase
         velocityYaw = 0.0F;
         velocityPitch = 0.0F;
         velocityRoll = 0.0F;
+        EXPLOSION_MIN = 0.40000000000000001D;
+        COLLISION_MIN = 0.20000000000000001D;
         field_1622 = true; //ignoreFrustumCheck
         gunAircraft = new ItemInstance(mod_Planes.itemGunAircraft);
         gunRocketAircraft = new ItemInstance(mod_Planes.itemGunAircraftRocket);
         gunRocketAircraftPanzer = new ItemInstance(mod_Planes.itemGunAircraftRocketPanzer);
 //        axes = new RotatedAxes();
+        lastCollidedEntity = null;
+        prevMotionX = 0.0D;
+        prevMotionY = 0.0D;
+        prevMotionZ = 0.0D;
     }
 
     public EntityPlaneNew(Level world, double d, double d1, double d2)
@@ -218,17 +225,46 @@ public class EntityPlaneNew extends EntityBase
         {
             return true;
         }
-        boatRockDirection = -boatRockDirection;
-        boatTimeSinceHit = 10;
-        boatCurrentDamage += i * 10;
-        if(boatCurrentDamage > 40)
-        {
-            boatCurrentDamage = 40;
+//        boatRockDirection = -boatRockDirection;
+//        boatTimeSinceHit = 10;
+//        boatCurrentDamage += i * 10;
+//        if(boatCurrentDamage > 40)
+//        {
+//            boatCurrentDamage = 40;
+//        }
+//        method_1336(); //setBeenAttacked
+//        planeDamage += 3 * i;  //dmg mnozony X3 jest
+//        level.playSound(this, "planes:mechhurt", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F); //glos do zmiany
+//        System.out.println("Alc dostałem od: " + entity);
+
+        if(entity instanceof Living){
+            if(entity instanceof MonsterEntityType){
+                boatRockDirection = -boatRockDirection;
+                boatTimeSinceHit = 10;
+                boatCurrentDamage += i * 10;
+                if(boatCurrentDamage > 40)
+                {
+                    boatCurrentDamage = 40;
+                }
+                method_1336(); //setBeenAttacked
+                planeDamage += (int)i/5;
+                level.playSound(this, "planes:mechhurt", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+                System.out.println("PLANE DAMAGED from: " + entity + " DMG: " + (int)i/5);
+            }
+        }else{
+            boatRockDirection = -boatRockDirection;
+            boatTimeSinceHit = 10;
+            boatCurrentDamage += i * 10;
+            if(boatCurrentDamage > 40)
+            {
+                boatCurrentDamage = 40;
+            }
+            method_1336(); //setBeenAttacked
+            planeDamage += i;
+            level.playSound(this, "planes:mechhurt", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+            System.out.println("PLANE DAMAGED from: " + entity + " DMG: " + i);
         }
-        method_1336(); //setBeenAttacked
-        planeDamage += 3 * i;  //dmg mnozony X3 jest
-        level.playSound(this, "planes:mechhurt", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F); //glos do zmiany
-        System.out.println("Alc dostałem od: " + entity);
+
         if(planeDamage > plane.planeHealth && !level.isServerSide) //oryg >600
         {
             remove();
@@ -253,53 +289,56 @@ public class EntityPlaneNew extends EntityBase
                 }
 
             }
-            int r8 = 2;
-            float f8 = 1.5F;
-            if(plane.item_bay.itemId != ItemBase.egg.id && rand.nextInt(r8) == 0)
-                dropItem(plane.item_bay.itemId, 1, f8);
-            if(rand.nextInt(r8) == 0)
-                dropItem(plane.item_cockpit.itemId, 1, f8);
-            if(rand.nextInt(r8) == 0)
-                dropItem(plane.item_propeller.itemId, 1, f8);
-            if(rand.nextInt(r8) == 0)
-                dropItem(plane.item_tail.itemId, 1, f8);
-            if(rand.nextInt(r8) == 0)
-                dropItem(plane.item_wings.itemId, 1, f8);
-            if(rand.nextInt(r8) == 0)
-                dropItem(plane.item_wings.itemId, 1, f8);
-            if(plane.item_guns.itemId != ItemBase.egg.id && rand.nextInt(r8) == 0)
-                dropItem(plane.item_guns.itemId, 1, f8);
-            if(plane.item_guns.itemId != ItemBase.egg.id && rand.nextInt(r8) == 0)
-                dropItem(plane.item_guns.itemId, 1, f8);
-                            switch(engineType)
-                {
-                    case 1: // '\001'
-                        if(rand.nextInt(r8) == 0)
-                        dropItem(ww2Parts.smallEngine.id, 1, f8);
-                        break;
-
-                    case 2: // '\002'
-                        if(rand.nextInt(r8) == 0)
-                        dropItem(ww2Parts.mediumEngine.id, 1, f8);
-                        break;
-
-                    case 3: // '\003'
-                        if(rand.nextInt(r8) == 0)
-                        dropItem(ww2Parts.largeEngine.id, 1, f8);
-                        break;
-
-                    case 4: // '\004'
-                        if(rand.nextInt(r8) == 0)
-                        dropItem(ww2Parts.rotaryEngine.id, 1, f8);
-                        break;
-
-                }
-
-                if(plane.dyeColor != 16 && rand.nextInt(r8) == 0)
-                dropItem(new ItemInstance(ItemBase.dyePowder, rand.nextInt(6) + 1, plane.dyeColor), f8);
-
+            dropParts();
         }
         return true;
+    }
+
+    public void dropParts(){
+        int r8 = 2;
+        float f8 = 1.5F;
+        if(plane.item_bay.itemId != ItemBase.egg.id && rand.nextInt(r8) == 0)
+            dropItem(plane.item_bay.itemId, 1, f8);
+        if(rand.nextInt(r8) == 0)
+            dropItem(plane.item_cockpit.itemId, 1, f8);
+        if(rand.nextInt(r8) == 0)
+            dropItem(plane.item_propeller.itemId, 1, f8);
+        if(rand.nextInt(r8) == 0)
+            dropItem(plane.item_tail.itemId, 1, f8);
+        if(rand.nextInt(r8) == 0)
+            dropItem(plane.item_wings.itemId, 1, f8);
+        if(rand.nextInt(r8) == 0)
+            dropItem(plane.item_wings.itemId, 1, f8);
+        if(plane.item_guns.itemId != ItemBase.egg.id && rand.nextInt(r8) == 0)
+            dropItem(plane.item_guns.itemId, 1, f8);
+        if(plane.item_guns.itemId != ItemBase.egg.id && rand.nextInt(r8) == 0)
+            dropItem(plane.item_guns.itemId, 1, f8);
+        switch(engineType)
+        {
+            case 1: // '\001'
+                if(rand.nextInt(r8) == 0)
+                    dropItem(ww2Parts.smallEngine.id, 1, f8);
+                break;
+
+            case 2: // '\002'
+                if(rand.nextInt(r8) == 0)
+                    dropItem(ww2Parts.mediumEngine.id, 1, f8);
+                break;
+
+            case 3: // '\003'
+                if(rand.nextInt(r8) == 0)
+                    dropItem(ww2Parts.largeEngine.id, 1, f8);
+                break;
+
+            case 4: // '\004'
+                if(rand.nextInt(r8) == 0)
+                    dropItem(ww2Parts.rotaryEngine.id, 1, f8);
+                break;
+
+        }
+
+        if(plane.dyeColor != 16 && rand.nextInt(r8) == 0)
+            dropItem(new ItemInstance(ItemBase.dyePowder, rand.nextInt(6) + 1, plane.dyeColor), f8);
     }
 
     public void remove()
@@ -383,6 +422,11 @@ public class EntityPlaneNew extends EntityBase
     public double getSpeed()
     {
         return Math.sqrt(velocityX * velocityX + velocityZ * velocityZ);
+    }
+
+    public double getPrevSpeed()
+    {
+        return Math.sqrt(prevMotionX * prevMotionX + prevMotionZ * prevMotionZ);
     }
 
     public void pressKey(int i)
@@ -500,155 +544,8 @@ public class EntityPlaneNew extends EntityBase
             {
                 default:
                     break;
-
-//                case 6: // '\006'
-//                    if(!level.isServerSide && shootDelay <= 0 && plane.hasGuns && mod_Planes.bulletsEnabled)
-//                    {
-//                        int j = 0;
-//                        for(int i1 = plane.numCargoSlots + plane.numRocketSlots + 1; i1 < plane.numCargoSlots + plane.numRocketSlots + plane.numBulletSlots + 1; i1++)
-//                        {
-//                            if(cargoItems[i1] != null && cargoItems[i1].itemId == mod_Planes.bullet.id)  //AMMO CHANGE
-//                            {
-//                                j = i1;
-//                            }
-//                        }
-//
-//                        if(j != 0)
-//                        {
-//                            double d1 = (double)plane.barrelX / 16D;
-//                            double d3 = -((double)plane.barrelY / 16D) * Math.cos((rotationRoll * 3.141593F) / 180F) + ((double)plane.barrelZ / 16D) * -Math.sin((rotationRoll * 3.141593F) / 180F);
-//                            double d5 = ((double)plane.barrelY / 16D) * Math.sin((rotationRoll * 3.141593F) / 180F) + ((double)plane.barrelZ / 16D) * Math.cos((rotationRoll * 3.141593F) / 180F);
-//                            double d7 = Math.cos(((double)(-yaw) / 180D) * 3.1415926535897931D);
-//                            double d9 = Math.sin(((double)(-yaw) / 180D) * 3.1415926535897931D);
-//                            double d11 = Math.cos(((double)pitch / 180D) * 3.1415926535897931D);
-//                            double d13 = Math.sin(((double)pitch / 180D) * 3.1415926535897931D);
-//                            double d15 = (d1 * d11 - d3 * d13) * d7 + d5 * d9;
-//                            double d17 = d1 * d13 + d3 * d11;
-//                            double d19 = (d3 * d13 - d1 * d11) * d9 + d5 * d7;
-//                            d1 -= 3D;
-//                            double d21 = (d1 * d11 - d3 * d13) * d7 + d5 * d9 + rand.nextGaussian() / 100D;
-//                            double d22 = d1 * d13 + d3 * d11 + rand.nextGaussian() / 100D;
-//                            double d23 = (d3 * d13 - d1 * d11) * d9 + d5 * d7 + rand.nextGaussian() / 100D;
-//
-//                            ((SdkItemGun)gunAircraft.getType()).onItemRightClickEntity(gunAircraft, level, this, plane.barrelX / 16F, (float)d17, plane.barrelZ / 16F, 90F, 0.0F);
-//
-//                            shootDelay = plane.planeShootDelay;
-//                            plane.barrelZ = -plane.barrelZ;
-//                            takeInventoryItem(j, 1);
-//                        }
-//                    }
-//                    break;
-//
-//                case 7: // '\007'
-//                    if(!level.isServerSide && shootDelay <= 0 && plane.hasGuns && mod_Planes.bulletsEnabled)
-//                    {
-//                        int c = 0;
-//                        byte byte1 = 0;
-//                        for(int p1 = 1; p1 < plane.numRocketSlots + 1; p1++)
-//                        {
-//                            if(cargoItems[p1] != null && cargoItems[p1].itemId == mod_Planes.rocketAircraft.id)
-//                            {
-//                                c = p1;
-//                            }
-//                            if(cargoItems[p1] != null && cargoItems[p1].itemId == mod_Planes.rocketAircraftPanzer.id)
-//                            {
-//                                c = p1;
-//                                byte1 = 1;
-//                            }
-//                        }
-//
-//                        if(c != 0)
-//                        {
-//                            double e1 = (double)plane.barrelX / 16D;
-//                            double e3 = -((double)plane.barrelY / 16D) * Math.cos((rotationRoll * 3.141593F) / 180F) + ((double)plane.barrelZ / 16D) * -Math.sin((rotationRoll * 3.141593F) / 180F);
-//                            double e11 = Math.cos(((double)pitch / 180D) * 3.1415926535897931D);
-//                            double e13 = Math.sin(((double)pitch / 180D) * 3.1415926535897931D);
-//                            double e17 = e1 * e13 + e3 * e11;
-//                            if(byte1 == 0)
-//                            {
-//                                ((SdkItemGun)gunRocketAircraft.getType()).onItemRightClickEntity(gunRocketAircraft, level, this, plane.barrelX / 16F, (float)e17, plane.barrelZ / 16F, 90F, 0.0F);
-//                            }
-//                            if(byte1 == 1)
-//                            {
-//                                ((SdkItemGun)gunRocketAircraftPanzer.getType()).onItemRightClickEntity(gunRocketAircraft, level, this, plane.barrelX / 16F, (float)e17, plane.barrelZ / 16F, 90F, 0.0F);
-//                            }
-//                            shootDelay = 10; //itemek ma za duzy
-//                            plane.barrelZ = -plane.barrelZ;
-//                            takeInventoryItem(c, 1);
-//                        }
-//                    }
-//                    break;
-//
-//
-//                case 9: // '\t'
-//                    if(level.isServerSide || bombDelay > 0 || !plane.hasBombs || !mod_Planes.bombsEnabled)
-//                    {
-//                        break;
-//                    }
-//                    int k = 0;
-//                    byte byte0 = 0;
-//                    for(int j1 = plane.numCargoSlots + plane.numRocketSlots + plane.numBulletSlots + 1; j1 < plane.numCargoSlots + plane.numRocketSlots + plane.numBulletSlots + plane.numBombSlots + 1; j1++)
-//                    {
-//                        if(cargoItems[j1] != null && cargoItems[j1].itemId == mod_Planes.smallBomb.id)
-//                        {
-//                            k = j1;
-//                        }
-//                        if(cargoItems[j1] != null && cargoItems[j1].itemId == mod_Planes.largeBomb.id)
-//                        {
-//                            k = j1;
-//                            byte0 = 1;
-//                        }
-//                        if(cargoItems[j1] != null && cargoItems[j1].itemId == mod_Planes.napalm.id)
-//                        {
-//                            k = j1;
-//                            byte0 = 2;
-//                        }
-//                        if(cargoItems[j1] != null && cargoItems[j1].itemId == mod_Planes.panzerBomb.id)
-//                        {
-//                            k = j1;
-//                            byte0 = 3;
-//                        }
-//                    }
-//
-//                    if(k == 0)
-//                    {
-//                        break;
-//                    }
-//                    double d2 = (double)plane.bombXOffset / 16D;
-//                    double d4 = -((double)plane.bombYOffset / 16D) * Math.cos((rotationRoll * 3.141593F) / 180F) + ((double)plane.bombZOffset / 16D) * -Math.sin((rotationRoll * 3.141593F) / 180F);
-//                    double d6 = ((double)plane.bombYOffset / 16D) * Math.sin((rotationRoll * 3.141593F) / 180F) + ((double)plane.bombZOffset / 16D) * Math.cos((rotationRoll * 3.141593F) / 180F);
-//                    double d8 = Math.cos(((double)(-yaw) / 180D) * 3.1415926535897931D);
-//                    double d10 = Math.sin(((double)(-yaw) / 180D) * 3.1415926535897931D);
-//                    double d12 = Math.cos(((double)pitch / 180D) * 3.1415926535897931D);
-//                    double d14 = Math.sin(((double)(-pitch) / 180D) * 3.1415926535897931D);
-//                    double d16 = (d2 * d12 - d4 * d14) * d8 + d6 * d10;
-//                    double d18 = d2 * d14 + d4 * d12;
-//                    double d20 = (d4 * d14 - d2 * d12) * d10 + d6 * d8;
-//                    if(byte0 == 2 && (passenger instanceof PlayerBase))
-//                    {
-//                        ((PlayerBase)passenger).increaseStat(mod_Planes.dropNapalm, 1);
-//                    }
-//                    level.spawnEntity(new EntityBomb(level, x + d16, y + d18, z + d20, velocityX, velocityY, velocityZ, byte0)); //bomba
-//                    level.playSound(this, plane.bombSound, 1.0F, 1.0F);
-//                    takeInventoryItem(k, 1);
-//                    bombDelay = plane.planeBombDelay;
-//                    break;
-//
-//                case 12: // '\007'
-//                    if(!level.isServerSide) {
-//                        if (SdkTools.minecraft.currentScreen instanceof GuiPlane) {
-//                            SdkTools.minecraft.openScreen(null);
-//                        } else if (passenger.vehicle instanceof EntityPlaneNew) {
-//                            SdkTools.minecraft.openScreen(new GuiPlaneNew(((PlayerBase)passenger).inventory, (EntityPlaneNew)passenger.vehicle));
-//                        }
-//                    }
-
             }
         }
-//        if(!level.isServerSide && i == 7)
-//        {
-////            ModLoader.OpenGUI((EntityPlayer)passenger, new GuiPlane(((EntityPlayer)passenger).inventory, this));
-//        }
         if(i == 8)
         {
             for(int l = 0; l < plane.numPassengers; l++)
@@ -719,26 +616,6 @@ public class EntityPlaneNew extends EntityBase
                 {
                     pressKey(5);
                 }
-//                if(Keyboard.isKeyDown(KeyBindingListener.keyBinding_altfire.key))
-//                {
-//                    pressKey(6);
-//                }
-//                if(Keyboard.isKeyDown(KeyBindingListener.keyBinding_rocket.key))
-//                {
-//                    pressKey(7);
-//                }
-//                if(Keyboard.isKeyDown(KeyBindingListener.keyBinding_exit.key))
-//                {
-//                    pressKey(8);
-//                }
-//                if(Keyboard.isKeyDown(KeyBindingListener.keyBinding_bomb.key))
-//                {
-//                    pressKey(9);
-//                }
-//                if(Keyboard.isKeyDown(KeyBindingListener.keyBinding_altinventory.key))
-//                {
-//                    pressKey(12);
-//                }
             }
         }
         if(shootDelay > 0)
@@ -825,7 +702,7 @@ public class EntityPlaneNew extends EntityBase
             double ad2 = (z + rand.nextDouble() - 0.5D);
             if(planeDamage > (4 * plane.planeHealth) / 5)
             {
-                level.addParticle("largesmoke", x + d7, y + d8, z + d9, velocityX, velocityY, velocityZ); //dodac ognia
+                level.addParticle("largesmoke", x + d7, y + d8, z + d9, velocityX, velocityY, velocityZ);
             } else
             {
                 level.addParticle("smoke", x + d7, y + d8, z + d9, velocityX, velocityY, velocityZ);
@@ -1015,28 +892,8 @@ public class EntityPlaneNew extends EntityBase
             motionG = 0.0D;
             rotationRoll *= 0.80000000000000004D;
         }
-        if((onGround || field_1626) && Math.sqrt(velocityX * velocityX + velocityY * velocityY + velocityZ * velocityZ) > 0.20000000000000001D && (pitch > 30F || rotationRoll > 30F || rotationRoll < -30F || field_1624))
+        if((onGround || field_1626) && Math.sqrt(velocityX * velocityX + velocityY * velocityY + velocityZ * velocityZ) > EXPLOSION_MIN && (pitch > 30F || rotationRoll > 30F || rotationRoll < -30F || field_1624))
         {
-//            if(mod_Planes.planesExplode && SdkTools.minecraft.options.difficulty != 0)
-//            {
-//                level.createExplosion(null, x, y, z, 5F * (float)Math.sqrt(velocityX * velocityX + velocityY * velocityY + velocityZ * velocityZ));
-//                for(int l = (int)x - 3; l < (int)x + 3; l++)
-//                {
-//                    for(int i1 = (int)y - 2; i1 < (int)y + 2; i1++)
-//                    {
-//                        for(int k1 = (int)z - 3; k1 < (int)z + 3; k1++)
-//                        {
-//                            if(level.getTileId(l, i1, k1) == 0 && rand.nextBoolean())
-//                            {
-//                                level.setTile(l, i1, k1, BlockBase.FIRE.id);
-//                            }
-//                        }
-//
-//                    }
-//
-//                }
-//
-//            }
             damage(null, plane.planeHealth);
         }
         if(!level.isServerSide)
@@ -1072,9 +929,22 @@ public class EntityPlaneNew extends EntityBase
                 {
                     entity.method_1353(this);
                 }
+                if(entity != passenger && entity.method_1380())
+                {
+                    handleCollision(entity);
+                }
             }
-
         }
+        if(passenger != null && getPrevSpeed() - getSpeed() > COLLISION_MIN)
+        {
+            if(lastCollidedEntity != null && !(lastCollidedEntity instanceof Item))
+            {
+                lastCollidedEntity.accelerate(prevMotionX, prevMotionY + 1.0D, prevMotionZ);
+                lastCollidedEntity.damage(this, 50); //zderzenie z samolotem
+            }
+            damage(lastCollidedEntity, 50);
+        }
+        lastCollidedEntity = null;
         if(passenger != null && passenger.removed)
         {
             passenger = null;
@@ -1083,6 +953,17 @@ public class EntityPlaneNew extends EntityBase
         {
             if(pitch > plane.slopedPitch) //dodac wlaściWOSC !!!
                 pitch = pitch - 1F;
+        }
+        prevMotionX = velocityX;
+        prevMotionY = velocityY;
+        prevMotionZ = velocityZ;
+    }
+
+    public void handleCollision(EntityBase entity)
+    {
+        if(entity.passenger != this && entity.vehicle != this)
+        {
+            lastCollidedEntity = entity;
         }
     }
 
@@ -1268,13 +1149,14 @@ public class EntityPlaneNew extends EntityBase
             System.out.println("MAX: " + plane.planeHealth);
             System.out.println("DMG: " + planeDamage);
             System.out.println("TYPE: " + plane.shortName);
+            entityplayer.swingHand();
             return true;
         }
         if(entityplayer.getHeldItem() != null && entityplayer.getHeldItem().itemId == mod_Planes.planeBlowTorch.id)
         {
             if(planeDamage < plane.planeHealth && planeDamage > 0)
             {
-                level.playSound(this, "planes:wrench", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+                level.playSound(this, "planes:blowtorch", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
                 planeDamage = Math.max(planeDamage - 12, 0);
                 entityplayer.swingHand();
                 entityplayer.getHeldItem().applyDamage(1, entityplayer);
@@ -1408,6 +1290,8 @@ public class EntityPlaneNew extends EntityBase
     private double field_9387_k;
     private double field_9386_l;
     public double propellerSpeed;
+    private double EXPLOSION_MIN;
+    private double COLLISION_MIN;
     public static double speed;
     private float length;
     private int planeDamage;
@@ -1432,6 +1316,10 @@ public class EntityPlaneNew extends EntityBase
     public float velocityPitch;
     public float velocityRoll;
     public PlaneTypeNew plane;
+    public EntityBase lastCollidedEntity;
+    public double prevMotionX;
+    public double prevMotionY;
+    public double prevMotionZ;
 
     @Override
     public void fireKey(PlayerBase entityplayer) {

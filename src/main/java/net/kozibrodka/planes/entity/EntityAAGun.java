@@ -5,6 +5,8 @@ import net.kozibrodka.planes.events.mod_Planes;
 import net.kozibrodka.planes.properties.AAGunType;
 import net.kozibrodka.sdk_api.events.utils.WW2Cannon;
 import net.minecraft.entity.EntityBase;
+import net.minecraft.entity.Living;
+import net.minecraft.entity.monster.MonsterEntityType;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
@@ -43,6 +45,8 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
         this.gunYaw = 0.0F;
         this.gunPitch = 0.0F;
         this.shootDelay = 0;
+        currentBarrel = 0;
+        reloadTimer = 0;
     }
 
     public EntityAAGun(Level world, AAGunType type1, double d, double d1, double d2) {
@@ -105,12 +109,7 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
 
                 for(int j = 0; j < this.type.numBarrels; ++j) {
                     if(shootTime <= 0 && this.ammo[j] != null && this.currentBarrel == j) {
-
-//                        System.out.println("BEFORE" + j + "  " + this.ammo[j] + "  " + this.ammo[j].getDamage() +  "  " + this.ammo[j].getDurability());
-
-//                        this.ammo[j].setDamage(0);
                         this.ammo[j] = null;
-
                         double d = 2.75D;
                         double d1 = 0.625D;
                         double d2 = 0.25D;
@@ -131,17 +130,10 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
 
                         level.playSound(x, y, z, type.shootSound, 4F, (1.0F + (level.rand.nextFloat() - level.rand.nextFloat()) * 0.2F) * 0.7F);
                         if(!this.level.isServerSide) {
-//                            this.level.spawnEntityInWorld(new EntityBullet(this.level, this.rotate((double)this.type.model.barrelX / 16.0D + 3.0D, (double)this.type.model.barrelY / 16.0D, (double)this.type.model.barrelZ / 16.0D + 3.0D).addVector(this.posX, this.posY, this.posZ), this.gunYaw + 90.0F, this.gunPitch, (EntityLiving)player, (float)this.type.accuracy, this.type.damage, bullet));
-//                            this.level.playSoundAtEntity(this, this.type.shootSound, 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
-
 //                            System.out.println( j + "  " + this.ammo[j] + "  " + this.ammo[j].getDamage() +  "  " + this.ammo[j].getDurability());
                             level.spawnEntity(new EntityAAShell(level, d7 + x, d8 + y, d9 + z, d10 - d7, d11 - d8, d12 - d9, type.damage, type.velocity, type.accuracy, type.range));
 //                            level.addParticle("smoke", x + d7, y + d8, z + d9, d10 - d7, d11 - d8, d12 - d9);
                         }
-//                        if(j == type.numBarrels-1)
-//                        {
-//                            doReload();
-//                        }
                     }
                     if(j == type.numBarrels-1) //poprzednie było poewne ^^
                     {
@@ -152,8 +144,20 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
                 this.currentBarrel = (this.currentBarrel + 1) % this.type.numBarrels;
 
         } else {
-            this.method_1336();
-            this.health -= i;
+            if(entity instanceof Living){
+                if(entity instanceof MonsterEntityType){
+                    method_1336(); //setBeenAttacked
+                    this.health -= (int)i/5;
+                    level.playSound(this, "planes:mechhurt", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+                    System.out.println("AA DAMAGED from: " + entity + " DMG: " + (int)i/5);
+                }
+            }else{
+                method_1336(); //setBeenAttacked
+                this.health -= i;
+                level.playSound(this, "planes:mechhurt", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+                System.out.println("AA DAMAGED from: " + entity + " DMG: " + i);
+            }
+
             if(!this.level.isServerSide && this.health <= 0) {
                 this.remove();
             }
