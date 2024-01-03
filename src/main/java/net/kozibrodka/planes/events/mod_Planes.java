@@ -24,11 +24,12 @@ import net.modificationstation.stationapi.api.event.registry.BlockRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.EntityHandlerRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.registry.ModID;
 import net.modificationstation.stationapi.api.registry.Registry;
-import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
-import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
+import net.modificationstation.stationapi.api.util.Null;
+import net.modificationstation.stationapi.api.template.item.TemplateItem;
+import net.modificationstation.stationapi.api.template.block.TemplateBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.Namespace;
 import net.modificationstation.stationapi.api.util.Null;
 
 import java.lang.reflect.InvocationTargetException;
@@ -40,8 +41,8 @@ public class mod_Planes {
     @GConfig(value = "PlanesCFG", visibleName = "WW2 Planes Config")
     public static final PlanesCFG planesGlass = new PlanesCFG();
 
-    @Entrypoint.ModID
-    public static final ModID MOD_ID = Null.get();
+    @Entrypoint.Namespace
+    public static final Namespace MOD_ID = Null.get();
 
     public static PlaneType getPlaneType(String s) {
         return (PlaneType) planeMapping.get(s);
@@ -72,80 +73,80 @@ public class mod_Planes {
     public static PlaneType type = null;
     public static PlaneTypeNew typeNew = null;
 
-    public static TemplateItemBase smallBomb;
-    public static TemplateItemBase largeBomb;
-    public static TemplateItemBase napalm;
-    public static TemplateItemBase panzerBomb;
-    public static TemplateItemBase bullet;
-    public static TemplateItemBase rocketAircraft;
-    public static TemplateItemBase rocketAircraftPanzer;
-    public static TemplateItemBase aaShell;
-    public static TemplateItemBase planeFuel;
-    public static TemplateItemBase planeBlowTorch;
+    public static TemplateItem smallBomb;
+    public static TemplateItem largeBomb;
+    public static TemplateItem napalm;
+    public static TemplateItem panzerBomb;
+    public static TemplateItem bullet;
+    public static TemplateItem rocketAircraft;
+    public static TemplateItem rocketAircraftPanzer;
+    public static TemplateItem aaShell;
+    public static TemplateItem planeFuel;
+    public static TemplateItem planeBlowTorch;
 
-    public static TemplateItemBase itemGunAircraft;
-    public static TemplateItemBase itemGunAircraftRocket;
-    public static TemplateItemBase itemGunAircraftRocketPanzer;
+    public static TemplateItem itemGunAircraft;
+    public static TemplateItem itemGunAircraftRocket;
+    public static TemplateItem itemGunAircraftRocketPanzer;
 
-    public static TemplateItemBase BF109;
-    public static TemplateItemBase Biplane;
-    public static TemplateItemBase Camel;
-    public static TemplateItemBase Fokker;
-    public static TemplateItemBase Mustang;
-    public static TemplateItemBase Spitfire;
-    public static TemplateItemBase TwoSeaterBiplane;
-    public static TemplateItemBase Lancaster;
+    public static TemplateItem BF109;
+    public static TemplateItem Biplane;
+    public static TemplateItem Camel;
+    public static TemplateItem Fokker;
+    public static TemplateItem Mustang;
+    public static TemplateItem Spitfire;
+    public static TemplateItem TwoSeaterBiplane;
+    public static TemplateItem Lancaster;
 
-    public static TemplateItemBase bofors;
-    public static TemplateItemBase flakvierling;
+    public static TemplateItem bofors;
+    public static TemplateItem flakvierling;
 
-    public static TemplateItemBase flak88;
-    public static TemplateItemBase flak88a;
-    public static TemplateItemBase flak88b;
-    public static TemplateItemBase flak88c;
+    public static TemplateItem flak88;
+    public static TemplateItem flak88a;
+    public static TemplateItem flak88b;
+    public static TemplateItem flak88c;
 
-    public static TemplateItemBase planeNew_YAK5;
-    public static TemplateItemBase planeNew_Spitfire1;
-    public static TemplateItemBase planeNew_Spitfire2;
-    public static TemplateItemBase planeNew_P38;
-    public static TemplateItemBase planeNew_P38a;
-    public static TemplateItemBase planeNew_ME262;
-    public static TemplateItemBase planeNew_ME109;
-    public static TemplateItemBase planeNew_JU87G;
-    public static TemplateItemBase planeNew_JU87;
-    public static TemplateItemBase planeNew_Hurricane;
-    public static TemplateItemBase planeNew_HE111;
+    public static TemplateItem planeNew_YAK5;
+    public static TemplateItem planeNew_Spitfire1;
+    public static TemplateItem planeNew_Spitfire2;
+    public static TemplateItem planeNew_P38;
+    public static TemplateItem planeNew_P38a;
+    public static TemplateItem planeNew_ME262;
+    public static TemplateItem planeNew_ME109;
+    public static TemplateItem planeNew_JU87G;
+    public static TemplateItem planeNew_JU87;
+    public static TemplateItem planeNew_Hurricane;
+    public static TemplateItem planeNew_HE111;
 
-    public static TemplateBlockBase planeWorkbench;
+    public static TemplateBlock planeWorkbench;
 
     //todo: passengers, nie wiem czy w ogole dziala.     Otwieranie inventory jedynie przy zerowej prędkośći??? balans hp. , change ekwipunek samolotu?, fkalverling reload (first one)
 
     @EventListener
     public void registerItems(ItemRegistryEvent event) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        bullet = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "bullet")).setTranslationKey(MOD_ID, "bullet");
-        aaShell = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "aaShell")).setTranslationKey(MOD_ID, "aaShell");
-        rocketAircraft = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "rocketAircraft")).setTranslationKey(MOD_ID, "rocketAircraft").setMaxStackSize(2);
-        rocketAircraftPanzer = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "rocketAircraftPanzer")).setTranslationKey(MOD_ID, "rocketAircraftPanzer").setMaxStackSize(3);
-        smallBomb = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "smallBomb")).setTranslationKey(MOD_ID, "smallBomb").setMaxStackSize(2);
-        panzerBomb = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "panzerBomb")).setTranslationKey(MOD_ID, "panzerBomb").setMaxStackSize(2);
-        largeBomb = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "largeBomb")).setTranslationKey(MOD_ID, "largeBomb").setMaxStackSize(1);
-        napalm = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "napalm")).setTranslationKey(MOD_ID, "napalm").setMaxStackSize(2);
-        planeFuel = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "planeFuel")).setTranslationKey(MOD_ID, "planeFuel");
-        planeBlowTorch = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "planeBlowTorch")).setTranslationKey(MOD_ID, "planeBlowTorch").setMaxStackSize(1).setDurability(64);;
+        bullet = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "bullet")).setTranslationKey(MOD_ID, "bullet");
+        aaShell = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "aaShell")).setTranslationKey(MOD_ID, "aaShell");
+        rocketAircraft = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "rocketAircraft")).setTranslationKey(MOD_ID, "rocketAircraft").setMaxStackSize(2);
+        rocketAircraftPanzer = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "rocketAircraftPanzer")).setTranslationKey(MOD_ID, "rocketAircraftPanzer").setMaxStackSize(3);
+        smallBomb = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "smallBomb")).setTranslationKey(MOD_ID, "smallBomb").setMaxStackSize(2);
+        panzerBomb = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "panzerBomb")).setTranslationKey(MOD_ID, "panzerBomb").setMaxStackSize(2);
+        largeBomb = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "largeBomb")).setTranslationKey(MOD_ID, "largeBomb").setMaxStackSize(1);
+        napalm = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "napalm")).setTranslationKey(MOD_ID, "napalm").setMaxStackSize(2);
+        planeFuel = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "planeFuel")).setTranslationKey(MOD_ID, "planeFuel");
+        planeBlowTorch = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "planeBlowTorch")).setTranslationKey(MOD_ID, "planeBlowTorch").setMaxStackSize(1).setDurability(64);;
 
-        itemGunAircraft = (TemplateItemBase) new SdkItemGunAircraft(Identifier.of(MOD_ID, "itemGunAircraft")).setTranslationKey(MOD_ID, "itemGunAircraft");
-        itemGunAircraftRocket = (TemplateItemBase) new SdkItemGunAircraftRocket(Identifier.of(MOD_ID, "itemGunAircraftRocket")).setTranslationKey(MOD_ID, "itemGunAircraftRocket");
-        itemGunAircraftRocketPanzer = (TemplateItemBase) new SdkItemGunAircraftRocketPanzer(Identifier.of(MOD_ID, "itemGunAircraftRocketPanzer")).setTranslationKey(MOD_ID, "itemGunAircraftRocketPanzer");
+        itemGunAircraft = (TemplateItem) new SdkItemGunAircraft(Identifier.of(MOD_ID, "itemGunAircraft")).setTranslationKey(MOD_ID, "itemGunAircraft");
+        itemGunAircraftRocket = (TemplateItem) new SdkItemGunAircraftRocket(Identifier.of(MOD_ID, "itemGunAircraftRocket")).setTranslationKey(MOD_ID, "itemGunAircraftRocket");
+        itemGunAircraftRocketPanzer = (TemplateItem) new SdkItemGunAircraftRocketPanzer(Identifier.of(MOD_ID, "itemGunAircraftRocketPanzer")).setTranslationKey(MOD_ID, "itemGunAircraftRocketPanzer");
 
-//        if(planesGlass.registerPlanes_OLD) {
-//            new PlaneType(new Properties_BF109());
-//            new PlaneType(new Properties_Biplane());
-//            new PlaneType(new Properties_Camel());
-//            new PlaneType(new Properties_Fokker());
-//            new PlaneType(new Properties_Mustang());
-//            new PlaneType(new Properties_Spitfire());
-//            new PlaneType(new Properties_TwoSeaterBiplane());
-//        }
+        if(planesGlass.registerPlanes_OLD) {
+            new PlaneType(new Properties_BF109());
+            new PlaneType(new Properties_Biplane());
+            new PlaneType(new Properties_Camel());
+            new PlaneType(new Properties_Fokker());
+            new PlaneType(new Properties_Mustang());
+            new PlaneType(new Properties_Spitfire());
+            new PlaneType(new Properties_TwoSeaterBiplane());
+        }
 
         if(planesGlass.registerPlanes_NEW) {
             new PlaneTypeNew(new PropertiesNew_YAK5());
@@ -163,28 +164,28 @@ public class mod_Planes {
         }
 
         if(planesGlass.registerAA) {
-//            new AAGunType(new Properties_Bofors());
-//            new AAGunType(new Properties_Flakvierling());
-            new AAGunType(new Properties_Flak88());
+            new AAGunType(new Properties_Bofors());
+            new AAGunType(new Properties_Flakvierling());
+//            new AAGunType(new Properties_Flak88());
 //            new AAGunType(new Properties_Flak88a());
 //            new AAGunType(new Properties_Flak88b());
 //            new AAGunType(new Properties_Flak88c());
         }
 
-//        for (int i = 0; i < PlaneType.types.size(); i++) {
-//            PlaneType planetype = (PlaneType) PlaneType.types.get(i);
-//            System.out.println((new StringBuilder()).append("mod_Planes added plane : ").append(planetype.shortName).toString());
-//
-//            planeMapping.put(planetype.shortName, planetype);
-//            planetype.przedmiot = (TemplateItemBase) new ItemPlane(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxStackSize(1);
-//        }
+        for (int i = 0; i < PlaneType.types.size(); i++) {
+            PlaneType planetype = (PlaneType) PlaneType.types.get(i);
+            System.out.println((new StringBuilder()).append("mod_Planes added plane : ").append(planetype.shortName).toString());
+
+            planeMapping.put(planetype.shortName, planetype);
+            planetype.przedmiot = (TemplateItem) new ItemPlane(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxStackSize(1);
+        }
 
         for (int i = 0; i < PlaneTypeNew.types.size(); i++) {
             PlaneTypeNew planetype = (PlaneTypeNew) PlaneTypeNew.types.get(i);
             System.out.println((new StringBuilder()).append("mod_Planes added planeNew : ").append(planetype.shortName).toString());
 
             planeMappingNew.put(planetype.shortName, planetype);
-            planetype.przedmiot = (TemplateItemBase) new ItemPlaneNew(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxStackSize(1);
+            planetype.przedmiot = (TemplateItem) new ItemPlaneNew(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxStackSize(1);
         }
 
         for (int i = 0; i < AAGunType.types.size(); i++) {
@@ -192,15 +193,14 @@ public class mod_Planes {
             System.out.println((new StringBuilder()).append("mod_Planes added aaGun : ").append(planetype.shortName).toString());
 
             aaGunMapping.put(planetype.shortName, planetype);
-            planetype.przedmiot = (TemplateItemBase) new ItemAAGun(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxStackSize(1);
+            planetype.przedmiot = (TemplateItem) new ItemAAGun(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxStackSize(1);
         }
 
-//        SdkMap.hitsoundList.add(SdkEntityBulletAircraft.class);
     }
 
     @EventListener
     public void registerBlocks(BlockRegistryEvent samolotAddEvent) {
-        planeWorkbench = (TemplateBlockBase) new BlockPlaneWorkbench(Identifier.of(MOD_ID, "planeWorkbench")).setTranslationKey(MOD_ID, "planeWorkbench").setHardness(5F).setBlastResistance(10F).setSounds(BlockBase.METAL_SOUNDS);
+        planeWorkbench = (TemplateBlock) new BlockPlaneWorkbench(Identifier.of(MOD_ID, "planeWorkbench")).setTranslationKey(MOD_ID, "planeWorkbench").setHardness(5F).setBlastResistance(10F).setSounds(BlockBase.METAL_SOUNDS);
     }
 
     @EventListener

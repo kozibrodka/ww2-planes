@@ -14,7 +14,7 @@ public class PlanesCFG {
     @ConfigName("Add Legacy Planes")
     public Boolean registerPlanes_OLD = true;
     @ConfigName("Add Modern Planes")
-    public Boolean registerPlanes_NEW = true;
+    public Boolean registerPlanes_NEW = false;
     @ConfigName("Add AA Guns")
     public Boolean registerAA = true;
 

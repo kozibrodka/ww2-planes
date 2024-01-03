@@ -2,7 +2,7 @@ package net.kozibrodka.planes.properties;
 
 
 import net.kozibrodka.planes.model.ModelAAGun;
-import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
+import net.modificationstation.stationapi.api.template.item.TemplateItem;
 
 public class AAGun_properties {
 
@@ -26,5 +26,5 @@ public class AAGun_properties {
     public String shortName;
     public float topViewLimit = 75.0F;
     public float bottomViewLimit = 0.0F;
-    public TemplateItemBase przedmiot;
+    public TemplateItem przedmiot;
 }

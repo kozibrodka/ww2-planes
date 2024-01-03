@@ -1,7 +1,7 @@
 package net.kozibrodka.planes.properties;
 
 import net.kozibrodka.planes.model.ModelAAGun;
-import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
+import net.modificationstation.stationapi.api.template.item.TemplateItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +54,6 @@ public class AAGunType {
     public String shortName;
     public float topViewLimit = 75.0F;
     public float bottomViewLimit = 0.0F;
-    public TemplateItemBase przedmiot;
+    public TemplateItem przedmiot;
     public static List types = new ArrayList();
 }

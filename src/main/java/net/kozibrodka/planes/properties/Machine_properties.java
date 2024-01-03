@@ -4,7 +4,7 @@ import net.kozibrodka.planes.events.mod_Planes;
 import net.kozibrodka.planes.model.ModelPlane;
 import net.kozibrodka.planes.model.ModelPlaneNew;
 import net.minecraft.item.ItemInstance;
-import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
+import net.modificationstation.stationapi.api.template.item.TemplateItem;
 
 public class Machine_properties {
     public float maxPropSpeed;
@@ -70,5 +70,5 @@ public class Machine_properties {
     public String itemlist3;
     public ModelPlane model;
     public ModelPlaneNew modelNew;
-    public TemplateItemBase przedmiot;
+    public TemplateItem przedmiot;
 }

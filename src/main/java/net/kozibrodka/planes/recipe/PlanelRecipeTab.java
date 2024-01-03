@@ -17,7 +17,7 @@ import net.minecraft.entity.player.AbstractClientPlayer;
 import net.minecraft.inventory.InventoryBase;
 import net.minecraft.item.ItemInstance;
 import net.modificationstation.stationapi.api.recipe.StationRecipe;
-import net.modificationstation.stationapi.api.registry.ModID;
+import net.modificationstation.stationapi.api.util.Namespace;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
@@ -33,18 +33,18 @@ public class PlanelRecipeTab extends TabWithTexture {
     public ArrayList<Class<? extends ContainerBase>> guiCraftingStations = new ArrayList<>();
     public int recipeIndex;
 
-    public PlanelRecipeTab(ModID tabCreator) {
+    public PlanelRecipeTab(Namespace tabCreator) {
         this(tabCreator, new ArrayList<Object>(PlaneRecipeRegistry.getInstance().getRecipeList()), mod_Planes.planeWorkbench);
         isVanillaWorkbench = true;
         guiCraftingStations.add(Crafting.class);
     }
 
-    public PlanelRecipeTab(ModID tabCreator, List<Object> recipesComplete, BlockBase tabBlock) {
+    public PlanelRecipeTab(Namespace tabCreator, List<Object> recipesComplete, BlockBase tabBlock) {
         this(tabCreator, 26, recipesComplete, tabBlock, "/assets/planes/stationapi/textures/gui/planeCrafting.png", 154, 92, 10, 15, 56, 46, 5);
         slots[0] = new Integer[]{132, 41};
     }
 
-    public PlanelRecipeTab(ModID tabCreator, int slotsPerRecipe, List<Object> recipesComplete, BlockBase tabBlock, String texturePath, int width, int height, int textureX, int textureY, int buttonX, int buttonY, int slotsWidth) {
+    public PlanelRecipeTab(Namespace tabCreator, int slotsPerRecipe, List<Object> recipesComplete, BlockBase tabBlock, String texturePath, int width, int height, int textureX, int textureY, int buttonX, int buttonY, int slotsWidth) {
         super(tabCreator, slotsPerRecipe, texturePath, width, height, 3, 4, textureX, textureY, buttonX, buttonY);
         this.recipesComplete = recipesComplete;
         this.tabBlock = tabBlock;

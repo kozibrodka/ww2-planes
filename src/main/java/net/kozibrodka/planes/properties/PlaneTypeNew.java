@@ -3,7 +3,8 @@ package net.kozibrodka.planes.properties;
 import net.kozibrodka.planes.model.ModelPlane;
 import net.kozibrodka.planes.model.ModelPlaneNew;
 import net.minecraft.item.ItemInstance;
-import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
+import net.modificationstation.stationapi.api.template.item.TemplateItem;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,7 +143,7 @@ public class PlaneTypeNew {
     public ModelPlaneNew modelNew;
     public boolean nowoczesny;
     public static List types = new ArrayList();
-    public TemplateItemBase przedmiot;
+    public TemplateItem przedmiot;
     public int planeFuelAdd;
     public float planeWidth;
     public float planeHeight;
