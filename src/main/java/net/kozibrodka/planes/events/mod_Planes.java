@@ -137,15 +137,15 @@ public class mod_Planes {
         itemGunAircraftRocket = (TemplateItemBase) new SdkItemGunAircraftRocket(Identifier.of(MOD_ID, "itemGunAircraftRocket")).setTranslationKey(MOD_ID, "itemGunAircraftRocket");
         itemGunAircraftRocketPanzer = (TemplateItemBase) new SdkItemGunAircraftRocketPanzer(Identifier.of(MOD_ID, "itemGunAircraftRocketPanzer")).setTranslationKey(MOD_ID, "itemGunAircraftRocketPanzer");
 
-        if(planesGlass.registerPlanes_OLD) {
-            new PlaneType(new Properties_BF109());
-            new PlaneType(new Properties_Biplane());
-            new PlaneType(new Properties_Camel());
-            new PlaneType(new Properties_Fokker());
-            new PlaneType(new Properties_Mustang());
-            new PlaneType(new Properties_Spitfire());
-            new PlaneType(new Properties_TwoSeaterBiplane());
-        }
+//        if(planesGlass.registerPlanes_OLD) {
+//            new PlaneType(new Properties_BF109());
+//            new PlaneType(new Properties_Biplane());
+//            new PlaneType(new Properties_Camel());
+//            new PlaneType(new Properties_Fokker());
+//            new PlaneType(new Properties_Mustang());
+//            new PlaneType(new Properties_Spitfire());
+//            new PlaneType(new Properties_TwoSeaterBiplane());
+//        }
 
         if(planesGlass.registerPlanes_NEW) {
             new PlaneTypeNew(new PropertiesNew_YAK5());
@@ -163,21 +163,21 @@ public class mod_Planes {
         }
 
         if(planesGlass.registerAA) {
-            new AAGunType(new Properties_Bofors());
-            new AAGunType(new Properties_Flakvierling());
-//            new AAGunType(new Properties_Flak88());
+//            new AAGunType(new Properties_Bofors());
+//            new AAGunType(new Properties_Flakvierling());
+            new AAGunType(new Properties_Flak88());
 //            new AAGunType(new Properties_Flak88a());
 //            new AAGunType(new Properties_Flak88b());
 //            new AAGunType(new Properties_Flak88c());
         }
 
-        for (int i = 0; i < PlaneType.types.size(); i++) {
-            PlaneType planetype = (PlaneType) PlaneType.types.get(i);
-            System.out.println((new StringBuilder()).append("mod_Planes added plane : ").append(planetype.shortName).toString());
-
-            planeMapping.put(planetype.shortName, planetype);
-            planetype.przedmiot = (TemplateItemBase) new ItemPlane(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxStackSize(1);
-        }
+//        for (int i = 0; i < PlaneType.types.size(); i++) {
+//            PlaneType planetype = (PlaneType) PlaneType.types.get(i);
+//            System.out.println((new StringBuilder()).append("mod_Planes added plane : ").append(planetype.shortName).toString());
+//
+//            planeMapping.put(planetype.shortName, planetype);
+//            planetype.przedmiot = (TemplateItemBase) new ItemPlane(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxStackSize(1);
+//        }
 
         for (int i = 0; i < PlaneTypeNew.types.size(); i++) {
             PlaneTypeNew planetype = (PlaneTypeNew) PlaneTypeNew.types.get(i);
@@ -195,7 +195,7 @@ public class mod_Planes {
             planetype.przedmiot = (TemplateItemBase) new ItemAAGun(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxStackSize(1);
         }
 
-        SdkMap.hitsoundList.add(SdkEntityBulletAircraft.class);
+//        SdkMap.hitsoundList.add(SdkEntityBulletAircraft.class);
     }
 
     @EventListener
