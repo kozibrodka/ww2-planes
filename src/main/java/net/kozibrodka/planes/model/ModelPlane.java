@@ -2,9 +2,9 @@ package net.kozibrodka.planes.model;
 
 import net.kozibrodka.planes.entity.EntityPlane;
 import net.kozibrodka.tmt.TURBO_MODEL_173.*;
-import net.minecraft.client.render.entity.model.EntityModelBase;
+import net.minecraft.client.render.entity.model.EntityModel;
 
-public class ModelPlane extends EntityModelBase
+public class ModelPlane extends EntityModel
 {
 
     public ModelPlane()

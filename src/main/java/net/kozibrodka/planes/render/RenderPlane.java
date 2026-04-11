@@ -2,8 +2,8 @@ package net.kozibrodka.planes.render;
 import net.kozibrodka.planes.entity.EntityPlane;
 import net.kozibrodka.planes.model.ModelPlane;
 import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.entity.EntityBase;
-import net.minecraft.util.maths.MathHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 public class RenderPlane extends EntityRenderer
@@ -11,7 +11,7 @@ public class RenderPlane extends EntityRenderer
 
     public RenderPlane()
     {
-        field_2678 = 0.5F;
+        shadowRadius = 0.5F;
     }
 
     public void method_1908(EntityPlane entityplane, double d, double d1, double d2,
@@ -39,7 +39,7 @@ public class RenderPlane extends EntityRenderer
         GL11.glPopMatrix();
     }
 
-    public void render(EntityBase entity, double d, double d1, double d2,
+    public void render(Entity entity, double d, double d1, double d2,
                        float f, float f1)
     {
         method_1908((EntityPlane)entity, d, d1, d2, f, f1);

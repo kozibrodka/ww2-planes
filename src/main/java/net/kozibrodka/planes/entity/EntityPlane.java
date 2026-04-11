@@ -11,39 +11,39 @@ import net.kozibrodka.sdk_api.events.utils.SdkItemGun;
 import net.kozibrodka.sdk_api.events.utils.SdkTools;
 import net.kozibrodka.sdk_api.events.utils.WW2Plane;
 import net.kozibrodka.sdk_api.events.utils.WW2Tank;
-import net.minecraft.block.BlockBase;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityBase;
-import net.minecraft.entity.Item;
-import net.minecraft.entity.Living;
-import net.minecraft.entity.animal.Wolf;
-import net.minecraft.entity.monster.MonsterEntityType;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.inventory.InventoryBase;
-import net.minecraft.item.ItemBase;
-import net.minecraft.item.ItemInstance;
-import net.minecraft.level.Level;
-import net.minecraft.util.io.CompoundTag;
-import net.minecraft.util.io.ListTag;
-import net.minecraft.util.maths.Box;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Monster;
+import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.util.math.Box;
+import net.minecraft.world.World;
 import org.lwjgl.input.Keyboard;
 
 import java.util.Iterator;
 import java.util.List;
 
 
-public class EntityPlane extends EntityBase
-        implements InventoryBase, WW2Plane
+public class EntityPlane extends Entity
+        implements Inventory, WW2Plane
 {
 
-    public EntityPlane(Level world)
+    public EntityPlane(World world)
     {
         super(world);
         boatCurrentDamage = 0;
         boatTimeSinceHit = 0;
         boatRockDirection = 1;
-        field_1593 = true;  //prevententityfromspawn
-        setSize(6F, 1.8F);
+        blocksSameBlockSpawning = true;  //prevententityfromspawn
+        setBoundingBoxSpacing(6F, 1.8F);
         standingEyeHeight = height / 2.0F - 0.17F;
         setPosition(0.0D, standingEyeHeight, 0.0D);
         velocityX = 0.0D;
@@ -65,17 +65,17 @@ public class EntityPlane extends EntityBase
         velocityRoll = 0.0F;
         EXPLOSION_MIN = 0.40000000000000001D;
         COLLISION_MIN = 0.20000000000000001D;
-        field_1622 = true; //ignoreFrustumCheck
-        gunAircraft = new ItemInstance(mod_Planes.itemGunAircraft);
-        gunRocketAircraft = new ItemInstance(mod_Planes.itemGunAircraftRocket);
-        gunRocketAircraftPanzer = new ItemInstance(mod_Planes.itemGunAircraftRocketPanzer);
+        ignoreFrustumCull = true; //ignoreFrustumCheck
+        gunAircraft = new ItemStack(mod_Planes.itemGunAircraft);
+        gunRocketAircraft = new ItemStack(mod_Planes.itemGunAircraftRocket);
+        gunRocketAircraftPanzer = new ItemStack(mod_Planes.itemGunAircraftRocketPanzer);
         lastCollidedEntity = null;
         prevMotionX = 0.0D;
         prevMotionY = 0.0D;
         prevMotionZ = 0.0D;
     }
 
-    public EntityPlane(Level world, double d, double d1, double d2)
+    public EntityPlane(World world, double d, double d1, double d2)
     {
         this(world);
         standingEyeHeight = height / 2.0F - 0.17F;
@@ -96,19 +96,19 @@ public class EntityPlane extends EntityBase
         passengerSeats = new EntityPassengerSeat[plane.numPassengers];
         for(int i = 0; i < plane.numPassengers; i++)
         {
-            if(level != null)
+            if(world != null)
             {
-                passengerSeats[i] = new EntityPassengerSeat(level, plane.seatsX[i], plane.seatsY[i], plane.seatsZ[i], this);
-                level.spawnEntity(passengerSeats[i]);
+                passengerSeats[i] = new EntityPassengerSeat(world, plane.seatsX[i], plane.seatsY[i], plane.seatsZ[i], this);
+                world.spawnEntity(passengerSeats[i]);
             }
         }
 
         inventorySize = plane.numCargoSlots + plane.numBulletSlots + plane.numBombSlots + plane.numRocketSlots + 1; //
-        cargoItems = new ItemInstance[inventorySize];
+        cargoItems = new ItemStack[inventorySize];
     }
 
-    public EntityPlane(Level world, double d, double d1, double d2,
-                       PlayerBase entityplayer, int i, PlaneType planetype)
+    public EntityPlane(World world, double d, double d1, double d2,
+                       PlayerEntity entityplayer, int i, PlaneType planetype)
     {
         this(world);
         plane = planetype;
@@ -132,22 +132,22 @@ public class EntityPlane extends EntityBase
         passengerSeats = new EntityPassengerSeat[plane.numPassengers];
         for(int j = 0; j < plane.numPassengers; j++)
         {
-            if(level != null)
+            if(world != null)
             {
-                passengerSeats[j] = new EntityPassengerSeat(level, plane.seatsX[j], plane.seatsY[j], plane.seatsZ[j], this);
-                level.spawnEntity(passengerSeats[j]);
+                passengerSeats[j] = new EntityPassengerSeat(world, plane.seatsX[j], plane.seatsY[j], plane.seatsZ[j], this);
+                world.spawnEntity(passengerSeats[j]);
             }
         }
 
         inventorySize = plane.numCargoSlots + plane.numBulletSlots + plane.numBombSlots + plane.numRocketSlots + 1;
-        cargoItems = new ItemInstance[inventorySize];
+        cargoItems = new ItemStack[inventorySize];
     }
 
     protected void initDataTracker()
     {
     }
 
-    protected boolean canClimb()
+    protected boolean bypassesSteppingEffects()
     {
         return false;
     }
@@ -164,7 +164,7 @@ public class EntityPlane extends EntityBase
         z = d2;
         float f = width / 4F;
         float f1 = height;
-        boundingBox.method_99(d - (double)f, (d1 - (double)standingEyeHeight) + (double)field_1640, d2 - (double)f, d + (double)f, (d1 - (double)standingEyeHeight) + (double)field_1640 + (double)f1, d2 + (double)f);
+        boundingBox.set(d - (double)f, (d1 - (double)standingEyeHeight) + (double)cameraOffset, d2 - (double)f, d + (double)f, (d1 - (double)standingEyeHeight) + (double)cameraOffset + (double)f1, d2 + (double)f);
     }
 
     public void setRotationRoll(float f)
@@ -172,22 +172,22 @@ public class EntityPlane extends EntityBase
         velocityRoll = (f - rotationRoll) / 3F;
     }
 
-    public Box getBoundingBox(EntityBase entity)
+    public Box getCollisionAgainstShape(Entity entity)
     {
         return entity.boundingBox;
     }
 
-    public Box method_1381()
+    public Box getBoundingBox()
     {
         return boundingBox;
     }
 
-    public boolean method_1380()
+    public boolean isPushable()
     {
         return true;
     }
 
-    public double getMountedHeightOffset()
+    public double getPassengerRidingHeight()
     {
         return plane.playerYOffset;
     }
@@ -196,31 +196,31 @@ public class EntityPlane extends EntityBase
     {
         for(int j = 0; j < i; j++)
         {
-            double d = (x + rand.nextDouble() * 1.5D) - 0.75D;
-            double d1 = ((y + rand.nextDouble() - 0.5D)) + 0.25D;
-            double d2 = (z + rand.nextDouble() - 0.5D);
-            double d3 = flag ? rand.nextDouble() - 0.5D : 0.0D;
-            double d4 = flag ? rand.nextDouble() - 0.5D : 0.0D;
-            double d5 = flag ? rand.nextDouble() - 0.5D : 0.0D;
+            double d = (x + random.nextDouble() * 1.5D) - 0.75D;
+            double d1 = ((y + random.nextDouble() - 0.5D)) + 0.25D;
+            double d2 = (z + random.nextDouble() - 0.5D);
+            double d3 = flag ? random.nextDouble() - 0.5D : 0.0D;
+            double d4 = flag ? random.nextDouble() - 0.5D : 0.0D;
+            double d5 = flag ? random.nextDouble() - 0.5D : 0.0D;
             if(Math.random() < 0.75D)
             {
-                level.addParticle(s, d, d1, d2, d3, d4, d5);
+                world.addParticle(s, d, d1, d2, d3, d4, d5);
             } else
             {
-                level.addParticle(s, d, d1, d2, d3, d4, d5);
+                world.addParticle(s, d, d1, d2, d3, d4, d5);
             }
         }
 
     }
 
-    public boolean damage(EntityBase entity, int i)
+    public boolean damage(Entity entity, int i)
     {
-        if(removed)
+        if(dead)
         {
             return true;
         }
-        if(entity instanceof Living){
-            if(entity instanceof MonsterEntityType){
+        if(entity instanceof LivingEntity){
+            if(entity instanceof Monster){
                 boatRockDirection = -boatRockDirection;
                 boatTimeSinceHit = 10;
                 boatCurrentDamage += i * 10;
@@ -228,9 +228,9 @@ public class EntityPlane extends EntityBase
                 {
                     boatCurrentDamage = 40;
                 }
-                method_1336(); //setBeenAttacked
+                scheduleVelocityUpdate(); //setBeenAttacked
                 planeDamage += (int)i/5;
-                level.playSound(this, "planes:mechhurt", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+                world.playSound(this, "planes:mechhurt", 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                 System.out.println("PLANE DAMAGED from: " + entity + " DMG: " + (int)i/5);
             }
         }else{
@@ -241,18 +241,18 @@ public class EntityPlane extends EntityBase
             {
                 boatCurrentDamage = 40;
             }
-            method_1336(); //setBeenAttacked
+            scheduleVelocityUpdate(); //setBeenAttacked
             planeDamage += i;
-            level.playSound(this, "planes:mechhurt", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+            world.playSound(this, "planes:mechhurt", 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
             System.out.println("PLANE DAMAGED from: " + entity + " DMG: " + i);
         }
 
-        if(planeDamage > plane.planeHealth && !level.isServerSide) //oryg >600
+        if(planeDamage > plane.planeHealth && !world.isRemote) //oryg >600
         {
-            remove();
+            markDead();
             if(mod_Planes.planesExplode && SdkTools.minecraft.options.difficulty != 0)
             {
-                level.createExplosion(null, x, y, z, 5F * (float)Math.sqrt(velocityX * velocityX + velocityY * velocityY + velocityZ * velocityZ));
+                world.createExplosion(null, x, y, z, 5F * (float)Math.sqrt(velocityX * velocityX + velocityY * velocityY + velocityZ * velocityZ));
                 spawnParticles("explode", 64, true);
                 for(int l = (int)x - 3; l < (int)x + 3; l++)
                 {
@@ -260,9 +260,9 @@ public class EntityPlane extends EntityBase
                     {
                         for(int k1 = (int)z - 3; k1 < (int)z + 3; k1++)
                         {
-                            if(level.getTileId(l, i1, k1) == 0 && rand.nextInt(4) == 0)
+                            if(world.getBlockId(l, i1, k1) == 0 && random.nextInt(4) == 0)
                             {
-                                level.setTile(l, i1, k1, BlockBase.FIRE.id);
+                                world.setBlock(l, i1, k1, Block.FIRE.id);
                             }
                         }
 
@@ -279,108 +279,108 @@ public class EntityPlane extends EntityBase
     public void dropParts(){
         int r8 = 2;
         float f8 = 1.5F;
-        if(plane.item_bay.itemId != ItemBase.egg.id && rand.nextInt(r8) == 0)
+        if(plane.item_bay.itemId != Item.EGG.id && random.nextInt(r8) == 0)
             dropItem(plane.item_bay.itemId, 1, f8);
-        if(rand.nextInt(r8) == 0)
+        if(random.nextInt(r8) == 0)
             dropItem(plane.item_cockpit.itemId, 1, f8);
-        if(rand.nextInt(r8) == 0)
+        if(random.nextInt(r8) == 0)
             dropItem(plane.item_propeller.itemId, 1, f8);
-        if(rand.nextInt(r8) == 0)
+        if(random.nextInt(r8) == 0)
             dropItem(plane.item_tail.itemId, 1, f8);
-        if(rand.nextInt(r8) == 0)
+        if(random.nextInt(r8) == 0)
             dropItem(plane.item_wings.itemId, 1, f8);
-        if(rand.nextInt(r8) == 0)
+        if(random.nextInt(r8) == 0)
             dropItem(plane.item_wings.itemId, 1, f8);
-        if(plane.item_guns.itemId != ItemBase.egg.id && rand.nextInt(r8) == 0)
+        if(plane.item_guns.itemId != Item.EGG.id && random.nextInt(r8) == 0)
             dropItem(plane.item_guns.itemId, 1, f8);
-        if(plane.item_guns.itemId != ItemBase.egg.id && rand.nextInt(r8) == 0)
+        if(plane.item_guns.itemId != Item.EGG.id && random.nextInt(r8) == 0)
             dropItem(plane.item_guns.itemId, 1, f8);
         switch(engineType)
         {
             case 1: // '\001'
-                if(rand.nextInt(r8) == 0)
+                if(random.nextInt(r8) == 0)
                     dropItem(ww2Parts.smallEngine.id, 1, f8);
                 break;
 
             case 2: // '\002'
-                if(rand.nextInt(r8) == 0)
+                if(random.nextInt(r8) == 0)
                     dropItem(ww2Parts.mediumEngine.id, 1, f8);
                 break;
 
             case 3: // '\003'
-                if(rand.nextInt(r8) == 0)
+                if(random.nextInt(r8) == 0)
                     dropItem(ww2Parts.largeEngine.id, 1, f8);
                 break;
 
             case 4: // '\004'
-                if(rand.nextInt(r8) == 0)
+                if(random.nextInt(r8) == 0)
                     dropItem(ww2Parts.rotaryEngine.id, 1, f8);
                 break;
 
         }
 
-        if(plane.dyeColor != 16 && rand.nextInt(r8) == 0)
-            dropItem(new ItemInstance(ItemBase.dyePowder, rand.nextInt(6) + 1, plane.dyeColor), f8);
+        if(plane.dyeColor != 16 && random.nextInt(r8) == 0)
+            dropItem(new ItemStack(Item.DYE, random.nextInt(6) + 1, plane.dyeColor), f8);
     }
 
-    public void remove()
+    public void markDead()
     {
-        if(!level.isServerSide)
+        if(!world.isRemote)
         {
             label0:
-            for(int i = 0; i < getInventorySize(); i++)
+            for(int i = 0; i < size(); i++)
             {
-                ItemInstance itemstack = getInventoryItem(i);
+                ItemStack itemstack = getStack(i);
                 if(itemstack == null)
                 {
                     continue;
                 }
-                float f = rand.nextFloat() * 0.8F + 0.1F;
-                float f1 = rand.nextFloat() * 0.8F + 0.1F;
-                float f2 = rand.nextFloat() * 0.8F + 0.1F;
+                float f = random.nextFloat() * 0.8F + 0.1F;
+                float f1 = random.nextFloat() * 0.8F + 0.1F;
+                float f2 = random.nextFloat() * 0.8F + 0.1F;
                 do
                 {
                     if(itemstack.count <= 0)
                     {
                         continue label0;
                     }
-                    int k = rand.nextInt(21) + 10;
+                    int k = random.nextInt(21) + 10;
                     if(k > itemstack.count)
                     {
                         k = itemstack.count;
                     }
                     itemstack.count -= k;
-                    Item entityitem = new Item(level, x + (double)f, y + (double)f1, z + (double)f2, new ItemInstance(itemstack.itemId, k, itemstack.getDamage()));
+                    ItemEntity entityitem = new ItemEntity(world, x + (double)f, y + (double)f1, z + (double)f2, new ItemStack(itemstack.itemId, k, itemstack.getDamage()));
                     float f3 = 0.05F;
-                    entityitem.velocityX = (float)rand.nextGaussian() * f3;
-                    entityitem.velocityY = (float)rand.nextGaussian() * f3 + 0.2F;
-                    entityitem.velocityZ = (float)rand.nextGaussian() * f3;
-                    level.spawnEntity(entityitem);
+                    entityitem.velocityX = (float)random.nextGaussian() * f3;
+                    entityitem.velocityY = (float)random.nextGaussian() * f3 + 0.2F;
+                    entityitem.velocityZ = (float)random.nextGaussian() * f3;
+                    world.spawnEntity(entityitem);
                 } while(true);
             }
 
         }
         for(int j = 0; j < plane.numPassengers; j++)
         {
-            passengerSeats[j].remove();
+            passengerSeats[j].markDead();
         }
 
-        super.remove();
+        super.markDead();
     }
 
-    public void method_1312() //performHurtAnimation
+    public void animateHurt() //performHurtAnimation
     {
         boatRockDirection = -boatRockDirection;
         boatTimeSinceHit = 10;
         boatCurrentDamage += boatCurrentDamage * 10;
     }
 
-    public boolean method_1356() //canBeCollidedWith
+    public boolean isCollidable() //canBeCollidedWith
     {
-        return !removed;
+        return !dead;
     }
 
-    public void method_1311(double d, double d1, double d2, float f,
+    public void setPositionAndAnglesAvoidEntities(double d, double d1, double d2, float f,
                                         float f1, int i) //setPositionAndRotation2
     {
         field_9393_e = d;
@@ -394,7 +394,7 @@ public class EntityPlane extends EntityBase
         velocityZ = field_9386_l;
     }
 
-    public void setVelocity(double d, double d1, double d2)
+    public void setVelocityClient(double d, double d1, double d2)
     {
         field_9388_j = velocityX = d;
         field_9387_k = velocityY = d1;
@@ -420,7 +420,7 @@ public class EntityPlane extends EntityBase
         }
         if(planeDamage < plane.planeHealth)
         {
-            if(level.isServerSide)
+            if(world.isRemote)
             {
                 switch(i)
                 {
@@ -451,7 +451,7 @@ public class EntityPlane extends EntityBase
                         }
 
                     case 4: // '\004'
-                        if(planeFuel > 0 || level.isServerSide)
+                        if(planeFuel > 0 || world.isRemote)
                         {
                             propellerSpeed += 0.01D * (plane.acceleration + (double)(engineType / 2));
                             planeFuel--;
@@ -493,7 +493,7 @@ public class EntityPlane extends EntityBase
                         break;
 
                     case 4: // '\004'
-                        if(planeFuel > 0 || level.isServerSide)
+                        if(planeFuel > 0 || world.isRemote)
                         {
                             propellerSpeed += 0.01D * (plane.acceleration + (double)(engineType / 2));
                             planeFuel--;
@@ -544,34 +544,34 @@ public class EntityPlane extends EntityBase
         prevX = x;
         prevY = y;
         prevZ = z;
-        if(SdkTools.minecraft.currentScreen == null && passenger != null && (passenger instanceof PlayerBase)) //ModLoader.isGUIOpen(null)
+        if(SdkTools.minecraft.currentScreen == null && passenger != null && (passenger instanceof PlayerEntity)) //ModLoader.isGUIOpen(null)
         {
-            if(mod_Planes.useMouseControl && !level.isServerSide)
+            if(mod_Planes.useMouseControl && !world.isRemote)
             {
 //                ModLoader.OpenGUI((EntityPlayer)passenger, new GuiPlaneController(this));
             } else
             {
-                if(Keyboard.isKeyDown(SdkTools.minecraft.options.jumpKey.key))
+                if(Keyboard.isKeyDown(SdkTools.minecraft.options.jumpKey.code))
                 {
                     pressKey(0);
                 }
-                if(Keyboard.isKeyDown(SdkTools.minecraft.options.leftKey.key))
+                if(Keyboard.isKeyDown(SdkTools.minecraft.options.leftKey.code))
                 {
                     pressKey(1);
                 }
-                if(Keyboard.isKeyDown(SdkTools.minecraft.options.sneakKey.key))
+                if(Keyboard.isKeyDown(SdkTools.minecraft.options.sneakKey.code))
                 {
                     pressKey(2);
                 }
-                if(Keyboard.isKeyDown(SdkTools.minecraft.options.rightKey.key))
+                if(Keyboard.isKeyDown(SdkTools.minecraft.options.rightKey.code))
                 {
                     pressKey(3);
                 }
-                if(Keyboard.isKeyDown(SdkTools.minecraft.options.forwardKey.key))
+                if(Keyboard.isKeyDown(SdkTools.minecraft.options.forwardKey.code))
                 {
                     pressKey(4);
                 }
-                if(Keyboard.isKeyDown(SdkTools.minecraft.options.backKey.key))
+                if(Keyboard.isKeyDown(SdkTools.minecraft.options.backKey.code))
                 {
                     pressKey(5);
                 }
@@ -622,12 +622,12 @@ public class EntityPlane extends EntityBase
         }
         if(propellerSpeed > 0.0D && propellerSpeed < 1.0D && soundPosition == 0 && planeFuel > 0)
         {
-            level.playSound(this, plane.startSound, 0.5F, 1.0F); //oryg 1.0F
+            world.playSound(this, plane.startSound, 0.5F, 1.0F); //oryg 1.0F
             soundPosition = plane.startSoundLength;
         }
         if(propellerSpeed > 1.0D && soundPosition == 0 && planeFuel > 0)
         {
-            level.playSound(this, plane.propSound, 0.5F, 1.0F); //oryg 1.0F
+            world.playSound(this, plane.propSound, 0.5F, 1.0F); //oryg 1.0F
             soundPosition = plane.propSoundLength;
         }
         if(soundPosition > 0)
@@ -656,25 +656,25 @@ public class EntityPlane extends EntityBase
         plane.propellerZ = -plane.propellerZ;
         for(int k = 0; k < j; k++)
         {
-            double ad = (x + rand.nextDouble() * 1.5D) - 0.75D;
-            double ad1 = ((y + rand.nextDouble() - 0.5D)) + 0.25D;
-            double ad2 = (z + rand.nextDouble() - 0.5D);
+            double ad = (x + random.nextDouble() * 1.5D) - 0.75D;
+            double ad1 = ((y + random.nextDouble() - 0.5D)) + 0.25D;
+            double ad2 = (z + random.nextDouble() - 0.5D);
             if(planeDamage > (4 * plane.planeHealth) / 5)
             {
-                level.addParticle("largesmoke", x + d7, y + d8, z + d9, velocityX, velocityY, velocityZ); //dodac ognia
+                world.addParticle("largesmoke", x + d7, y + d8, z + d9, velocityX, velocityY, velocityZ); //dodac ognia
             } else
             {
-                level.addParticle("smoke", x + d7, y + d8, z + d9, velocityX, velocityY, velocityZ);
+                world.addParticle("smoke", x + d7, y + d8, z + d9, velocityX, velocityY, velocityZ);
             }
             if(planeDamage > (4.5 * plane.planeHealth) / 5)
             {
                 if(Math.random() < 0.2D) {
-                    level.addParticle("flame", ad, ad1, ad2, velocityX, velocityY, velocityZ);
+                    world.addParticle("flame", ad, ad1, ad2, velocityX, velocityY, velocityZ);
                 }
             }
         }
 
-        if(level.isServerSide)
+        if(world.isRemote)
         {
             if(field_9394_d > 0)
             {
@@ -707,12 +707,12 @@ public class EntityPlane extends EntityBase
             }
             return;
         }
-        if(planeFuel <= 0 && passenger != null && !level.isServerSide)
+        if(planeFuel <= 0 && passenger != null && !world.isRemote)
         {
             if(cargoItems[0] != null && cargoItems[0].itemId == mod_Planes.planeFuel.id)  //PALIWO
             {
                 planeFuel = plane.planeFuelAdd;
-                takeInventoryItem(0, 1);
+                removeStack(0, 1);
             } else
             {
                 propellerSpeed -= 0.01D * plane.decceleration;
@@ -722,11 +722,11 @@ public class EntityPlane extends EntityBase
         {
             planeFuel--;
         }
-        if(planeDamage > (4.5 * plane.planeHealth) / 5 && rand.nextInt(30) == 0) //samoniszczenie
+        if(planeDamage > (4.5 * plane.planeHealth) / 5 && random.nextInt(30) == 0) //samoniszczenie
         {
             damage(this, 1);
         }
-        if(passenger != null && (passenger instanceof Living) && !(passenger instanceof PlayerBase))
+        if(passenger != null && (passenger instanceof LivingEntity) && !(passenger instanceof PlayerEntity))
         {
             double d12 = (propellerSpeed + (double)engineType) - (double)plane.takeOffSpeed;
             if(d12 < 0.0D)
@@ -808,9 +808,9 @@ public class EntityPlane extends EntityBase
         {
             rotationRoll += 360F;
         }
-        if(propellerSpeed >= (double)(plane.maxPropSpeed + 4F) && passenger != null && (passenger instanceof PlayerBase))
+        if(propellerSpeed >= (double)(plane.maxPropSpeed + 4F) && passenger != null && (passenger instanceof PlayerEntity))
         {
-            ((PlayerBase)passenger).increaseStat(mod_Planes.maxSpeed, 1);
+            ((PlayerEntity)passenger).increaseStat(mod_Planes.maxSpeed, 1);
         }
         if(y > (double)plane.maxHeight && pitch < 0.0F)
         {
@@ -849,11 +849,11 @@ public class EntityPlane extends EntityBase
             motionG = 0.0D;
             rotationRoll *= 0.80000000000000004D;
         }
-        if((onGround || field_1626) && Math.sqrt(velocityX * velocityX + velocityY * velocityY + velocityZ * velocityZ) > EXPLOSION_MIN && (pitch > 30F || rotationRoll > 30F || rotationRoll < -30F || field_1624))
+        if((onGround || hasCollided) && Math.sqrt(velocityX * velocityX + velocityY * velocityY + velocityZ * velocityZ) > EXPLOSION_MIN && (pitch > 30F || rotationRoll > 30F || rotationRoll < -30F || horizontalCollision))
         {
             damage(null, plane.planeHealth);
         }
-        if(!level.isServerSide)
+        if(!world.isRemote)
         {
             motionG += propellerSpeed / 100D - 0.024500000000000001D;
         }
@@ -867,12 +867,12 @@ public class EntityPlane extends EntityBase
         pitch += velocityPitch;
         rotationRoll += velocityRoll;
         setRotation(yaw, pitch);
-        List list = level.getEntities(this, boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+        List list = world.getEntities(this, boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
         if(list != null && list.size() > 0)
         {
             for(int j1 = 0; j1 < list.size(); j1++)
             {
-                EntityBase entity = (EntityBase)list.get(j1);
+                Entity entity = (Entity)list.get(j1);
                 boolean flag = true;
                 for(int l1 = 0; l1 < plane.numPassengers; l1++)
                 {
@@ -882,11 +882,11 @@ public class EntityPlane extends EntityBase
                     }
                 }
 
-                if(flag && entity != passenger && entity.method_1380() && (entity instanceof EntityPlane))
+                if(flag && entity != passenger && entity.isPushable() && (entity instanceof EntityPlane))
                 {
-                    entity.method_1353(this);
+                    entity.onCollision(this);
                 }
-                if(entity != passenger && entity.method_1380())
+                if(entity != passenger && entity.isPushable())
                 {
                     handleCollision(entity);
                 }
@@ -895,15 +895,15 @@ public class EntityPlane extends EntityBase
         }
         if(passenger != null && getPrevSpeed() - getSpeed() > COLLISION_MIN)
         {
-            if(lastCollidedEntity != null && !(lastCollidedEntity instanceof Item))
+            if(lastCollidedEntity != null && !(lastCollidedEntity instanceof ItemEntity))
             {
-                lastCollidedEntity.accelerate(prevMotionX, prevMotionY + 1.0D, prevMotionZ);
+                lastCollidedEntity.addVelocity(prevMotionX, prevMotionY + 1.0D, prevMotionZ);
                 lastCollidedEntity.damage(this, 50); //zderzenie z samolotem
             }
             damage(lastCollidedEntity, 50);
         }
         lastCollidedEntity = null;
-        if(passenger != null && passenger.removed)
+        if(passenger != null && passenger.dead)
         {
             passenger = null;
         }
@@ -912,7 +912,7 @@ public class EntityPlane extends EntityBase
         prevMotionZ = velocityZ;
     }
 
-    public void handleCollision(EntityBase entity)
+    public void handleCollision(Entity entity)
     {
         if(entity.passenger != this && entity.vehicle != this)
         {
@@ -920,7 +920,7 @@ public class EntityPlane extends EntityBase
         }
     }
 
-    public void method_1353(EntityBase entity)
+    public void onCollision(Entity entity)
     {
         if(entity.passenger == this || entity.vehicle == this)
         {
@@ -934,20 +934,20 @@ public class EntityPlane extends EntityBase
             }
         }
 
-        super.method_1353(entity);
+        super.onCollision(entity);
     }
 
-    public void method_1382()
+    public void updatePassengerPosition()
     {
         if(passenger == null)
         {
             return;
         }
-        if(passenger == SdkTools.minecraft.player || (passenger instanceof Wolf))
+        if(passenger == SdkTools.minecraft.player || (passenger instanceof WolfEntity))
         {
             double d = 0.0D;
-            double d1 = (getMountedHeightOffset() + passenger.getHeightOffset()) * Math.cos((rotationRoll * 3.141593F) / 180F);
-            double d2 = -(getMountedHeightOffset() + passenger.getHeightOffset()) * Math.sin((rotationRoll * 3.141593F) / 180F);
+            double d1 = (getPassengerRidingHeight() + passenger.getStandingEyeHeight()) * Math.cos((rotationRoll * 3.141593F) / 180F);
+            double d2 = -(getPassengerRidingHeight() + passenger.getStandingEyeHeight()) * Math.sin((rotationRoll * 3.141593F) / 180F);
             double d3 = Math.cos(((double)(-yaw) / 180D) * 3.1415926535897931D);
             double d4 = Math.sin(((double)(-yaw) / 180D) * 3.1415926535897931D);
             double d5 = Math.cos(((double)pitch / 180D) * 3.1415926535897931D);
@@ -958,7 +958,7 @@ public class EntityPlane extends EntityBase
             double d10 = d * d6 + d1 * d5;
             double d11 = (d1 * d6 - d * d5) * d4 + d2 * d3;
             passenger.setPosition(x + d9 + d7, y + d10, z + d11 + d8);
-            if(mod_Planes.useMouseControl && !level.isServerSide)
+            if(mod_Planes.useMouseControl && !world.isRemote)
             {
                 passenger.prevYaw = passenger.yaw;
                 passenger.prevPitch = passenger.pitch;
@@ -972,40 +972,40 @@ public class EntityPlane extends EntityBase
         }
     }
 
-    protected void writeCustomDataToTag(CompoundTag nbttagcompound)
+    protected void writeNbt(NbtCompound nbttagcompound)
     {
-        ListTag nbttaglist = new ListTag();
+        NbtList nbttaglist = new NbtList();
         for(int i = 0; i < cargoItems.length; i++)
         {
             if(cargoItems[i] != null)
             {
-                CompoundTag nbttagcompound1 = new CompoundTag();
-                nbttagcompound1.put("Slot", (byte)i);
-                cargoItems[i].toTag(nbttagcompound1);
+                NbtCompound nbttagcompound1 = new NbtCompound();
+                nbttagcompound1.putByte("Slot", (byte)i);
+                cargoItems[i].writeNbt(nbttagcompound1);
                 nbttaglist.add(nbttagcompound1);
             }
         }
 
-        nbttagcompound.put("RotationYaw", yaw);
-        nbttagcompound.put("EngineType", engineType);
+        nbttagcompound.putFloat("RotationYaw", yaw);
+        nbttagcompound.putInt("EngineType", engineType);
         nbttagcompound.put("Items", nbttaglist);
-        nbttagcompound.put("Type", plane.shortName);
-        nbttagcompound.put("PlaneDmg", planeDamage);
+        nbttagcompound.putString("Type", plane.shortName);
+        nbttagcompound.putInt("PlaneDmg", planeDamage);
     }
 
-    protected void readCustomDataFromTag(CompoundTag nbttagcompound)
+    protected void readNbt(NbtCompound nbttagcompound)
     {
         plane = mod_Planes.getPlaneType(nbttagcompound.getString("Type"));
         inventorySize = plane.numCargoSlots + plane.numBulletSlots + plane.numBombSlots + plane.numRocketSlots + 1;
-        ListTag nbttaglist = nbttagcompound.getListTag("Items");
-        cargoItems = new ItemInstance[getInventorySize()];
+        NbtList nbttaglist = nbttagcompound.getList("Items");
+        cargoItems = new ItemStack[size()];
         for(int i = 0; i < nbttaglist.size(); i++)
         {
-            CompoundTag nbttagcompound1 = (CompoundTag)nbttaglist.get(i);
+            NbtCompound nbttagcompound1 = (NbtCompound)nbttaglist.get(i);
             int k = nbttagcompound1.getByte("Slot") & 0xff;
             if(k >= 0 && k < cargoItems.length)
             {
-                cargoItems[k] = new ItemInstance(nbttagcompound1);
+                cargoItems[k] = new ItemStack(nbttagcompound1);
             }
         }
         planeDamage = nbttagcompound.getInt("PlaneDmg");
@@ -1022,38 +1022,38 @@ public class EntityPlane extends EntityBase
         passengerSeats = new EntityPassengerSeat[plane.numPassengers];
         for(int j = 0; j < plane.numPassengers; j++)
         {
-            passengerSeats[j] = new EntityPassengerSeat(level, plane.seatsX[j], plane.seatsY[j], plane.seatsZ[j], this);
-            level.spawnEntity(passengerSeats[j]);
+            passengerSeats[j] = new EntityPassengerSeat(world, plane.seatsX[j], plane.seatsY[j], plane.seatsZ[j], this);
+            world.spawnEntity(passengerSeats[j]);
         }
 
     }
 
-    public float getEyeHeight()
+    public float getShadowRadius()
     {
         return 0.0F;
     }
 
-    public int getInventorySize()
+    public int size()
     {
         return inventorySize;
     }
 
-    public ItemInstance getInventoryItem(int i)
+    public ItemStack getStack(int i)
     {
         return cargoItems[i];
     }
 
-    public ItemInstance takeInventoryItem(int i, int j)
+    public ItemStack removeStack(int i, int j)
     {
         if(cargoItems[i] != null)
         {
             if(cargoItems[i].count <= j)
             {
-                ItemInstance itemstack = cargoItems[i];
+                ItemStack itemstack = cargoItems[i];
                 cargoItems[i] = null;
                 return itemstack;
             }
-            ItemInstance itemstack1 = cargoItems[i].split(j);
+            ItemStack itemstack1 = cargoItems[i].split(j);
             if(cargoItems[i].count == 0)
             {
                 cargoItems[i] = null;
@@ -1065,12 +1065,12 @@ public class EntityPlane extends EntityBase
         }
     }
 
-    public String getContainerName()
+    public String getName()
     {
         return plane.name;
     }
 
-    public int getMaxItemCount()
+    public int getMaxCountPerStack()
     {
         return 64;
     }
@@ -1079,22 +1079,22 @@ public class EntityPlane extends EntityBase
     {
     }
 
-    public void setInventoryItem(int i, ItemInstance itemstack)
+    public void setStack(int i, ItemStack itemstack)
     {
         cargoItems[i] = itemstack;
-        if(itemstack != null && itemstack.count > getMaxItemCount())
+        if(itemstack != null && itemstack.count > getMaxCountPerStack())
         {
-            itemstack.count = getMaxItemCount();
+            itemstack.count = getMaxCountPerStack();
         }
-        if(itemstack != null && itemstack.itemId == 263 && i == 0 && passenger != null && (passenger instanceof PlayerBase))
+        if(itemstack != null && itemstack.itemId == 263 && i == 0 && passenger != null && (passenger instanceof PlayerEntity))
         {
-            ((PlayerBase)passenger).increaseStat(mod_Planes.startPlane, 1);
+            ((PlayerEntity)passenger).increaseStat(mod_Planes.startPlane, 1);
         }
     }
 
-    public boolean interact(PlayerBase entityplayer)
+    public boolean interact(PlayerEntity entityplayer)
     {
-        if(entityplayer.getHeldItem() != null && entityplayer.getHeldItem().itemId == ItemCasingListener.itemWrenchGold.id)
+        if(entityplayer.getHand() != null && entityplayer.getHand().itemId == ItemCasingListener.itemWrenchGold.id)
         {
             System.out.println("MAX: " + plane.planeHealth);
             System.out.println("DMG: " + planeDamage);
@@ -1102,26 +1102,26 @@ public class EntityPlane extends EntityBase
             entityplayer.swingHand();
             return true;
         }
-        if(entityplayer.getHeldItem() != null && entityplayer.getHeldItem().itemId == mod_Planes.planeBlowTorch.id)
+        if(entityplayer.getHand() != null && entityplayer.getHand().itemId == mod_Planes.planeBlowTorch.id)
         {
             if(planeDamage < plane.planeHealth && planeDamage > 0)
             {
-                level.playSound(this, "planes:blowtorch", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+                world.playSound(this, "planes:blowtorch", 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                 planeDamage = Math.max(planeDamage - 12, 0);
                 entityplayer.swingHand();
-                entityplayer.getHeldItem().applyDamage(1, entityplayer);
-                if(entityplayer.getHeldItem().getDamage() <= 0)
+                entityplayer.getHand().damage(1, entityplayer);
+                if(entityplayer.getHand().getDamage() <= 0)
                 {
-                    entityplayer.inventory.main[entityplayer.inventory.selectedHotbarSlot] = null;
+                    entityplayer.inventory.main[entityplayer.inventory.selectedSlot] = null;
                 }
             }
             return true;
         }
-        if(passenger != null && (passenger instanceof PlayerBase) && passenger != entityplayer)
+        if(passenger != null && (passenger instanceof PlayerEntity) && passenger != entityplayer)
         {
             return true;
         }
-        if(!level.isServerSide && passenger != entityplayer)
+        if(!world.isRemote && passenger != entityplayer)
         {
             if(passenger != null)
             {
@@ -1134,12 +1134,12 @@ public class EntityPlane extends EntityBase
                     }
                     if(passengerSeats[i].passenger == null)
                     {
-                        entityplayer.startRiding(passengerSeats[i]);
-                        if(mod_Planes.useMouseControl && !level.isServerSide)
+                        entityplayer.setVehicle(passengerSeats[i]);
+                        if(mod_Planes.useMouseControl && !world.isRemote)
                         {
 //                            ModLoader.OpenGUI((EntityPlayer)passenger, new GuiPlaneController(this));
                         }
-                        List list1 = level.getEntities(Wolf.class, Box.createButWasteMemory(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D).expand(16D, 4D, 16D));
+                        List list1 = world.collectEntitiesByClass(WolfEntity.class, Box.createCached(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D).expand(16D, 4D, 16D));
                         Iterator iterator1 = list1.iterator();
                         do
                         {
@@ -1147,16 +1147,16 @@ public class EntityPlane extends EntityBase
                             {
                                 break;
                             }
-                            EntityBase entity1 = (EntityBase)iterator1.next();
-                            Wolf entitywolf1 = (Wolf)entity1;
-                            if(entitywolf1.isTamed() && entityplayer.name.equals(entitywolf1.getOwner()))
+                            Entity entity1 = (Entity)iterator1.next();
+                            WolfEntity entitywolf1 = (WolfEntity)entity1;
+                            if(entitywolf1.isTamed() && entityplayer.name.equals(entitywolf1.getOwnerName()))
                             {
                                 int k = 0;
                                 while(k < plane.numPassengers)
                                 {
                                     if(passengerSeats[k].passenger == null)
                                     {
-                                        entitywolf1.startRiding(passengerSeats[k]);
+                                        entitywolf1.setVehicle(passengerSeats[k]);
                                     }
                                     k++;
                                 }
@@ -1168,12 +1168,12 @@ public class EntityPlane extends EntityBase
                 } while(true);
             } else
             {
-                entityplayer.startRiding(this);
-                if(mod_Planes.useMouseControl && !level.isServerSide)
+                entityplayer.setVehicle(this);
+                if(mod_Planes.useMouseControl && !world.isRemote)
                 {
 //                    ModLoader.OpenGUI((EntityPlayer)passenger, new GuiPlaneController(this));
                 }
-                List list = level.getEntities(Wolf.class, Box.createButWasteMemory(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D).expand(16D, 4D, 16D));
+                List list = world.collectEntitiesByClass(WolfEntity.class, Box.createCached(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D).expand(16D, 4D, 16D));
                 Iterator iterator = list.iterator();
                 do
                 {
@@ -1181,16 +1181,16 @@ public class EntityPlane extends EntityBase
                     {
                         break;
                     }
-                    EntityBase entity = (EntityBase)iterator.next();
-                    Wolf entitywolf = (Wolf)entity;
-                    if(entitywolf.isTamed() && entityplayer.name.equals(entitywolf.getOwner()))
+                    Entity entity = (Entity)iterator.next();
+                    WolfEntity entitywolf = (WolfEntity)entity;
+                    if(entitywolf.isTamed() && entityplayer.name.equals(entitywolf.getOwnerName()))
                     {
                         int j = 0;
                         while(j < plane.numPassengers)
                         {
                             if(passengerSeats[j].passenger == null)
                             {
-                                entitywolf.startRiding(passengerSeats[j]);
+                                entitywolf.setVehicle(passengerSeats[j]);
                             }
                             j++;
                         }
@@ -1201,14 +1201,14 @@ public class EntityPlane extends EntityBase
         return true;
     }
 
-    public boolean canPlayerUse(PlayerBase entityplayer)
+    public boolean canPlayerUse(PlayerEntity entityplayer)
     {
-        if(removed)
+        if(dead)
         {
             return false;
         } else
         {
-            return entityplayer.method_1352(this) <= 64D;
+            return entityplayer.getSquaredDistance(this) <= 64D;
         }
     }
 
@@ -1254,13 +1254,13 @@ public class EntityPlane extends EntityBase
     private double EXPLOSION_MIN;
     private double COLLISION_MIN;
     public float angle;
-    public ItemInstance cargoItems[];
-    public ItemInstance gunAircraft;
-    public ItemInstance gunRocketAircraft;
-    public ItemInstance gunRocketAircraftPanzer;
+    public ItemStack cargoItems[];
+    public ItemStack gunAircraft;
+    public ItemStack gunRocketAircraft;
+    public ItemStack gunRocketAircraftPanzer;
     public int inventorySize;
     public EntityPassengerSeat passengerSeats[];
-    public EntityBase lastCollidedEntity;
+    public Entity lastCollidedEntity;
     private double motionG;
     public float velocityYaw;
     public float velocityPitch;
@@ -1271,8 +1271,8 @@ public class EntityPlane extends EntityBase
     public double prevMotionZ;
 
     @Override
-    public void fireKey(PlayerBase entityplayer) {
-        if(!level.isServerSide && shootDelay <= 0 && plane.hasGuns && mod_Planes.bulletsEnabled)
+    public void fireKey(PlayerEntity entityplayer) {
+        if(!world.isRemote && shootDelay <= 0 && plane.hasGuns && mod_Planes.bulletsEnabled)
         {
             int j = 0;
             for(int i1 = plane.numCargoSlots + plane.numRocketSlots + 1; i1 < plane.numCargoSlots + plane.numRocketSlots + plane.numBulletSlots + 1; i1++)
@@ -1296,22 +1296,22 @@ public class EntityPlane extends EntityBase
                 double d17 = d1 * d13 + d3 * d11;
                 double d19 = (d3 * d13 - d1 * d11) * d9 + d5 * d7;
                 d1 -= 3D;
-                double d21 = (d1 * d11 - d3 * d13) * d7 + d5 * d9 + rand.nextGaussian() / 100D;
-                double d22 = d1 * d13 + d3 * d11 + rand.nextGaussian() / 100D;
-                double d23 = (d3 * d13 - d1 * d11) * d9 + d5 * d7 + rand.nextGaussian() / 100D;
+                double d21 = (d1 * d11 - d3 * d13) * d7 + d5 * d9 + random.nextGaussian() / 100D;
+                double d22 = d1 * d13 + d3 * d11 + random.nextGaussian() / 100D;
+                double d23 = (d3 * d13 - d1 * d11) * d9 + d5 * d7 + random.nextGaussian() / 100D;
 
-                ((SdkItemGun)gunAircraft.getType()).onItemRightClickEntity(gunAircraft, level, this, plane.barrelX / 16F, (float)d17, plane.barrelZ / 16F, 90F, 0.0F);
+                ((SdkItemGun)gunAircraft.getItem()).onItemRightClickEntity(gunAircraft, world, this, plane.barrelX / 16F, (float)d17, plane.barrelZ / 16F, 90F, 0.0F);
 
                 shootDelay = plane.planeShootDelay;
                 plane.barrelZ = -plane.barrelZ;
-                takeInventoryItem(j, 1);
+                removeStack(j, 1);
             }
         }
     }
 
     @Override
-    public void bombKey(PlayerBase entityplayer) {
-        if(level.isServerSide || bombDelay > 0 || !plane.hasBombs || !mod_Planes.bombsEnabled)
+    public void bombKey(PlayerEntity entityplayer) {
+        if(world.isRemote || bombDelay > 0 || !plane.hasBombs || !mod_Planes.bombsEnabled)
         {
             return;
         }
@@ -1354,49 +1354,49 @@ public class EntityPlane extends EntityBase
         double d16 = (d2 * d12 - d4 * d14) * d8 + d6 * d10;
         double d18 = d2 * d14 + d4 * d12;
         double d20 = (d4 * d14 - d2 * d12) * d10 + d6 * d8;
-        if(byte0 == 2 && (passenger instanceof PlayerBase))
+        if(byte0 == 2 && (passenger instanceof PlayerEntity))
         {
-            ((PlayerBase)passenger).increaseStat(mod_Planes.dropNapalm, 1);
+            ((PlayerEntity)passenger).increaseStat(mod_Planes.dropNapalm, 1);
         }
-        level.spawnEntity(new EntityBomb(level, x + d16, y + d18, z + d20, velocityX, velocityY, velocityZ, byte0)); //bomba
-        level.playSound(this, plane.bombSound, 1.0F, 1.0F);
-        takeInventoryItem(k, 1);
+        world.spawnEntity(new EntityBomb(world, x + d16, y + d18, z + d20, velocityX, velocityY, velocityZ, byte0)); //bomba
+        world.playSound(this, plane.bombSound, 1.0F, 1.0F);
+        removeStack(k, 1);
         bombDelay = plane.planeBombDelay;
     }
 
     @Override
-    public void inventoryKey(Minecraft minecraft, PlayerBase entityplayer) {
-        if(!level.isServerSide) {
+    public void inventoryKey(Minecraft minecraft, PlayerEntity entityplayer) {
+        if(!world.isRemote) {
             if (SdkTools.minecraft.currentScreen instanceof GuiPlane) {
-                SdkTools.minecraft.openScreen(null);
+                SdkTools.minecraft.setScreen(null);
             } else if (passenger.vehicle instanceof EntityPlane) {
-                SdkTools.minecraft.openScreen(new GuiPlane(((PlayerBase)passenger).inventory, (EntityPlane)passenger.vehicle));
+                SdkTools.minecraft.setScreen(new GuiPlane(((PlayerEntity)passenger).inventory, (EntityPlane)passenger.vehicle));
             }
         }
     }
 
     @Override
-    public void exitKey(PlayerBase entityplayer) {
+    public void exitKey(PlayerEntity entityplayer) {
         for(int l = 0; l < plane.numPassengers; l++)
         {
-            if(!(passengerSeats[l].passenger instanceof Wolf))
+            if(!(passengerSeats[l].passenger instanceof WolfEntity))
             {
                 continue;
             }
-            Wolf entitywolf = (Wolf)passengerSeats[l].passenger;
-            if(entitywolf.isTamed() && ((PlayerBase)passenger).name != null && entitywolf.getOwner() != null && ((PlayerBase)passenger).name == entitywolf.getOwner())
+            WolfEntity entitywolf = (WolfEntity)passengerSeats[l].passenger;
+            if(entitywolf.isTamed() && ((PlayerEntity)passenger).name != null && entitywolf.getOwnerName() != null && ((PlayerEntity)passenger).name == entitywolf.getOwnerName())
             {
-                entitywolf.startRiding(passengerSeats[l]);
+                entitywolf.setVehicle(passengerSeats[l]);
             }
         }
 
-        passenger.startRiding(this);
+        passenger.setVehicle(this);
 //        passenger.startRiding(null);
     }
 
     @Override
-    public void rocketKey(PlayerBase entityplayer) {
-        if(!level.isServerSide && shootDelay <= 0 && plane.hasGuns && mod_Planes.bulletsEnabled)
+    public void rocketKey(PlayerEntity entityplayer) {
+        if(!world.isRemote && shootDelay <= 0 && plane.hasGuns && mod_Planes.bulletsEnabled)
         {
             int c = 0;
             byte byte1 = 0;
@@ -1422,21 +1422,21 @@ public class EntityPlane extends EntityBase
                 double e17 = e1 * e13 + e3 * e11;
                 if(byte1 == 0)
                 {
-                    ((SdkItemGun)gunRocketAircraft.getType()).onItemRightClickEntity(gunRocketAircraft, level, this, plane.barrelX / 16F, (float)e17, plane.barrelZ / 16F, 90F, 0.0F);
+                    ((SdkItemGun)gunRocketAircraft.getItem()).onItemRightClickEntity(gunRocketAircraft, world, this, plane.barrelX / 16F, (float)e17, plane.barrelZ / 16F, 90F, 0.0F);
                 }
                 if(byte1 == 1)
                 {
-                    ((SdkItemGun)gunRocketAircraftPanzer.getType()).onItemRightClickEntity(gunRocketAircraft, level, this, plane.barrelX / 16F, (float)e17, plane.barrelZ / 16F, 90F, 0.0F);
+                    ((SdkItemGun)gunRocketAircraftPanzer.getItem()).onItemRightClickEntity(gunRocketAircraft, world, this, plane.barrelX / 16F, (float)e17, plane.barrelZ / 16F, 90F, 0.0F);
                 }
                 shootDelay = 10; //itemek ma za duzy
                 plane.barrelZ = -plane.barrelZ;
-                takeInventoryItem(c, 1);
+                removeStack(c, 1);
             }
         }
     }
 
     @Override
-    public void reloadKey(PlayerBase entityplayer) {
+    public void reloadKey(PlayerEntity entityplayer) {
 
     }
 }

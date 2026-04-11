@@ -3,13 +3,13 @@ package net.kozibrodka.planes.render;
 import net.kozibrodka.planes.entity.EntityPlaneNew;
 import net.kozibrodka.planes.model.ModelPlaneNew;
 import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.entity.EntityBase;
-import net.minecraft.util.maths.MathHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 public class RenderPlaneNew extends EntityRenderer {
     public RenderPlaneNew() {
-        this.field_2678 = 0.5F;
+        this.shadowRadius = 0.5F;
     }
 
     public void func_157_a(EntityPlaneNew entityPlane, double d, double d1, double d2, float f, float f1) {
@@ -59,7 +59,7 @@ public class RenderPlaneNew extends EntityRenderer {
         //KWESTIA RENDERPLANE z 1.6.4, wiecej rzeczy cos tam rotuje itd
     }
 
-    public void render(EntityBase entity, double d, double d1, double d2, float f, float f1) {
+    public void render(Entity entity, double d, double d1, double d2, float f, float f1) {
 //        this.func_157_a((EntityPlaneNew)entity, d, d1, d2, f, f1);
         this.method_1908((EntityPlaneNew)entity, d, d1, d2, f, f1);
     }

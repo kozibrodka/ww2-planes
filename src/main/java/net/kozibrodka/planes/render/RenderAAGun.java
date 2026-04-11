@@ -3,12 +3,12 @@ package net.kozibrodka.planes.render;
 import net.kozibrodka.planes.entity.EntityAAGun;
 import net.kozibrodka.planes.model.ModelAAGun;
 import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.entity.EntityBase;
+import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
 
 public class RenderAAGun extends EntityRenderer {
     public RenderAAGun() {
-        this.field_2678 = 0.5F;
+        this.shadowRadius = 0.5F;
     }
 
     public void renderAA(EntityAAGun aa, double d, double d1, double d2, float f, float f1) {
@@ -23,7 +23,7 @@ public class RenderAAGun extends EntityRenderer {
         GL11.glPopMatrix();
     }
 
-    public void render(EntityBase entity, double d, double d1, double d2, float f, float f1) {
+    public void render(Entity entity, double d, double d1, double d2, float f, float f1) {
         this.renderAA((EntityAAGun)entity, d, d1, d2, f, f1);
     }
 }

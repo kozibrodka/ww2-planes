@@ -3,7 +3,7 @@ package net.kozibrodka.planes.properties;
 import net.kozibrodka.planes.events.mod_Planes;
 import net.kozibrodka.planes.model.ModelPlane;
 import net.kozibrodka.planes.model.ModelPlaneNew;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.template.item.TemplateItem;
 
 public class Machine_properties {
@@ -59,12 +59,12 @@ public class Machine_properties {
     public float standingOko;
 
     public int dyeColor;
-    public ItemInstance item_tail;
-    public ItemInstance item_cockpit;
-    public ItemInstance item_propeller;
-    public ItemInstance item_wings;
-    public ItemInstance item_guns;
-    public ItemInstance item_bay;
+    public ItemStack item_tail;
+    public ItemStack item_cockpit;
+    public ItemStack item_propeller;
+    public ItemStack item_wings;
+    public ItemStack item_guns;
+    public ItemStack item_bay;
     public String itemlist1;
     public String itemlist2;
     public String itemlist3;

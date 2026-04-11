@@ -1,7 +1,7 @@
 package net.kozibrodka.planes.properties;
 
 import net.kozibrodka.planes.model.ModelPlane;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.template.item.TemplateItem;
 
 import java.util.ArrayList;
@@ -114,13 +114,13 @@ public class PlaneType {
     public int seatsX[];
     public int seatsY[];
     public int seatsZ[];
-    public ItemInstance item_bay;
+    public ItemStack item_bay;
     public int dyeColor;
-    public ItemInstance item_tail;
-    public ItemInstance item_cockpit;
-    public ItemInstance item_propeller;
-    public ItemInstance item_wings;
-    public ItemInstance item_guns;
+    public ItemStack item_tail;
+    public ItemStack item_cockpit;
+    public ItemStack item_propeller;
+    public ItemStack item_wings;
+    public ItemStack item_guns;
     public String itemlist1;
     public String itemlist2;
     public String itemlist3;

@@ -1,15 +1,15 @@
 package net.kozibrodka.planes.gui;
 
 import net.kozibrodka.planes.entity.EntityPlane;
-import net.minecraft.container.ContainerBase;
-import net.minecraft.container.slot.Slot;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.inventory.InventoryBase;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.slot.Slot;
 
-public class InventoryPlane extends ContainerBase
+public class InventoryPlane extends ScreenHandler
 {
 
-    public InventoryPlane(InventoryBase iinventory, EntityPlane entityplane)
+    public InventoryPlane(Inventory iinventory, EntityPlane entityplane)
     {
         plane = entityplane;
         addSlot(new Slot(entityplane, 0, 8, 53));
@@ -55,7 +55,7 @@ public class InventoryPlane extends ContainerBase
 
     }
 
-    public boolean canUse(PlayerBase entityplayer)
+    public boolean canUse(PlayerEntity entityplayer)
     {
         return plane.canPlayerUse(entityplayer);
     }

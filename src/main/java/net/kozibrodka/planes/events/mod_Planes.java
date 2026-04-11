@@ -15,8 +15,8 @@ import net.mine_diver.unsafeevents.listener.EventListener;
 import net.mine_diver.unsafeevents.listener.ListenerPriority;
 import net.minecraft.achievement.Achievement;
 import net.minecraft.achievement.Achievements;
-import net.minecraft.block.BlockBase;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.event.achievement.AchievementRegisterEvent;
 import net.modificationstation.stationapi.api.event.entity.EntityRegister;
 import net.modificationstation.stationapi.api.event.recipe.RecipeRegisterEvent;
@@ -125,14 +125,14 @@ public class mod_Planes {
     public void registerItems(ItemRegistryEvent event) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         bullet = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "bullet")).setTranslationKey(MOD_ID, "bullet");
         aaShell = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "aaShell")).setTranslationKey(MOD_ID, "aaShell");
-        rocketAircraft = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "rocketAircraft")).setTranslationKey(MOD_ID, "rocketAircraft").setMaxStackSize(2);
-        rocketAircraftPanzer = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "rocketAircraftPanzer")).setTranslationKey(MOD_ID, "rocketAircraftPanzer").setMaxStackSize(3);
-        smallBomb = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "smallBomb")).setTranslationKey(MOD_ID, "smallBomb").setMaxStackSize(2);
-        panzerBomb = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "panzerBomb")).setTranslationKey(MOD_ID, "panzerBomb").setMaxStackSize(2);
-        largeBomb = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "largeBomb")).setTranslationKey(MOD_ID, "largeBomb").setMaxStackSize(1);
-        napalm = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "napalm")).setTranslationKey(MOD_ID, "napalm").setMaxStackSize(2);
+        rocketAircraft = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "rocketAircraft")).setTranslationKey(MOD_ID, "rocketAircraft").setMaxCount(2);
+        rocketAircraftPanzer = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "rocketAircraftPanzer")).setTranslationKey(MOD_ID, "rocketAircraftPanzer").setMaxCount(3);
+        smallBomb = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "smallBomb")).setTranslationKey(MOD_ID, "smallBomb").setMaxCount(2);
+        panzerBomb = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "panzerBomb")).setTranslationKey(MOD_ID, "panzerBomb").setMaxCount(2);
+        largeBomb = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "largeBomb")).setTranslationKey(MOD_ID, "largeBomb").setMaxCount(1);
+        napalm = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "napalm")).setTranslationKey(MOD_ID, "napalm").setMaxCount(2);
         planeFuel = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "planeFuel")).setTranslationKey(MOD_ID, "planeFuel");
-        planeBlowTorch = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "planeBlowTorch")).setTranslationKey(MOD_ID, "planeBlowTorch").setMaxStackSize(1).setDurability(64);;
+        planeBlowTorch = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "planeBlowTorch")).setTranslationKey(MOD_ID, "planeBlowTorch").setMaxCount(1).setMaxDamage(64);;
 
         itemGunAircraft = (TemplateItem) new SdkItemGunAircraft(Identifier.of(MOD_ID, "itemGunAircraft")).setTranslationKey(MOD_ID, "itemGunAircraft");
         itemGunAircraftRocket = (TemplateItem) new SdkItemGunAircraftRocket(Identifier.of(MOD_ID, "itemGunAircraftRocket")).setTranslationKey(MOD_ID, "itemGunAircraftRocket");
@@ -177,7 +177,7 @@ public class mod_Planes {
             System.out.println((new StringBuilder()).append("mod_Planes added plane : ").append(planetype.shortName).toString());
 
             planeMapping.put(planetype.shortName, planetype);
-            planetype.przedmiot = (TemplateItem) new ItemPlane(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxStackSize(1);
+            planetype.przedmiot = (TemplateItem) new ItemPlane(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxCount(1);
         }
 
         for (int i = 0; i < PlaneTypeNew.types.size(); i++) {
@@ -185,7 +185,7 @@ public class mod_Planes {
             System.out.println((new StringBuilder()).append("mod_Planes added planeNew : ").append(planetype.shortName).toString());
 
             planeMappingNew.put(planetype.shortName, planetype);
-            planetype.przedmiot = (TemplateItem) new ItemPlaneNew(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxStackSize(1);
+            planetype.przedmiot = (TemplateItem) new ItemPlaneNew(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxCount(1);
         }
 
         for (int i = 0; i < AAGunType.types.size(); i++) {
@@ -193,14 +193,14 @@ public class mod_Planes {
             System.out.println((new StringBuilder()).append("mod_Planes added aaGun : ").append(planetype.shortName).toString());
 
             aaGunMapping.put(planetype.shortName, planetype);
-            planetype.przedmiot = (TemplateItem) new ItemAAGun(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxStackSize(1);
+            planetype.przedmiot = (TemplateItem) new ItemAAGun(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxCount(1);
         }
 
     }
 
     @EventListener
     public void registerBlocks(BlockRegistryEvent samolotAddEvent) {
-        planeWorkbench = (TemplateBlock) new BlockPlaneWorkbench(Identifier.of(MOD_ID, "planeWorkbench")).setTranslationKey(MOD_ID, "planeWorkbench").setHardness(5F).setBlastResistance(10F).setSounds(BlockBase.METAL_SOUNDS);
+        planeWorkbench = (TemplateBlock) new BlockPlaneWorkbench(Identifier.of(MOD_ID, "planeWorkbench")).setTranslationKey(MOD_ID, "planeWorkbench").setHardness(5F).setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
     }
 
     @EventListener
@@ -210,11 +210,11 @@ public class mod_Planes {
 
     @EventListener(priority = ListenerPriority.HIGH) //highest
     public void registerAchievements(AchievementRegisterEvent event) {
-        craftPlane = new Achievement(230, MOD_ID.id("craftPlane").toString(), -5, 4, ww2Parts.woodenPropeller, Achievements.AQUIRE_IRON).method_1041();
-        startPlane = new Achievement(231, MOD_ID.id("startPlane").toString(), -7, 4, ww2Parts.smallEngine, craftPlane).method_1041();
-        shootGhast = new Achievement(232, MOD_ID.id("shootGhast").toString(), -9, 4, mod_Planes.bullet, startPlane).method_1041();
-        maxSpeed = new Achievement(233, MOD_ID.id("maxSpeed").toString(), -7, 2, ww2Parts.metalPropeller, startPlane).method_1041();
-        dropNapalm = new Achievement(234, MOD_ID.id("dropNapalm").toString(), -7, 6, mod_Planes.napalm, startPlane).method_1041();
+        craftPlane = new Achievement(230, MOD_ID.id("craftPlane").toString(), -5, 4, ww2Parts.woodenPropeller, Achievements.ACQUIRE_IRON).addStat();
+        startPlane = new Achievement(231, MOD_ID.id("startPlane").toString(), -7, 4, ww2Parts.smallEngine, craftPlane).addStat();
+        shootGhast = new Achievement(232, MOD_ID.id("shootGhast").toString(), -9, 4, mod_Planes.bullet, startPlane).addStat();
+        maxSpeed = new Achievement(233, MOD_ID.id("maxSpeed").toString(), -7, 2, ww2Parts.metalPropeller, startPlane).addStat();
+        dropNapalm = new Achievement(234, MOD_ID.id("dropNapalm").toString(), -7, 6, mod_Planes.napalm, startPlane).addStat();
     }
 
     @EventListener
@@ -243,7 +243,7 @@ public class mod_Planes {
 
     @EventListener
     public void registerTabs(HMITabRegistryEvent event) {
-        event.registry.register(Identifier.of(MOD_ID, "planes"), new PlanelRecipeTab(MOD_ID), new ItemInstance(planeWorkbench));
+        event.registry.register(Identifier.of(MOD_ID, "planes"), new PlanelRecipeTab(MOD_ID), new ItemStack(planeWorkbench));
     }
     //TODO: fix graphics TMI, set Planes Props, Modern Planes CFG, Crafting for parts, Config, balance DMG ETC.
 

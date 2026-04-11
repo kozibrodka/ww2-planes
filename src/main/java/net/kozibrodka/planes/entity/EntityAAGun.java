@@ -4,18 +4,18 @@ package net.kozibrodka.planes.entity;
 import net.kozibrodka.planes.events.mod_Planes;
 import net.kozibrodka.planes.properties.AAGunType;
 import net.kozibrodka.sdk_api.events.utils.WW2Cannon;
-import net.minecraft.entity.EntityBase;
-import net.minecraft.entity.Living;
-import net.minecraft.entity.monster.MonsterEntityType;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.ItemInstance;
-import net.minecraft.level.Level;
-import net.minecraft.util.io.CompoundTag;
-import net.minecraft.util.io.ListTag;
-import net.minecraft.util.maths.Box;
-import net.minecraft.util.maths.Vec3f;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Monster;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
-public class EntityAAGun extends EntityBase implements WW2Cannon {
+public class EntityAAGun extends Entity implements WW2Cannon {
     private int field_9394_d;
     private double field_9393_e;
     private double field_9392_f;
@@ -32,15 +32,15 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
     public float[] barrelRecoil;
     public AAGunType type;
 //    public Entity towedByEntity;
-    public ItemInstance[] ammo;
+    public ItemStack[] ammo;
     public int reloadTimer;
     public int shootTime;
     public int currentBarrel;
 
-    public EntityAAGun(Level world) {
+    public EntityAAGun(World world) {
         super(world);
-        this.field_1593 = true;
-        this.setSize(2.0F, 2.0F);
+        this.blocksSameBlockSpawning = true;
+        this.setBoundingBoxSpacing(2.0F, 2.0F);
         this.standingEyeHeight = 0.0F;
         this.gunYaw = 0.0F;
         this.gunPitch = 0.0F;
@@ -49,14 +49,14 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
         reloadTimer = 0;
     }
 
-    public EntityAAGun(Level world, AAGunType type1, double d, double d1, double d2) {
+    public EntityAAGun(World world, AAGunType type1, double d, double d1, double d2) {
         this(world);
         this.type = type1;
         this.initType();
         this.setPosition(d, d1, d2);
     }
 
-    public EntityAAGun(Level world, double d, double d1, double d2) {
+    public EntityAAGun(World world, double d, double d1, double d2) {
         this(world);
         this.setPosition(d, d1, d2);
     }
@@ -67,41 +67,41 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
         this.z = d2;
         float f = this.width / 2.0F;
         float f1 = this.height;
-        this.boundingBox.method_99(d - (double)f, d1 - (double)this.standingEyeHeight + (double)this.field_1640, d2 - (double)f, d + (double)f, d1 - (double)this.standingEyeHeight + (double)this.field_1640 + (double)f1, d2 + (double)f);
+        this.boundingBox.set(d - (double)f, d1 - (double)this.standingEyeHeight + (double)this.cameraOffset, d2 - (double)f, d + (double)f, d1 - (double)this.standingEyeHeight + (double)this.cameraOffset + (double)f1, d2 + (double)f);
     }
 
     public void initType() {
         this.health = this.type.health;
         this.barrelRecoil = new float[this.type.numBarrels];
-        this.ammo = new ItemInstance[this.type.numBarrels];
+        this.ammo = new ItemStack[this.type.numBarrels];
     }
 
     protected void initDataTracker() {
     }
 
-    public Box getBoundingBox(EntityBase entity) {
+    public Box getCollisionAgainstShape(Entity entity) {
         return entity.boundingBox;
     }
 
-    public Box method_1381() {
+    public Box getBoundingBox() {
         return this.boundingBox;
     }
 
-    public boolean method_1380() {
+    public boolean isPushable() {
         return false;
     }
 
-    public double getMountedHeightOffset() {
+    public double getPassengerRidingHeight() {
         return 0.0D;
     }
 
-    public boolean damage(EntityBase entity, int i) {
+    public boolean damage(Entity entity, int i) {
 
-        if(removed)
+        if(dead)
         {
             return true;
         }
-        if(entity == passenger && (entity instanceof PlayerBase)){
+        if(entity == passenger && (entity instanceof PlayerEntity)){
 
                 if(this.reloadTimer > 0 ||shootTime > 0) {
                     return true;
@@ -128,10 +128,10 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
                         shootTime = this.type.shootDelay;
                         this.barrelRecoil[j] = (float)this.type.recoil;
 
-                        level.playSound(x, y, z, type.shootSound, 4F, (1.0F + (level.rand.nextFloat() - level.rand.nextFloat()) * 0.2F) * 0.7F);
-                        if(!this.level.isServerSide) {
+                        world.playSound(x, y, z, type.shootSound, 4F, (1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.7F);
+                        if(!this.world.isRemote) {
 //                            System.out.println( j + "  " + this.ammo[j] + "  " + this.ammo[j].getDamage() +  "  " + this.ammo[j].getDurability());
-                            level.spawnEntity(new EntityAAShell(level, d7 + x, d8 + y, d9 + z, d10 - d7, d11 - d8, d12 - d9, type.damage, type.velocity, type.accuracy, type.range));
+                            world.spawnEntity(new EntityAAShell(world, d7 + x, d8 + y, d9 + z, d10 - d7, d11 - d8, d12 - d9, type.damage, type.velocity, type.accuracy, type.range));
 //                            level.addParticle("smoke", x + d7, y + d8, z + d9, d10 - d7, d11 - d8, d12 - d9);
                         }
                     }
@@ -144,29 +144,29 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
                 this.currentBarrel = (this.currentBarrel + 1) % this.type.numBarrels;
 
         } else {
-            if(entity instanceof Living){
-                if(entity instanceof MonsterEntityType){
-                    method_1336(); //setBeenAttacked
+            if(entity instanceof LivingEntity){
+                if(entity instanceof Monster){
+                    scheduleVelocityUpdate(); //setBeenAttacked
                     this.health -= (int)i/5;
-                    level.playSound(this, "planes:mechhurt", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+                    world.playSound(this, "planes:mechhurt", 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                     System.out.println("AA DAMAGED from: " + entity + " DMG: " + (int)i/5);
                 }
             }else{
-                method_1336(); //setBeenAttacked
+                scheduleVelocityUpdate(); //setBeenAttacked
                 this.health -= i;
-                level.playSound(this, "planes:mechhurt", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+                world.playSound(this, "planes:mechhurt", 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                 System.out.println("AA DAMAGED from: " + entity + " DMG: " + i);
             }
 
-            if(!this.level.isServerSide && this.health <= 0) {
-                this.remove();
+            if(!this.world.isRemote && this.health <= 0) {
+                this.markDead();
             }
         }
 
         return true;
     }
 
-    public Vec3f rotate(double x, double y, double z) {
+    public Vec3d rotate(double x, double y, double z) {
         double cosYaw = Math.cos((double)(180.0F - this.gunYaw * (float)Math.PI / 180.0F));
         double sinYaw = Math.sin((double)(180.0F - this.gunYaw * (float)Math.PI / 180.0F));
         double cosPitch = Math.cos((double)(this.gunPitch * (float)Math.PI / 180.0F));
@@ -174,11 +174,11 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
         double newX = x * cosYaw + (y * sinPitch + z * cosPitch) * sinYaw;
         double newY = y * cosPitch - z * sinPitch;
         double newZ = -x * sinYaw + (y * sinPitch + z * cosPitch) * cosYaw;
-        return Vec3f.method_1293(newX, newY, newZ);
+        return Vec3d.create(newX, newY, newZ);
     }
 
-    public boolean method_1356() {
-        return !this.removed;
+    public boolean isCollidable() {
+        return !this.dead;
     }
 
     public void doReload()
@@ -189,15 +189,15 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
 //                this.ammo[i] = null;
 //            }
 
-            if(this.ammo[i] == null && this.passenger != null && this.passenger instanceof PlayerBase) {
-                int slot = this.findAmmo((PlayerBase)this.passenger);
+            if(this.ammo[i] == null && this.passenger != null && this.passenger instanceof PlayerEntity) {
+                int slot = this.findAmmo((PlayerEntity)this.passenger);
                 if(slot >= 0) {
-                    this.ammo[i] = ((PlayerBase)this.passenger).inventory.getInventoryItem(slot);
+                    this.ammo[i] = ((PlayerEntity)this.passenger).inventory.getStack(slot);
 //                    this.ammo[i].setDamage(1);
-                    ((PlayerBase)this.passenger).inventory.takeInventoryItem(slot, 1);
+                    ((PlayerEntity)this.passenger).inventory.removeStack(slot, 1);
                     if(i == 0){
                         this.reloadTimer = this.type.reloadTime;
-                        this.level.playSound(this, this.type.reloadSound, 1.0F, 1.0F / (this.rand.nextFloat() * 0.4F + 0.8F));
+                        this.world.playSound(this, this.type.reloadSound, 1.0F, 1.0F / (this.random.nextFloat() * 0.4F + 0.8F));
                     }
                 }
             }
@@ -235,8 +235,8 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
         this.velocityX *= 0.5D;
         this.velocityZ *= 0.5D;
         this.move(this.velocityX, this.velocityY, this.velocityZ);
-        if(!this.level.isServerSide) {
-            if(this.passenger != null && this.passenger.removed) {
+        if(!this.world.isRemote) {
+            if(this.passenger != null && this.passenger.dead) {
                 this.passenger = null;
             }
             if(shootTime > 0) {
@@ -291,23 +291,23 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
         }
     }
 
-    public void remove() {
-        super.remove();
+    public void markDead() {
+        super.markDead();
         this.dropItem(this.type.przedmiot.id, 1);
-        ItemInstance[] arr$ = this.ammo;
+        ItemStack[] arr$ = this.ammo;
         int len$ = arr$.length;
 
         for(int i$ = 0; i$ < len$; ++i$) {
-            ItemInstance stack = arr$[i$];
+            ItemStack stack = arr$[i$];
             if(stack != null) {
 //                stack.setDamage(0);
-                this.dropItem(new ItemInstance(mod_Planes.aaShell.id,1,1), 0.5F);
+                this.dropItem(new ItemStack(mod_Planes.aaShell.id,1,1), 0.5F);
             }
         }
 
     }
 
-    public void method_1382() {
+    public void updatePassengerPosition() {
         if(this.passenger != null) {
             double x = (double)this.type.gunnerX / 16.0D;
             double y = (double)this.type.gunnerY / 16.0D;
@@ -322,11 +322,11 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
         }
     }
 
-    protected void writeCustomDataToTag(CompoundTag nbttagcompound) {
-        nbttagcompound.put("Type", this.type.shortName);
-        nbttagcompound.put("Health", this.health);
-        nbttagcompound.put("RotationYaw", this.yaw);
-        nbttagcompound.put("RotationPitch", this.yaw);
+    protected void writeNbt(NbtCompound nbttagcompound) {
+        nbttagcompound.putString("Type", this.type.shortName);
+        nbttagcompound.putInt("Health", this.health);
+        nbttagcompound.putFloat("RotationYaw", this.yaw);
+        nbttagcompound.putFloat("RotationPitch", this.yaw);
 
 //        for(int i = 0; i < this.type.numBarrels; ++i) {
 //            if(this.ammo[i] != null) {
@@ -334,14 +334,14 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
 //            }
 //        }
 
-        ListTag nbttaglist = new ListTag();
+        NbtList nbttaglist = new NbtList();
         for(int i = 0; i < type.numBarrels; i++)
         {
             if(ammo[i] != null)
             {
-                CompoundTag nbttagcompound1 = new CompoundTag();
-                nbttagcompound1.put("Slot", (byte)i);
-                ammo[i].toTag(nbttagcompound1);
+                NbtCompound nbttagcompound1 = new NbtCompound();
+                nbttagcompound1.putByte("Slot", (byte)i);
+                ammo[i].writeNbt(nbttagcompound1);
                 nbttaglist.add(nbttagcompound1);
             }
         }
@@ -349,7 +349,7 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
 
     }
 
-    protected void readCustomDataFromTag(CompoundTag nbttagcompound) {
+    protected void readNbt(NbtCompound nbttagcompound) {
         this.type = mod_Planes.getAAGunType(nbttagcompound.getString("Type"));
         this.initType();
 
@@ -361,35 +361,35 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
 //            this.ammo[i] = ItemInstance.fromTag(nbttagcompound.getCompoundTag("Ammo " + i));
 //        }
 
-        ListTag nbttaglist = nbttagcompound.getListTag("Items");
-        ammo = new ItemInstance[type.numBarrels];
+        NbtList nbttaglist = nbttagcompound.getList("Items");
+        ammo = new ItemStack[type.numBarrels];
         for(int i = 0; i < nbttaglist.size(); i++)
         {
-            CompoundTag nbttagcompound1 = (CompoundTag)nbttaglist.get(i);
+            NbtCompound nbttagcompound1 = (NbtCompound)nbttaglist.get(i);
             int k = nbttagcompound1.getByte("Slot") & 0xff;
             if(k >= 0 && k < type.numBarrels)
             {
-                ammo[k] = new ItemInstance(nbttagcompound1);
+                ammo[k] = new ItemStack(nbttagcompound1);
             }
         }
 
     }
 
-    public float getEyeHeight() {
+    public float getShadowRadius() {
         return 0.0F;
     }
 
-    public boolean interact(PlayerBase entityplayer) {
-        if(this.passenger != null && this.passenger instanceof PlayerBase && this.passenger != entityplayer) {
+    public boolean interact(PlayerEntity entityplayer) {
+        if(this.passenger != null && this.passenger instanceof PlayerEntity && this.passenger != entityplayer) {
             return true;
         } else {
-            if(!this.level.isServerSide) {
+            if(!this.world.isRemote) {
                 if(this.passenger == entityplayer) {
 //                    entityplayer.startRiding(this);
                     return true;
                 }
 
-                entityplayer.startRiding(this);
+                entityplayer.setVehicle(this);
                 doReload();
 
 //                for(int i = 0; i < this.type.numBarrels; ++i) {
@@ -410,9 +410,9 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
         }
     }
 
-    public int findAmmo(PlayerBase player) {
-        for(int i = 0; i < player.inventory.getInventorySize(); ++i) {
-            ItemInstance stack = player.inventory.getInventoryItem(i);
+    public int findAmmo(PlayerEntity player) {
+        for(int i = 0; i < player.inventory.size(); ++i) {
+            ItemStack stack = player.inventory.getStack(i);
             if(stack != null && stack.itemId == mod_Planes.aaShell.id) {
                 return i;
             }
@@ -422,7 +422,7 @@ public class EntityAAGun extends EntityBase implements WW2Cannon {
     }
 
     @Override
-    public void exitKey(PlayerBase entityplayer) {
-        passenger.startRiding(this);
+    public void exitKey(PlayerEntity entityplayer) {
+        passenger.setVehicle(this);
     }
 }

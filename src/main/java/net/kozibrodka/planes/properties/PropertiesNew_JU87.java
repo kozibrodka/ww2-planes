@@ -3,8 +3,8 @@ package net.kozibrodka.planes.properties;
 import net.kozibrodka.planes.events.mod_Planes;
 import net.kozibrodka.planes.model.ModelJU87_125;
 import net.kozibrodka.sdk_api.events.init.ww2Parts;
-import net.minecraft.item.ItemBase;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class PropertiesNew_JU87 extends Machine_properties {
     public PropertiesNew_JU87()
@@ -63,12 +63,12 @@ public class PropertiesNew_JU87 extends Machine_properties {
             seatsY[passengerL] = 0;
             seatsZ[passengerL] = 0;
         }
-        item_propeller =  new ItemInstance(ww2Parts.metalPropeller.id, 1, 0);
-        item_cockpit =  new ItemInstance(ww2Parts.metalCockpit.id, 1, 0);
-        item_wings = new ItemInstance(ww2Parts.metalWing.id,1,0);
-        item_guns =  new ItemInstance(ItemBase.egg.id, 1, 0);
-        item_tail =  new ItemInstance(ww2Parts.metalTail.id, 1, 0);
-        item_bay =  new ItemInstance(ww2Parts.bombBay.id, 1, 0);
+        item_propeller =  new ItemStack(ww2Parts.metalPropeller.id, 1, 0);
+        item_cockpit =  new ItemStack(ww2Parts.metalCockpit.id, 1, 0);
+        item_wings = new ItemStack(ww2Parts.metalWing.id,1,0);
+        item_guns =  new ItemStack(Item.EGG.id, 1, 0);
+        item_tail =  new ItemStack(ww2Parts.metalTail.id, 1, 0);
+        item_bay =  new ItemStack(ww2Parts.bombBay.id, 1, 0);
         dyeColor = 8;
         itemlist1 = "DDW D";
         itemlist2 = "TBCEP";

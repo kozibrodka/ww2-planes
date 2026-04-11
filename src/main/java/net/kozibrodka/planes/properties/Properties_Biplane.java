@@ -3,8 +3,8 @@ package net.kozibrodka.planes.properties;
 import net.kozibrodka.planes.events.mod_Planes;
 import net.kozibrodka.planes.model.ModelBiplane;
 import net.kozibrodka.sdk_api.events.init.ww2Parts;
-import net.minecraft.item.ItemBase;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class Properties_Biplane extends Machine_properties {
     public Properties_Biplane()
@@ -62,12 +62,12 @@ public class Properties_Biplane extends Machine_properties {
             seatsZ[passengerL] = 0;
         }
 
-        item_propeller =  new ItemInstance(ww2Parts.woodenPropeller.id, 1, 0);
-        item_cockpit =  new ItemInstance(ww2Parts.woodenCockpit.id, 1, 0);
-        item_wings = new ItemInstance(ww2Parts.biplaneWing.id,1,0);
-        item_guns =  new ItemInstance(ItemBase.egg.id, 1, 0);
-        item_tail =  new ItemInstance(ww2Parts.woodenTail.id, 1, 0);
-        item_bay =  new ItemInstance(ItemBase.egg.id, 1, 0);
+        item_propeller =  new ItemStack(ww2Parts.woodenPropeller.id, 1, 0);
+        item_cockpit =  new ItemStack(ww2Parts.woodenCockpit.id, 1, 0);
+        item_wings = new ItemStack(ww2Parts.biplaneWing.id,1,0);
+        item_guns =  new ItemStack(Item.EGG.id, 1, 0);
+        item_tail =  new ItemStack(ww2Parts.woodenTail.id, 1, 0);
+        item_bay =  new ItemStack(Item.EGG.id, 1, 0);
         dyeColor = 16;
         itemlist1 = "  W  ";
         itemlist2 = "T CEP";

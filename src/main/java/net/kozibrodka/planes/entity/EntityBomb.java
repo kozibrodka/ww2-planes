@@ -1,30 +1,30 @@
 package net.kozibrodka.planes.entity;
 
-import net.minecraft.block.BlockBase;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityBase;
-import net.minecraft.level.Level;
-import net.minecraft.sortme.Explosion;
-import net.minecraft.util.io.CompoundTag;
-import net.minecraft.util.maths.MathHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
+import net.minecraft.world.explosion.Explosion;
 
-public class EntityBomb extends EntityBase
+public class EntityBomb extends Entity
 {
 
-    public EntityBomb(Level world)
+    public EntityBomb(World world)
     {
         super(world);
         fallTime = 0;
     }
 
-    public EntityBomb(Level world, double d, double d1, double d2,
+    public EntityBomb(World world, double d, double d1, double d2,
                       int i)
     {
         super(world);
         fallTime = 0;
         bombType = i;
-        field_1593 = true;
-        setSize(0.98F, 0.98F);
+        blocksSameBlockSpawning = true;
+        setBoundingBoxSpacing(0.98F, 0.98F);
         standingEyeHeight = height / 2.0F;
         setPosition(d, d1, d2);
         velocityX = 0.0D;
@@ -35,12 +35,12 @@ public class EntityBomb extends EntityBase
         prevZ = d2;
     }
 
-    public EntityBomb(Level world, double d, double d1, double d2)
+    public EntityBomb(World world, double d, double d1, double d2)
     {
         super(world);
         fallTime = 0;
-        field_1593 = true;
-        setSize(0.98F, 0.98F);
+        blocksSameBlockSpawning = true;
+        setBoundingBoxSpacing(0.98F, 0.98F);
         standingEyeHeight = height / 2.0F;
         setPosition(d, d1, d2);
         velocityX = 0.0D;
@@ -51,14 +51,14 @@ public class EntityBomb extends EntityBase
         prevZ = d2;
     }
 
-    public EntityBomb(Level world, double d, double d1, double d2,
+    public EntityBomb(World world, double d, double d1, double d2,
                       double d3, double d4, double d5, int i)
     {
         super(world);
         fallTime = 0;
         bombType = i;
-        field_1593 = true;
-        setSize(0.98F, 0.98F);
+        blocksSameBlockSpawning = true;
+        setBoundingBoxSpacing(0.98F, 0.98F);
         standingEyeHeight = height / 2.0F;
         setPosition(d, d1, d2);
         velocityX = d3;
@@ -73,9 +73,9 @@ public class EntityBomb extends EntityBase
     {
     }
 
-    public boolean method_1356()
+    public boolean isCollidable()
     {
-        return !removed;
+        return !dead;
     }
 
     public void tick()
@@ -97,7 +97,7 @@ public class EntityBomb extends EntityBase
             velocityX *= 0.69999998807907104D;
             velocityZ *= 0.69999998807907104D;
             velocityY *= -0.5D;
-            remove();
+            markDead();
             label0:
             switch(bombType)
             {
@@ -105,20 +105,20 @@ public class EntityBomb extends EntityBase
                     break;
 
                 case 0: // '\0'
-                    level.createExplosion(null, x, y, z, 3F);
+                    world.createExplosion(null, x, y, z, 3F);
                     break;
 
                 case 1: // '\001'
-                    level.createExplosion(null, x, y, z, 6F);
+                    world.createExplosion(null, x, y, z, 6F);
                     break;
                 case 3: // '\001'
-                    Explosion explosion = new Explosion(level, null, x, (float)y, (float)z, 5F);
-                    explosion.kaboomPhase1();
-                    level.playSound(x, y, z, "random.explode", 4F, (1.0F + (level.rand.nextFloat() - level.rand.nextFloat()) * 0.2F) * 0.7F);
+                    Explosion explosion = new Explosion(world, null, x, (float)y, (float)z, 5F);
+                    explosion.explode();
+                    world.playSound(x, y, z, "random.explode", 4F, (1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.7F);
                     for(int a = 0; a < 32; a++)
                     {
-                        level.addParticle("explode", x, y, z, level.rand.nextDouble() - 0.5D, level.rand.nextDouble() - 0.5D, level.rand.nextDouble() - 0.5D);
-                        level.addParticle("smoke", x, y, z, level.rand.nextDouble() - 0.5D, level.rand.nextDouble() - 0.5D, level.rand.nextDouble() - 0.5D);
+                        world.addParticle("explode", x, y, z, world.random.nextDouble() - 0.5D, world.random.nextDouble() - 0.5D, world.random.nextDouble() - 0.5D);
+                        world.addParticle("smoke", x, y, z, world.random.nextDouble() - 0.5D, world.random.nextDouble() - 0.5D, world.random.nextDouble() - 0.5D);
                     }
                     break;
 
@@ -134,9 +134,9 @@ public class EntityBomb extends EntityBase
                         {
                             for(int j1 = k - 3; j1 < k + 3; j1++)
                             {
-                                if(level.getMaterial(l, i1, j1) == Material.AIR)
+                                if(world.getMaterial(l, i1, j1) == Material.AIR)
                                 {
-                                    level.setTile(l, i1, j1, BlockBase.FIRE.id);
+                                    world.setBlock(l, i1, j1, Block.FIRE.id);
                                 }
                             }
 
@@ -148,24 +148,24 @@ public class EntityBomb extends EntityBase
         }
     }
 
-    protected void writeCustomDataToTag(CompoundTag nbttagcompound)
+    protected void writeNbt(NbtCompound nbttagcompound)
     {
-        nbttagcompound.put("Tile", (byte)bombType);
+        nbttagcompound.putByte("Tile", (byte)bombType);
     }
 
-    protected void readCustomDataFromTag(CompoundTag nbttagcompound)
+    protected void readNbt(NbtCompound nbttagcompound)
     {
         bombType = nbttagcompound.getByte("Tile") & 0xff;
     }
 
-    public float getEyeHeight()
+    public float getShadowRadius()
     {
         return 0.0F;
     }
 
-    public Level getWorld()
+    public World getWorld()
     {
-        return level;
+        return world;
     }
 
     public int bombType;

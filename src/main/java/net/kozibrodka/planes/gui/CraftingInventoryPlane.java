@@ -4,30 +4,30 @@ package net.kozibrodka.planes.gui;
 import net.kozibrodka.planes.events.mod_Planes;
 import net.kozibrodka.planes.recipe.PlaneRecipeRegistry;
 import net.kozibrodka.planes.recipe.SlotPlanes;
-import net.minecraft.container.ContainerBase;
-import net.minecraft.container.slot.CraftingResult;
-import net.minecraft.container.slot.Slot;
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Chest;
-import net.minecraft.inventory.Crafting;
-import net.minecraft.inventory.InventoryBase;
-import net.minecraft.item.ItemInstance;
-import net.minecraft.level.Level;
+import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.CraftingResultInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.slot.CraftingResultSlot;
+import net.minecraft.screen.slot.Slot;
+import net.minecraft.world.World;
 
 
-public class CraftingInventoryPlane extends ContainerBase //ale tutaj było zamieszanie z klasami
+public class CraftingInventoryPlane extends ScreenHandler //ale tutaj było zamieszanie z klasami
 {
 
-    public CraftingInventoryPlane(PlayerInventory inventoryplayer, Level world, int i, int j, int k)
+    public CraftingInventoryPlane(PlayerInventory inventoryplayer, World world, int i, int j, int k)
     {
-        craftMatrix = new Crafting(this, 5, 3);
-        craftResult = new Chest();
+        craftMatrix = new CraftingInventory(this, 5, 3);
+        craftResult = new CraftingResultInventory();
         field_20133_c = world;
         xTile = i;
         yTile = j;
         zTile = k;
-        addSlot(new CraftingResult(inventoryplayer.player, craftMatrix, craftResult, 0, 134, 36));
+        addSlot(new CraftingResultSlot(inventoryplayer.player, craftMatrix, craftResult, 0, 134, 36));
         for(int l = 0; l < 3; l++)
         {
             for(int k1 = 0; k1 < 5; k1++)
@@ -51,21 +51,21 @@ public class CraftingInventoryPlane extends ContainerBase //ale tutaj było zami
             addSlot(new Slot(inventoryplayer, j1, 8 + j1 * 18, 142));
         }
 
-        onContentsChanged(craftMatrix);
+        onSlotUpdate(craftMatrix);
     }
 
-    public void onContentsChanged(InventoryBase iinventory)
+    public void onSlotUpdate(Inventory iinventory)
     {
 //        craftResult.setInventoryItem(0, RecipeRegistry.getInstance().getCraftingOutput(craftMatrix));
-        craftResult.setInventoryItem(0, PlaneRecipeRegistry.getInstance().getCraftingOutput(craftMatrix));
+        craftResult.setStack(0, PlaneRecipeRegistry.getInstance().getCraftingOutput(craftMatrix));
     }
 
-    public void onClosed(PlayerBase entityplayer)
+    public void onClosed(PlayerEntity entityplayer)
     {
         super.onClosed(entityplayer);
         for(int i = 0; i < 15; i++)
         {
-            ItemInstance itemstack = craftMatrix.getInventoryItem(i);
+            ItemStack itemstack = craftMatrix.getStack(i);
             if(itemstack != null)
             {
                 entityplayer.dropItem(itemstack);
@@ -74,20 +74,20 @@ public class CraftingInventoryPlane extends ContainerBase //ale tutaj było zami
 
     }
 
-    public boolean canUse(PlayerBase entityplayer)
+    public boolean canUse(PlayerEntity entityplayer)
     {
-        if(field_20133_c.getTileId(xTile, yTile, zTile) != mod_Planes.planeWorkbench.id)
+        if(field_20133_c.getBlockId(xTile, yTile, zTile) != mod_Planes.planeWorkbench.id)
         {
             return false;
         } else
         {
-            return entityplayer.squaredDistanceTo((double)xTile + 0.5D, (double)yTile + 0.5D, (double)zTile + 0.5D) <= 64D;
+            return entityplayer.getSquaredDistance((double)xTile + 0.5D, (double)yTile + 0.5D, (double)zTile + 0.5D) <= 64D;
         }
     }
 
-    public Crafting craftMatrix;
-    public InventoryBase craftResult;
-    private Level field_20133_c;
+    public CraftingInventory craftMatrix;
+    public Inventory craftResult;
+    private World field_20133_c;
     private int xTile;
     private int yTile;
     private int zTile;
