@@ -1489,6 +1489,11 @@ public class EntityPlaneNew extends Entity
     public void reloadKey(PlayerEntity entityplayer) {
 
     }
+
+    @Override
+    public int getPercentHealth() {
+        return 0;
+    }
 //    public RotatedAxes axes;
 }
 

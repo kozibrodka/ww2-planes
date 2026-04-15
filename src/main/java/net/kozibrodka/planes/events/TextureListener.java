@@ -15,7 +15,7 @@ import net.modificationstation.stationapi.api.util.Null;
 public class TextureListener {
 
     @Entrypoint.Namespace
-    public static final Namespace MOD_ID = Null.get();
+    public static  Namespace MOD_ID = Null.get();
 
     @EventListener
     public void registerTextures(TextureRegisterEvent event) {
@@ -61,7 +61,7 @@ public class TextureListener {
     }
 
     @EventListener
-    private static void registerEntityRenderers(EntityRendererRegisterEvent event) {
+    public static void registerEntityRenderers(EntityRendererRegisterEvent event) {
         event.renderers.put(EntityPlane.class, new RenderPlane());
         event.renderers.put(EntityPlaneNew.class, new RenderPlaneNew());
         event.renderers.put(EntityAAGun.class, new RenderAAGun());

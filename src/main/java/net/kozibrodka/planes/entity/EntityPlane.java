@@ -1439,5 +1439,10 @@ public class EntityPlane extends Entity
     public void reloadKey(PlayerEntity entityplayer) {
 
     }
+
+    @Override
+    public int getPercentHealth() {
+        return 0;
+    }
 }
 

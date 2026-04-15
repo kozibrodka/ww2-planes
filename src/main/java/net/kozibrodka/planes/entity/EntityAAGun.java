@@ -425,4 +425,9 @@ public class EntityAAGun extends Entity implements WW2Cannon {
     public void exitKey(PlayerEntity entityplayer) {
         passenger.setVehicle(this);
     }
+
+    @Override
+    public int getPercentHealth() {
+        return 0;
+    }
 }

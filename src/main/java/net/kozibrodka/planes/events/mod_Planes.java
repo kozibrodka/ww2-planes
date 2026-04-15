@@ -1,22 +1,17 @@
 package net.kozibrodka.planes.events;
 
-import net.glasslauncher.hmifabric.event.HMITabRegistryEvent;
-import net.glasslauncher.mods.api.gcapi.api.GConfig;
+import net.glasslauncher.mods.gcapi3.api.ConfigRoot;
 import net.kozibrodka.planes.entity.*;
 import net.kozibrodka.planes.item.*;
 import net.kozibrodka.planes.properties.*;
-import net.kozibrodka.planes.recipe.PlanelRecipeTab;
 import net.kozibrodka.planes.recipe.BlockPlaneWorkbench;
 import net.kozibrodka.planes.recipe.PlaneRecipeRegistry;
 import net.kozibrodka.sdk_api.events.init.ww2Parts;
-import net.kozibrodka.sdk_api.events.utils.SdkMap;
-import net.kozibrodka.sdk_api.events.utils.WW2Plane;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.mine_diver.unsafeevents.listener.ListenerPriority;
 import net.minecraft.achievement.Achievement;
 import net.minecraft.achievement.Achievements;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.event.achievement.AchievementRegisterEvent;
 import net.modificationstation.stationapi.api.event.entity.EntityRegister;
 import net.modificationstation.stationapi.api.event.recipe.RecipeRegisterEvent;
@@ -30,7 +25,6 @@ import net.modificationstation.stationapi.api.template.item.TemplateItem;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;
-import net.modificationstation.stationapi.api.util.Null;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -38,11 +32,11 @@ import java.util.Map;
 
 public class mod_Planes {
 
-    @GConfig(value = "PlanesCFG", visibleName = "WW2 Planes Config")
+    @ConfigRoot(value = "PlanesCFG", visibleName = "WW2 Planes Config")
     public static final PlanesCFG planesGlass = new PlanesCFG();
 
     @Entrypoint.Namespace
-    public static final Namespace MOD_ID = Null.get();
+    public static  Namespace MOD_ID = Null.get();
 
     public static PlaneType getPlaneType(String s) {
         return (PlaneType) planeMapping.get(s);
@@ -218,7 +212,7 @@ public class mod_Planes {
     }
 
     @EventListener
-    private static void registerEntities(EntityRegister event) {
+    public static void registerEntities(EntityRegister event) {
         event.register(EntityPlane.class, String.valueOf(Identifier.of(MOD_ID, "EntityPlane")));
         event.register(EntityPlaneNew.class, String.valueOf(Identifier.of(MOD_ID, "EntityPlaneNew")));
         event.register(EntityAAGun.class, String.valueOf(Identifier.of(MOD_ID, "EntityAAGun")));
@@ -230,7 +224,7 @@ public class mod_Planes {
     }
 
     @EventListener
-    private static void registerMobHandlers(EntityHandlerRegistryEvent event) {
+    public static void registerMobHandlers(EntityHandlerRegistryEvent event) {
         Registry.register(event.registry, MOD_ID.id("EntityPlane"), EntityPlane::new);
         Registry.register(event.registry, MOD_ID.id("EntityPlaneNew"), EntityPlaneNew::new);
         Registry.register(event.registry, MOD_ID.id("EntityAAGun"), EntityAAGun::new);
@@ -241,10 +235,10 @@ public class mod_Planes {
         Registry.register(event.registry, MOD_ID.id("SdkEntityBulletAircraftRocketPanzer"), SdkEntityBulletAircraftRocketPanzer::new);
     }
 
-    @EventListener
-    public void registerTabs(HMITabRegistryEvent event) {
-        event.registry.register(Identifier.of(MOD_ID, "planes"), new PlanelRecipeTab(MOD_ID), new ItemStack(planeWorkbench));
-    }
+//    @EventListener
+//    public void registerTabs(HMITabRegistryEvent event) {
+//        event.registry.register(Identifier.of(MOD_ID, "planes"), new PlanelRecipeTab(MOD_ID), new ItemStack(planeWorkbench));
+//    }
     //TODO: fix graphics TMI, set Planes Props, Modern Planes CFG, Crafting for parts, Config, balance DMG ETC.
 
 }
