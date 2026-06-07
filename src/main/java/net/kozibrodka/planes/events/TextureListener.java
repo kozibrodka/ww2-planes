@@ -33,8 +33,9 @@ public class TextureListener {
         mod_Planes.itemGunAircraftRocket.setTexture(Identifier.of(MOD_ID, "item/PlaneGun"));
         mod_Planes.itemGunAircraftRocketPanzer.setTexture(Identifier.of(MOD_ID, "item/PlaneGun"));
 
+        /// Not Working cuz of weird item registry (PlaneTypes...)
 //        mod_Planes.BF109.setTexture(Identifier.of(MOD_ID, "item/BF109"));
-//        mod_Planes.Biplane.setTexture(Identifier.of(MOD_ID, "item/Biplane"));
+//        mod_Planes.Biplane_OLD.setTexture(Identifier.of(MOD_ID, "item/Biplane"));
 //        mod_Planes.Camel.setTexture(Identifier.of(MOD_ID, "item/Camel"));
 //        mod_Planes.Fokker.setTexture(Identifier.of(MOD_ID, "item/Fokker"));
 //        mod_Planes.Mustang.setTexture(Identifier.of(MOD_ID, "item/Mustang"));

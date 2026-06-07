@@ -2,19 +2,18 @@ package net.kozibrodka.planes.properties;
 
 import net.kozibrodka.planes.events.mod_Planes;
 import net.kozibrodka.planes.model.ModelFokker;
-import net.kozibrodka.planes.model.ModelFokker_125;
 import net.kozibrodka.sdk_api.events.init.ww2Parts;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class Properties_Fokker extends Machine_properties {
-    public Properties_Fokker()
+public class Properties_Fokker_OLD extends Machine_properties {
+    public Properties_Fokker_OLD()
     {
         name = "Fokker Dr.1";
-        shortName = "Fokker";
+        shortName = "Fokker_OLD";
         texture = "Fokker";
-        modelNew = new ModelFokker_125();
-        przedmiot = mod_Planes.Fokker;
+        model = new ModelFokker();
+        przedmiot = mod_Planes.Fokker_OLD;
         maxPropSpeed = 2.0F;
         takeOffSpeed = 2.0F;
         barrelX = -48;
@@ -75,13 +74,6 @@ public class Properties_Fokker extends Machine_properties {
         itemlist2 = "T CEP";
         itemlist3 = "DDWGD";
         planeFuelAdd = 1000;
-
-        sloped = false;
-        oldClassic = true;
-        standingOko = (1.8F / 2.0F) - 0.17F;
-        planeWidth = 6F;
-        planeHeight = 1.8F;
-        playerYOffset = 3.0D;
     }
 
 }

@@ -80,6 +80,7 @@ public class PlaneTypeNew {
         planeWidth = klasa.planeWidth;
         planeHeight = klasa.planeHeight;
         standingOko = klasa.standingOko;
+        oldClassic = klasa.oldClassic;
         types.add(this);
     }
 
@@ -141,7 +142,7 @@ public class PlaneTypeNew {
     public String itemlist3;
     public ModelPlane model;
     public ModelPlaneNew modelNew;
-    public boolean nowoczesny;
+    public boolean oldClassic;
     public static List types = new ArrayList();
     public TemplateItem przedmiot;
     public int planeFuelAdd;

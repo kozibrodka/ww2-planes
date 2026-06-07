@@ -2,6 +2,7 @@ package net.kozibrodka.planes.properties;
 
 import net.kozibrodka.planes.events.mod_Planes;
 import net.kozibrodka.planes.model.ModelCamel;
+import net.kozibrodka.planes.model.ModelCamel_125;
 import net.kozibrodka.sdk_api.events.init.ww2Parts;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,7 +12,8 @@ public class Properties_Camel extends Machine_properties {
     {
         name = "Camel";
         shortName = "Camel";
-        model = new ModelCamel();
+        texture = "Camel";
+        modelNew = new ModelCamel_125();
         przedmiot = mod_Planes.Camel;
         maxPropSpeed = 2.0F;
         takeOffSpeed = 2.0F;
@@ -73,6 +75,13 @@ public class Properties_Camel extends Machine_properties {
         itemlist2 = "T CEP";
         itemlist3 = "DDWGD";
         planeFuelAdd = 1000;
+
+        sloped = false;
+        oldClassic = true;
+        standingOko = (1.8F / 2.0F) - 0.17F;
+        planeWidth = 6F;
+        planeHeight = 1.8F;
+        playerYOffset = 3.0D;
     }
 
 }

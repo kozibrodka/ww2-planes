@@ -2,19 +2,18 @@ package net.kozibrodka.planes.properties;
 
 import net.kozibrodka.planes.events.mod_Planes;
 import net.kozibrodka.planes.model.ModelSpitfire;
-import net.kozibrodka.planes.model.ModelSpitfire_125;
 import net.kozibrodka.sdk_api.events.init.ww2Parts;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class Properties_Spitfire extends Machine_properties {
-    public Properties_Spitfire()
+public class Properties_Spitfire_OLD extends Machine_properties {
+    public Properties_Spitfire_OLD()
     {
         name = "Spitfire";
-        shortName = "Spitfire";
+        shortName = "Spitfire_OLD";
         texture = "Spitfire";
-        modelNew = new ModelSpitfire_125();
-        przedmiot = mod_Planes.Spitfire;
+        model = new ModelSpitfire();
+        przedmiot = mod_Planes.Spitfire_OLD;
         maxPropSpeed = 4.0F;
         takeOffSpeed = 3.0F;
         barrelX = -44;
@@ -75,13 +74,6 @@ public class Properties_Spitfire extends Machine_properties {
         itemlist2 = "TBCEP";
         itemlist3 = "DDW D";
         planeFuelAdd = 1000;
-
-        sloped = false;
-        oldClassic = true;
-        standingOko = (1.8F / 2.0F) - 0.17F;
-        planeWidth = 6F;
-        planeHeight = 1.8F;
-        playerYOffset = 3.0D;
     }
 
 }

@@ -2,6 +2,7 @@ package net.kozibrodka.planes.properties;
 
 import net.kozibrodka.planes.events.mod_Planes;
 import net.kozibrodka.planes.model.ModelTwoSeaterBiplane;
+import net.kozibrodka.planes.model.ModelTwoSeaterBiplane_125;
 import net.kozibrodka.sdk_api.events.init.ww2Parts;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,7 +12,8 @@ public class Properties_TwoSeaterBiplane extends Machine_properties {
     {
         name = "Two Seater Biplane";
         shortName = "TwoSeaterBiplane";
-        model = new ModelTwoSeaterBiplane();
+        texture = "TwoSeaterBiplane";
+        modelNew = new ModelTwoSeaterBiplane_125();
         przedmiot = mod_Planes.TwoSeaterBiplane;
         maxPropSpeed = 0.5F;
         takeOffSpeed = 1.0F;
@@ -73,6 +75,13 @@ public class Properties_TwoSeaterBiplane extends Machine_properties {
         itemlist2 = "TBCEP";
         itemlist3 = "  W  ";
         planeFuelAdd = 1000;
+
+        sloped = false;
+        oldClassic = true;
+        standingOko = (1.8F / 2.0F) - 0.17F;
+        planeWidth = 6F;
+        planeHeight = 1.8F;
+        playerYOffset = 3.0D;
     }
 
 }

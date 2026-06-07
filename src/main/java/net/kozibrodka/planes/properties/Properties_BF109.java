@@ -1,7 +1,7 @@
 package net.kozibrodka.planes.properties;
 
 import net.kozibrodka.planes.events.mod_Planes;
-import net.kozibrodka.planes.model.ModelBF109;
+import net.kozibrodka.planes.model.ModelBF109_125;
 import net.kozibrodka.sdk_api.events.init.ww2Parts;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,7 +11,8 @@ public class Properties_BF109 extends Machine_properties {
     {
         name = "BF109";
         shortName = "BF109";
-        model = new ModelBF109();
+        texture = "BF109";
+        modelNew = new ModelBF109_125();
         przedmiot = mod_Planes.BF109;
         maxPropSpeed = 4.5F;
         takeOffSpeed = 3.0F;
@@ -46,7 +47,6 @@ public class Properties_BF109 extends Machine_properties {
         propSoundLength = 30;
         shootSound = "planes:bullet";
         bombSound = "planes:bomb";
-        playerYOffset = 0D;
         numPassengers = 0;
         if(numPassengers > 0)
         {
@@ -72,6 +72,13 @@ public class Properties_BF109 extends Machine_properties {
         itemlist2 = "TBCEP";
         itemlist3 = "DDW D";
         planeFuelAdd = 1000;
+
+        sloped = false;
+        oldClassic = true;
+        standingOko = (1.8F / 2.0F) - 0.17F;
+        planeWidth = 6F;
+        planeHeight = 1.8F;
+        playerYOffset = 3.0D;
     }
 
 }

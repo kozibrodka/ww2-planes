@@ -268,7 +268,7 @@ public class EntityAAGun extends Entity implements WW2Cannon {
 
 
         } else {
-            if(this.field_9394_d > 0) {
+            if(this.field_9394_d > 0) { //TODO interpelation stuff weird names...
                 double var9 = this.x + (this.field_9393_e - this.x) / (double)this.field_9394_d;
                 double d5 = this.y + (this.field_9392_f - this.y) / (double)this.field_9394_d;
                 double d9 = this.z + (this.field_9391_g - this.z) / (double)this.field_9394_d;

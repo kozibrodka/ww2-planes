@@ -70,6 +70,7 @@ public class PlaneType {
         itemlist2 = klasa.itemlist2;
         itemlist3 = klasa.itemlist3;
         planeFuelAdd = klasa.planeFuelAdd;
+        texture = klasa.texture;
         types.add(this);
     }
 
@@ -89,6 +90,7 @@ public class PlaneType {
     public boolean hasGuns;
     public String name;
     public String shortName;
+    public String texture;
     public int planeHealth;
     public int planeShootDelay;
     public int planeBombDelay;
@@ -125,7 +127,6 @@ public class PlaneType {
     public String itemlist2;
     public String itemlist3;
     public ModelPlane model;
-    public boolean nowoczesny;
     public static List types = new ArrayList();
     public TemplateItem przedmiot;
     public int planeFuelAdd;

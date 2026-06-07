@@ -122,6 +122,8 @@ dependencies {
 	}
 	modImplementation(files("libs/sdk-api-0.4.1.jar"))
 	modImplementation(files("libs/turbo-model-thingy-1.1.jar"))
+	modImplementation(files("libs/InventoryTweaks-2.6.1.jar"))
+	modImplementation(files("libs/keyf3-1.0.2.jar"))
 }
 
 processResources {
@@ -147,7 +149,7 @@ java {
 
 jar {
 	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}"}
+		rename { "${it}_${project.archives_base_name}"}
 	}
 }
 

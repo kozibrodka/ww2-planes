@@ -5,7 +5,7 @@ import net.kozibrodka.planes.model.ModelPlane;
 import net.kozibrodka.planes.model.ModelPlaneNew;
 import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.template.item.TemplateItem;
-
+/// Plane Propeties (change name later propably...)
 public class Machine_properties {
     public float maxPropSpeed;
     public float takeOffSpeed;
@@ -57,6 +57,7 @@ public class Machine_properties {
     public float planeWidth;
     public float planeHeight;
     public float standingOko;
+    public boolean oldClassic;
 
     public int dyeColor;
     public ItemStack item_tail;

@@ -32,93 +32,19 @@ public class ModelPlaneNew extends ModelBase {
     public ModelRendererTurbo[] bodyDoorOpenModel = new ModelRendererTurbo[0];
     public ModelRendererTurbo[] bodyDoorCloseModel = new ModelRendererTurbo[0];
 
-//    public ModelRendererTurbo[] noseModel;
-//    public ModelRendererTurbo[] leftWingModel;
-//    public ModelRendererTurbo[] rightWingModel   ;
-//    public ModelRendererTurbo[] topWingModel ;
-//    public ModelRendererTurbo[] bayModel   ;
-//    public ModelRendererTurbo[] tailModel   ;
-//    public ModelRendererTurbo[][] propellerModels  ;
-//    public ModelRendererTurbo[] yawFlapModel  ;
-//    public ModelRendererTurbo[] pitchFlapLeftModel   ;
-//    public ModelRendererTurbo[] pitchFlapRightModel   ;
-//    public ModelRendererTurbo[] pitchFlapLeftWingModel   ;
-//    public ModelRendererTurbo[] pitchFlapRightWingModel   ;
-//    public ModelRendererTurbo[] bodyWheelModel   ;
-//    public ModelRendererTurbo[] tailWheelModel   ;
-//    public ModelRendererTurbo[] leftWingWheelModel   ;
-//    public ModelRendererTurbo[] rightWingWheelModel;
-//    public ModelRendererTurbo[] tailDoorOpenModel;
-//    public ModelRendererTurbo[] tailDoorCloseModel;
-//    public ModelRendererTurbo[] rightWingPos1Model;
-//    public ModelRendererTurbo[] rightWingPos2Model;
-//    public ModelRendererTurbo[] leftWingPos1Model;
-//    public ModelRendererTurbo[] leftWingPos2Model;
-//    public ModelRendererTurbo[] bodyModel;
-//    public ModelRendererTurbo[] bodyDoorOpenModel;
-//    public ModelRendererTurbo[] bodyDoorCloseModel;
-
     public HashMap<String, ModelRendererTurbo[][]> gunModels = new HashMap();
-
-//    public void render(EntityDriveable driveable, float f1) {
-//        this.render(0.0625F, (EntityPlane)driveable, f1);
-//    }
-//
-//    public void render(DriveableType type) {
-//        super.render(type);
-//        this.renderPart(this.noseModel);
-//        this.renderPart(this.leftWingModel);
-//        this.renderPart(this.rightWingModel);
-//        this.renderPart(this.topWingModel);
-//        this.renderPart(this.bayModel);
-//        this.renderPart(this.tailModel);
-//        ModelRendererTurbo[][] arr$ = this.propellerModels;
-//        int len$ = arr$.length;
-//
-//        for(int i$ = 0; i$ < len$; ++i$) {
-//            ModelRendererTurbo[] prop = arr$[i$];
-//
-//            for(int j = 0; j < prop.length; ++j) {
-//                prop[j].rotateAngleX = (float)j * 2.0F * (float)Math.PI / (float)prop.length;
-//                prop[j].render(0.0625F);
-//            }
-//        }
-//
-//        this.renderPart(this.yawFlapModel);
-//        this.renderPart(this.pitchFlapLeftModel);
-//        this.renderPart(this.pitchFlapRightModel);
-//        this.renderPart(this.pitchFlapLeftWingModel);
-//        this.renderPart(this.pitchFlapRightWingModel);
-//        this.renderPart(this.bodyWheelModel);
-//        this.renderPart(this.tailWheelModel);
-//        this.renderPart(this.leftWingWheelModel);
-//        this.renderPart(this.rightWingWheelModel);
-//        this.renderPart(this.tailDoorCloseModel);
-//        this.renderPart(this.rightWingPos1Model);
-//        this.renderPart(this.leftWingPos1Model);
-//    }
 
     public void render(float f, float f1, float f2, float f3, float f4, float f5, EntityPlaneNew plane) { //float f5, EntityPlaneNew plane, float f
         float angle = plane.angle;
-//        Iterator arr$ = plane.getPlaneType().propellers.iterator();
-//        int i$;
-//        while(arr$.hasNext()) {
-//            Propeller len$ = (Propeller)arr$.next();
-//            if(plane.isPartIntact(len$.planePart)) {
-//                i$ = this.propellerModels[len$.ID].length;
-//
-//                for(int seat = 0; seat < i$; ++seat) {
-//                    this.propellerModels[len$.ID][seat].field_78795_f = angle + (float)seat * 2.0F * (float)Math.PI / (float)i$;
-//                    this.propellerModels[len$.ID][seat].render(f5);
-//                }
-//            }
-//        }
 
         int i;
         for (i = 0; i < this.propellerModels.length; ++i) {
             int numParts = this.propellerModels[i].length;
 
             for (int j = 0; j < numParts; ++j) {
+                if(plane.plane.oldClassic){
+                    propellerModels[i][j].setPosition(plane.plane.propellerX, plane.plane.propellerY, plane.plane.propellerZ * (i % 2 != 0 ? -1 : 1));
+                }
                 this.propellerModels[i][j].rotateAngleX = angle + (float) j * 2.0F * (float) Math.PI / (float) numParts;
                 this.propellerModels[i][j].render(f5);
             }
@@ -146,17 +72,29 @@ public class ModelPlaneNew extends ModelBase {
         }
 
         for (var16 = 0; var16 < this.yawFlapModel.length; ++var16) {
-            this.yawFlapModel[var16].rotateAngleY = -plane.flapsYaw * (float) Math.PI / 180.0F;
+            if(plane.plane.oldClassic){
+                this.yawFlapModel[var16].rotateAngleY = plane.flapsYaw * (float) Math.PI / 180.0F;
+            }else{
+                this.yawFlapModel[var16].rotateAngleY = -plane.flapsYaw * (float) Math.PI / 180.0F;
+            }
             this.yawFlapModel[var16].render(f5);
         }
 
         for (var16 = 0; var16 < this.pitchFlapLeftModel.length; ++var16) {
-            this.pitchFlapLeftModel[var16].rotateAngleZ = -plane.flapsPitchLeft * (float) Math.PI / 180.0F;
+            if(plane.plane.oldClassic){
+                this.pitchFlapLeftModel[var16].rotateAngleZ = plane.flapsPitchLeft * (float) Math.PI / 180.0F;
+            }else{
+                this.pitchFlapLeftModel[var16].rotateAngleZ = -plane.flapsPitchLeft * (float) Math.PI / 180.0F;
+            }
             this.pitchFlapLeftModel[var16].render(f5);
         }
 
         for (var16 = 0; var16 < this.pitchFlapRightModel.length; ++var16) {
-            this.pitchFlapRightModel[var16].rotateAngleZ = -plane.flapsPitchRight * (float) Math.PI / 180.0F;
+            if(plane.plane.oldClassic){
+                this.pitchFlapRightModel[var16].rotateAngleZ = plane.flapsPitchRight * (float) Math.PI / 180.0F;
+            }else{
+                this.pitchFlapRightModel[var16].rotateAngleZ = -plane.flapsPitchRight * (float) Math.PI / 180.0F;
+            }
             this.pitchFlapRightModel[var16].render(f5);
         }
 

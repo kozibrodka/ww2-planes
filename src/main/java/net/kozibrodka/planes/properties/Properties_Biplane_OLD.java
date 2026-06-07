@@ -1,21 +1,20 @@
 package net.kozibrodka.planes.properties;
 
 import net.kozibrodka.planes.events.mod_Planes;
-import net.kozibrodka.planes.model.ModelFokker;
-import net.kozibrodka.planes.model.ModelFokker_125;
+import net.kozibrodka.planes.model.ModelBiplane;
 import net.kozibrodka.sdk_api.events.init.ww2Parts;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class Properties_Fokker extends Machine_properties {
-    public Properties_Fokker()
+public class Properties_Biplane_OLD extends Machine_properties {
+    public Properties_Biplane_OLD()
     {
-        name = "Fokker Dr.1";
-        shortName = "Fokker";
-        texture = "Fokker";
-        modelNew = new ModelFokker_125();
-        przedmiot = mod_Planes.Fokker;
-        maxPropSpeed = 2.0F;
+        name = "Biplane";
+        shortName = "Biplane_OLD";
+        texture = "Biplane";
+        model = new ModelBiplane();
+        przedmiot = mod_Planes.Biplane_OLD;
+        maxPropSpeed = 3.0F;
         takeOffSpeed = 2.0F;
         barrelX = -48;
         barrelY = -9;
@@ -23,32 +22,32 @@ public class Properties_Fokker extends Machine_properties {
         bombXOffset = 0;
         bombYOffset = 16;
         bombZOffset = 0;
-        propellerX = -29;
+        propellerX = -14;
         propellerY = 0;
         propellerZ = 0;
-        hasGuns = true;
+        hasGuns = false;
         hasBombs = false;
-        planeShootDelay = 4;
+        planeShootDelay = 999;
         planeBombDelay = 999;
-        numCargoSlots = 0;
-        numBulletSlots = 5;
+        numCargoSlots = 5;
+        numBulletSlots = 0;
         numBombSlots = 0;
-        numRocketSlots = 2;
-        planeHealth = 600;
+        numRocketSlots = 0;
+        planeHealth = 300;
         turnLeftModifier = 4.0D;
         turnRightModifier = 4.0D;
         lookUpModifier = 1.0D;
         lookDownModifier = 1.0D;
-        acceleration = 3.0D;
-        decceleration = 2.0D;
-        maxHeight = 115;
+        acceleration = 2.0D;
+        decceleration = 1.0D;
+        maxHeight = 120;
         startSound = "planes:propstart";
         startSoundLength = 20;
         propSound = "planes:propsound";
         propSoundLength = 30;
         shootSound = "planes:bullet";
         bombSound = "planes:bomb";
-        playerYOffset = -0.3D;
+        playerYOffset = -0.5D;
         numPassengers = 0;
         if(numPassengers > 0)
         {
@@ -66,22 +65,15 @@ public class Properties_Fokker extends Machine_properties {
 
         item_propeller =  new ItemStack(ww2Parts.woodenPropeller.id, 1, 0);
         item_cockpit =  new ItemStack(ww2Parts.woodenCockpit.id, 1, 0);
-        item_wings = new ItemStack(ww2Parts.triplaneWing.id,1,0);
-        item_guns =  new ItemStack(ww2Parts.machinegun.id, 1, 0);
+        item_wings = new ItemStack(ww2Parts.biplaneWing.id,1,0);
+        item_guns =  new ItemStack(Item.EGG.id, 1, 0);
         item_tail =  new ItemStack(ww2Parts.woodenTail.id, 1, 0);
         item_bay =  new ItemStack(Item.EGG.id, 1, 0);
-        dyeColor = 1;
-        itemlist1 = "DDWGD";
+        dyeColor = 16;
+        itemlist1 = "  W  ";
         itemlist2 = "T CEP";
-        itemlist3 = "DDWGD";
+        itemlist3 = "  W  ";
         planeFuelAdd = 1000;
-
-        sloped = false;
-        oldClassic = true;
-        standingOko = (1.8F / 2.0F) - 0.17F;
-        planeWidth = 6F;
-        planeHeight = 1.8F;
-        playerYOffset = 3.0D;
     }
 
 }

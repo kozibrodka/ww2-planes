@@ -32,7 +32,7 @@ public class RenderPlane extends EntityRenderer
             GL11.glRotatef(((MathHelper.sin(f2) * f2 * f3) / 10F) * (float)entityplane.boatRockDirection, 1.0F, 0.0F, 0.0F);
         }
         GL11.glRotatef(entityplane.rotationRoll, 1.0F, 0.0F, 0.0F);
-        bindTexture((new StringBuilder()).append("/assets/planes/stationapi/textures/mob/").append(entityplane.plane.shortName).append(".png").toString());
+        bindTexture("/assets/planes/stationapi/textures/mob/" + entityplane.plane.texture + ".png");
         GL11.glScalef(-1F, -1F, 1.0F);
         ModelPlane modelplane = entityplane.plane.model;
         modelplane.render(0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F, entityplane);

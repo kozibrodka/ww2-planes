@@ -225,18 +225,6 @@ public class EntityPlaneNew extends Entity
         {
             return true;
         }
-//        boatRockDirection = -boatRockDirection;
-//        boatTimeSinceHit = 10;
-//        boatCurrentDamage += i * 10;
-//        if(boatCurrentDamage > 40)
-//        {
-//            boatCurrentDamage = 40;
-//        }
-//        method_1336(); //setBeenAttacked
-//        planeDamage += 3 * i;  //dmg mnozony X3 jest
-//        level.playSound(this, "planes:mechhurt", 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F); //glos do zmiany
-//        System.out.println("Alc dostałem od: " + entity);
-
         if(entity instanceof LivingEntity){
             if(entity instanceof Monster){
                 boatRockDirection = -boatRockDirection;
@@ -951,7 +939,7 @@ public class EntityPlaneNew extends Entity
         }
         if(passenger == null && propellerSpeed == 0 && plane.sloped)
         {
-            if(pitch > plane.slopedPitch) //dodac wlaściWOSC !!!
+            if(pitch > plane.slopedPitch)
                 pitch = pitch - 1F;
         }
         prevMotionX = velocityX;
@@ -1009,7 +997,7 @@ public class EntityPlaneNew extends Entity
             {
                 passenger.prevYaw = passenger.yaw;
                 passenger.prevPitch = passenger.pitch;
-                ((EntityBaseAccessor)passenger).invokeSetRotation(yaw + 90F, pitch);
+                ((EntityBaseAccessor)passenger).invokeSetRotation(yaw + 90F, pitch); //TODO get rid of accessor
 //                passenger.setRotation(yaw + 90F, pitch);
             }
             return;

@@ -82,6 +82,14 @@ public class mod_Planes {
     public static TemplateItem itemGunAircraftRocket;
     public static TemplateItem itemGunAircraftRocketPanzer;
 
+    public static TemplateItem BF109_OLD;
+    public static TemplateItem Biplane_OLD;
+    public static TemplateItem Camel_OLD;
+    public static TemplateItem Fokker_OLD;
+    public static TemplateItem Mustang_OLD;
+    public static TemplateItem Spitfire_OLD;
+    public static TemplateItem TwoSeaterBiplane_OLD;
+
     public static TemplateItem BF109;
     public static TemplateItem Biplane;
     public static TemplateItem Camel;
@@ -89,7 +97,6 @@ public class mod_Planes {
     public static TemplateItem Mustang;
     public static TemplateItem Spitfire;
     public static TemplateItem TwoSeaterBiplane;
-    public static TemplateItem Lancaster;
 
     public static TemplateItem bofors;
     public static TemplateItem flakvierling;
@@ -99,6 +106,7 @@ public class mod_Planes {
     public static TemplateItem flak88b;
     public static TemplateItem flak88c;
 
+    public static TemplateItem Lancaster;
     public static TemplateItem planeNew_YAK5;
     public static TemplateItem planeNew_Spitfire1;
     public static TemplateItem planeNew_Spitfire2;
@@ -110,6 +118,8 @@ public class mod_Planes {
     public static TemplateItem planeNew_JU87;
     public static TemplateItem planeNew_Hurricane;
     public static TemplateItem planeNew_HE111;
+
+    public static TemplateItem planeNew_BF109_TEST;
 
     public static TemplateBlock planeWorkbench;
 
@@ -133,13 +143,23 @@ public class mod_Planes {
         itemGunAircraftRocketPanzer = (TemplateItem) new SdkItemGunAircraftRocketPanzer(Identifier.of(MOD_ID, "itemGunAircraftRocketPanzer")).setTranslationKey(MOD_ID, "itemGunAircraftRocketPanzer");
 
         if(planesGlass.registerPlanes_OLD) {
-            new PlaneType(new Properties_BF109());
-            new PlaneType(new Properties_Biplane());
-            new PlaneType(new Properties_Camel());
-            new PlaneType(new Properties_Fokker());
-            new PlaneType(new Properties_Mustang());
-            new PlaneType(new Properties_Spitfire());
-            new PlaneType(new Properties_TwoSeaterBiplane());
+            /// TMT 173
+            new PlaneType(new Properties_BF109_OLD());
+            new PlaneType(new Properties_Biplane_OLD());
+            new PlaneType(new Properties_Camel_OLD());
+            new PlaneType(new Properties_Fokker_OLD());
+            new PlaneType(new Properties_Mustang_OLD());
+            new PlaneType(new Properties_Spitfire_OLD());
+            new PlaneType(new Properties_TwoSeaterBiplane_OLD());
+            /// TMT 125
+            new PlaneTypeNew(new Properties_BF109());
+            new PlaneTypeNew(new Properties_Biplane());
+            new PlaneTypeNew(new Properties_Camel());
+            new PlaneTypeNew(new Properties_Fokker());
+            new PlaneTypeNew(new Properties_Mustang());
+            new PlaneTypeNew(new Properties_Spitfire());
+            new PlaneTypeNew(new Properties_TwoSeaterBiplane());
+            //TODO passanger Wysokość i wysunięcie...
         }
 
         if(planesGlass.registerPlanes_NEW) {
@@ -175,19 +195,19 @@ public class mod_Planes {
         }
 
         for (int i = 0; i < PlaneTypeNew.types.size(); i++) {
-            PlaneTypeNew planetype = (PlaneTypeNew) PlaneTypeNew.types.get(i);
-            System.out.println((new StringBuilder()).append("mod_Planes added planeNew : ").append(planetype.shortName).toString());
+            PlaneTypeNew planetypenew = (PlaneTypeNew) PlaneTypeNew.types.get(i);
+            System.out.println((new StringBuilder()).append("mod_Planes added planeNew : ").append(planetypenew.shortName).toString());
 
-            planeMappingNew.put(planetype.shortName, planetype);
-            planetype.przedmiot = (TemplateItem) new ItemPlaneNew(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxCount(1);
+            planeMappingNew.put(planetypenew.shortName, planetypenew);
+            planetypenew.przedmiot = (TemplateItem) new ItemPlaneNew(Identifier.of(MOD_ID, planetypenew.shortName), planetypenew.shortName).setTranslationKey(MOD_ID, planetypenew.shortName).setMaxCount(1);
         }
 
         for (int i = 0; i < AAGunType.types.size(); i++) {
-            AAGunType planetype = (AAGunType) AAGunType.types.get(i);
-            System.out.println((new StringBuilder()).append("mod_Planes added aaGun : ").append(planetype.shortName).toString());
+            AAGunType antiatype = (AAGunType) AAGunType.types.get(i);
+            System.out.println((new StringBuilder()).append("mod_Planes added aaGun : ").append(antiatype.shortName).toString());
 
-            aaGunMapping.put(planetype.shortName, planetype);
-            planetype.przedmiot = (TemplateItem) new ItemAAGun(Identifier.of(MOD_ID, planetype.shortName), planetype.shortName).setTranslationKey(MOD_ID, planetype.shortName).setMaxCount(1);
+            aaGunMapping.put(antiatype.shortName, antiatype);
+            antiatype.przedmiot = (TemplateItem) new ItemAAGun(Identifier.of(MOD_ID, antiatype.shortName), antiatype.shortName).setTranslationKey(MOD_ID, antiatype.shortName).setMaxCount(1);
         }
 
     }

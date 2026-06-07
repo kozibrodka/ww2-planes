@@ -1,25 +1,24 @@
 package net.kozibrodka.planes.properties;
 
 import net.kozibrodka.planes.events.mod_Planes;
-import net.kozibrodka.planes.model.ModelSpitfire;
-import net.kozibrodka.planes.model.ModelSpitfire_125;
+import net.kozibrodka.planes.model.ModelBF109;
 import net.kozibrodka.sdk_api.events.init.ww2Parts;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class Properties_Spitfire extends Machine_properties {
-    public Properties_Spitfire()
+public class Properties_Mustang_OLD extends Machine_properties {
+    public Properties_Mustang_OLD()
     {
-        name = "Spitfire";
-        shortName = "Spitfire";
-        texture = "Spitfire";
-        modelNew = new ModelSpitfire_125();
-        przedmiot = mod_Planes.Spitfire;
-        maxPropSpeed = 4.0F;
+        name = "P-51 Mustang";
+        shortName = "Mustang_OLD";
+        texture = "Mustang";
+        model = new ModelBF109();
+        przedmiot = mod_Planes.Mustang_OLD;
+        maxPropSpeed = 4.8F;
         takeOffSpeed = 3.0F;
-        barrelX = -44;
+        barrelX = -80;
         barrelY = 3;
-        barrelZ = -44;
+        barrelZ = -4;
         bombXOffset = 0;
         bombYOffset = 16;
         bombZOffset = 0;
@@ -28,20 +27,20 @@ public class Properties_Spitfire extends Machine_properties {
         propellerZ = 0;
         hasGuns = true;
         hasBombs = true;
-        planeShootDelay = 2;
-        planeBombDelay = 20;
+        planeShootDelay = 6;
+        planeBombDelay = 10;
         numCargoSlots = 0;
-        numBulletSlots = 5;
-        numBombSlots = 3;
-        numRocketSlots = 4;
-        planeHealth = 500;
+        numBulletSlots = 0;
+        numBombSlots = 5;
+        numRocketSlots = 5;
+        planeHealth = 700;
         turnLeftModifier = 4.0D;
         turnRightModifier = 4.0D;
         lookUpModifier = 2.0D;
         lookDownModifier = 2.0D;
-        acceleration = 3.0D;
+        acceleration = 3.5D;
         decceleration = 3.0D;
-        maxHeight = 125;
+        maxHeight = 124;
         startSound = "planes:propstart";
         startSoundLength = 20;
         propSound = "planes:propsound";
@@ -66,22 +65,15 @@ public class Properties_Spitfire extends Machine_properties {
 
         item_propeller =  new ItemStack(ww2Parts.metalPropeller.id, 1, 0);
         item_cockpit =  new ItemStack(ww2Parts.metalCockpit.id, 1, 0);
-        item_wings = new ItemStack(ww2Parts.metalWingMG.id,1,0);
+        item_wings = new ItemStack(ww2Parts.metalWing.id,1,0);
         item_guns =  new ItemStack(Item.EGG.id, 1, 0);
         item_tail =  new ItemStack(ww2Parts.metalTail.id, 1, 0);
         item_bay =  new ItemStack(ww2Parts.bombBay.id, 1, 0);
-        dyeColor = 2;
+        dyeColor = 12;
         itemlist1 = "DDW D";
         itemlist2 = "TBCEP";
         itemlist3 = "DDW D";
         planeFuelAdd = 1000;
-
-        sloped = false;
-        oldClassic = true;
-        standingOko = (1.8F / 2.0F) - 0.17F;
-        planeWidth = 6F;
-        planeHeight = 1.8F;
-        playerYOffset = 3.0D;
     }
 
 }

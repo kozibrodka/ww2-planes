@@ -1,25 +1,24 @@
 package net.kozibrodka.planes.properties;
 
 import net.kozibrodka.planes.events.mod_Planes;
-import net.kozibrodka.planes.model.ModelSpitfire;
-import net.kozibrodka.planes.model.ModelSpitfire_125;
+import net.kozibrodka.planes.model.ModelBF109;
 import net.kozibrodka.sdk_api.events.init.ww2Parts;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class Properties_Spitfire extends Machine_properties {
-    public Properties_Spitfire()
+public class Properties_BF109_OLD extends Machine_properties {
+    public Properties_BF109_OLD()
     {
-        name = "Spitfire";
-        shortName = "Spitfire";
-        texture = "Spitfire";
-        modelNew = new ModelSpitfire_125();
-        przedmiot = mod_Planes.Spitfire;
-        maxPropSpeed = 4.0F;
+        name = "BF109";
+        shortName = "BF109_OLD";
+        texture = "BF109";
+        model = new ModelBF109();
+        przedmiot = mod_Planes.BF109_OLD;
+        maxPropSpeed = 4.5F;
         takeOffSpeed = 3.0F;
-        barrelX = -44;
+        barrelX = -80;
         barrelY = 3;
-        barrelZ = -44;
+        barrelZ = -4;
         bombXOffset = 0;
         bombYOffset = 16;
         bombZOffset = 0;
@@ -28,12 +27,12 @@ public class Properties_Spitfire extends Machine_properties {
         propellerZ = 0;
         hasGuns = true;
         hasBombs = true;
-        planeShootDelay = 2;
+        planeShootDelay = 0;
         planeBombDelay = 20;
         numCargoSlots = 0;
         numBulletSlots = 5;
-        numBombSlots = 3;
-        numRocketSlots = 4;
+        numBombSlots = 2;
+        numRocketSlots = 1;
         planeHealth = 500;
         turnLeftModifier = 4.0D;
         turnRightModifier = 4.0D;
@@ -63,25 +62,17 @@ public class Properties_Spitfire extends Machine_properties {
             seatsY[passengerL] = 0;
             seatsZ[passengerL] = 0;
         }
-
-        item_propeller =  new ItemStack(ww2Parts.metalPropeller.id, 1, 0);
+        item_propeller =  new ItemStack(ww2Parts.metalPropeller.id, 1, 0); //ww2Parts.metalPropeller.id
         item_cockpit =  new ItemStack(ww2Parts.metalCockpit.id, 1, 0);
-        item_wings = new ItemStack(ww2Parts.metalWingMG.id,1,0);
+        item_wings = new ItemStack(ww2Parts.metalWing.id,1,0);
         item_guns =  new ItemStack(Item.EGG.id, 1, 0);
         item_tail =  new ItemStack(ww2Parts.metalTail.id, 1, 0);
         item_bay =  new ItemStack(ww2Parts.bombBay.id, 1, 0);
-        dyeColor = 2;
+        dyeColor = 8;
         itemlist1 = "DDW D";
         itemlist2 = "TBCEP";
         itemlist3 = "DDW D";
         planeFuelAdd = 1000;
-
-        sloped = false;
-        oldClassic = true;
-        standingOko = (1.8F / 2.0F) - 0.17F;
-        planeWidth = 6F;
-        planeHeight = 1.8F;
-        playerYOffset = 3.0D;
     }
 
 }
