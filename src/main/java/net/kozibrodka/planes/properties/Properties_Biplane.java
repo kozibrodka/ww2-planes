@@ -48,7 +48,6 @@ public class Properties_Biplane extends Machine_properties {
         propSoundLength = 30;
         shootSound = "planes:bullet";
         bombSound = "planes:bomb";
-        playerYOffset = -0.5D;
         numPassengers = 0;
         if(numPassengers > 0)
         {
@@ -78,10 +77,11 @@ public class Properties_Biplane extends Machine_properties {
 
         sloped = false;
         oldClassic = true;
-        standingOko = (1.8F / 2.0F) - 0.17F;
+        standingOko = 0.625F;
         planeWidth = 6F;
         planeHeight = 1.8F;
-        playerYOffset = 3.0D;
+        playerYOffset = -2.0D;
+        playerXOffset = 0.0D; /// -4.0D jest lepsze dla "classic small planes"
     }
 
 }

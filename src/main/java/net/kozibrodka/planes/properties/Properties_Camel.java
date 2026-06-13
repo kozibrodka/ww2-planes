@@ -78,10 +78,10 @@ public class Properties_Camel extends Machine_properties {
 
         sloped = false;
         oldClassic = true;
-        standingOko = (1.8F / 2.0F) - 0.17F;
+        standingOko = 0.625F;
         planeWidth = 6F;
         planeHeight = 1.8F;
-        playerYOffset = 3.0D;
+        playerYOffset = -2.0D;
     }
 
 }

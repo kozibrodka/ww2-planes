@@ -672,7 +672,7 @@ public class EntityPlaneNew extends Entity
         {
             j = (10 * planeDamage) / plane.planeHealth;
         }
-        double d = (double)plane.propellerX / 16D;
+        double d = (double)plane.propellerX / 16D; //TODO to może być kod dla Boxa + Pass + Bullets .... uwzględnia wszystkie 3 płaszczyzny
         double d1 = ((double)plane.propellerY / 16D) * Math.cos((rotationRoll * 3.141593F) / 180F) + ((double)plane.propellerZ / 16D) * -Math.sin((rotationRoll * 3.141593F) / 180F);
         double d2 = ((double)plane.propellerY / 16D) * -Math.sin((rotationRoll * 3.141593F) / 180F) + ((double)plane.propellerZ / 16D) * Math.cos((rotationRoll * 3.141593F) / 180F);
         double d3 = Math.cos(((double)(-yaw) / 180D) * 3.1415926535897931D);
@@ -997,8 +997,8 @@ public class EntityPlaneNew extends Entity
             {
                 passenger.prevYaw = passenger.yaw;
                 passenger.prevPitch = passenger.pitch;
-                ((EntityBaseAccessor)passenger).invokeSetRotation(yaw + 90F, pitch); //TODO get rid of accessor
-//                passenger.setRotation(yaw + 90F, pitch);
+//                ((EntityBaseAccessor)passenger).invokeSetRotation(yaw + 90F, pitch); //TODO get rid of accessor
+                passenger.setRotation(yaw + 90F, pitch);
             }
             return;
         } else
@@ -1138,6 +1138,7 @@ public class EntityPlaneNew extends Entity
             System.out.println("DMG: " + planeDamage);
             System.out.println("TYPE: " + plane.shortName);
             entityplayer.swingHand();
+            damage(this, 1000); ///DEBUG
             return true;
         }
         if(entityplayer.getHand() != null && entityplayer.getHand().itemId == mod_Planes.planeBlowTorch.id)

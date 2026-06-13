@@ -1100,6 +1100,7 @@ public class EntityPlane extends Entity
             System.out.println("DMG: " + planeDamage);
             System.out.println("TYPE: " + plane.shortName);
             entityplayer.swingHand();
+            damage(this, 1000); ///DEBUG
             return true;
         }
         if(entityplayer.getHand() != null && entityplayer.getHand().itemId == mod_Planes.planeBlowTorch.id)

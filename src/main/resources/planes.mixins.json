@@ -9,6 +9,7 @@
   "server": [
   ],
   "client": [
+    "PlaneMouseControlMixin"
   ],
   "injectors": {
     "defaultRequire": 1
